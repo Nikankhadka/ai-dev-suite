@@ -1,162 +1,121 @@
-# Development Guide: Plan to Delivery
+# Development Guide: ECC Workflow
 
-A comprehensive guide for using OpenCode with the ECC agentic workflow to build projects from ideation to delivery. Read this outside of OpenCode as a reference — the INSTRUCTIONS.md that loads every session only contains behavioral guardrails (the "how").
-
----
-
-## 1. Project Init
-
-Every project starts with OpenCode understanding your codebase.
-
-```bash
-cd ~/new-project
-opencode
-/init
-```
-
-This creates an `AGENTS.md` in your project root with:
-- Build, lint, test commands (auto-detected)
-- Project structure, architecture notes
-- Coding conventions
-- Framework-specific patterns
-
-**Commit AGENTS.md** to git — it's your project's instruction manual for every agent.
+A practical guide for using the ECC agent orchestration suite from ideation to delivery. Read this outside of OpenCode — the INSTRUCTIONS.md loaded every session only contains behavioral guardrails.
 
 ---
 
-## 2. The Development Pipeline
-
-Follow this sequence for every feature or fix:
+## 1. The Pipeline
 
 ```
-Plan → TDD → Code → Review → Security → Verify → Deliver
+Plan → Build → Review → Test → Document
 ```
 
-### Plan
+For every feature or fix, follow this sequence. Complex tasks trigger `/orchestrate` which coordinates multiple agents automatically.
 
-For complex features or refactoring, start here before any code:
+---
+
+## 2. Day-to-Day Workflow
+
+### Plan Phase (Complex Features)
 
 ```
-/plan Add search with semantic embeddings
+/plan Add semantic search to the marketplace
 ```
 
-The `planner` agent will:
+The `planner` agent (read-only) will:
 - Analyze requirements and surface assumptions
 - Present tradeoffs between approaches
-- Create a step-by-step implementation plan
-- NOT write any code (read-only agent)
+- Design system architecture and database schema
+- Create step-by-step implementation plan
+- NOT write any code — waits for your approval
 
-Verify the plan meets the behavioral guardlines: is it simple? Surgical? Has clear success criteria?
+### Build Phase
 
-### TDD (Red → Green → Refactor)
-
-For any new feature or bug fix:
-
+**TDD approach (recommended for new features / bug fixes):**
 ```
 /tdd User registration should validate email format
 ```
-
 The `tdd-guide` agent:
-1. Writes tests that fail (RED — validates tests exist and fail for the right reason)
+1. Writes failing tests first (RED)
 2. Implements minimal code to pass (GREEN)
 3. Refactors while keeping tests green
 4. Checks 80%+ coverage
 
-Run tests during development:
+**Direct coding (simple changes):**
+Work directly with the `build` agent. Access all tools, web search, MCP docs, and on-demand skills.
 
-```
-/test-coverage
-```
-
-### Code
-
-For straightforward changes, work directly with the `build` agent:
-- Access to all tools (read, write, edit, bash, grep, glob, etc.)
-- Web search for research (`webfetch` + `websearch` + `context7` MCP)
-- All skills available on-demand via `skill({ name: "..." })`
-
-Load relevant skills for your task:
-
-```
-skill({ name: "api-design" })     # API endpoint patterns
-skill({ name: "frontend-patterns" }) # React/component patterns
-skill({ name: "backend-patterns" })  # Server-side architecture
-skill({ name: "security-review" })   # Security best practices
-```
-
-### Code Review
+### Review Phase
 
 After writing code:
-
 ```
-/code-review
+/review
 ```
-
-The `code-reviewer` agent checks for:
+The `reviewer` agent checks:
 - Code quality and maintainability
-- Potential bugs and edge cases
-- Performance implications
-- Adherence to project patterns
+- Security vulnerabilities (OWASP Top 10)
+- Build and TypeScript errors
+- Reports issues by severity with fix suggestions
 
-### Security Review
-
-For code handling user input, auth, or sensitive data:
+### Test Phase
 
 ```
-/security
+/e2e  Checkout flow should complete successfully
 ```
+The `e2e-runner` generates Playwright tests, runs them, and captures artifacts.
 
-Or for a deeper scan:
-
-```
-/security-scan
-```
-
-The `security-reviewer` checks:
-- Hardcoded secrets
-- Input validation
-- SQL injection, XSS, CSRF
-- Auth/authorization gaps
-- Dependency vulnerabilities
-
-### Verify
-
-Before delivery, run the full verification loop:
+### Document Phase
 
 ```
-/verify
+/maintain
 ```
+The `maintainer` agent:
+- Detects and removes dead code
+- Consolidates duplicates
+- Updates documentation and codemaps
+- Tracks deletions in DELETION_LOG.md
 
-This runs:
-1. Build check (`npm run build`, `tsc --noEmit`)
-2. Type check
-3. Lint (`npm run lint`)
-4. Test suite with coverage (`npm test -- --coverage`)
-5. Security scan
-6. Diff review
+---
 
-You also have granular verification:
+## 3. System Commands
 
-```
-/quality-gate            # Run quality gates
-/eval criteria           # Run eval against criteria
-/checkpoint              # Save verification state
-```
-
-### Delivery
-
-Once verified:
+### Documentation Lookup
 
 ```
-/build-fix               # Resolve any remaining build errors
-/test-coverage           # Final coverage check
+/docs How do I configure Next.js middleware?
+/docs What are the Supabase auth methods?
+```
+
+Uses Context7 MCP to fetch current docs. Always prefer over training data.
+
+### Memory & Skills
+
+```
+/memory instinct-status     # View learned instincts
+/memory evolve              # Cluster instincts into skills
+/memory skill-create        # Generate skills from git history
+/memory projects            # List known projects
+```
+
+### System Management
+
+```
+/system harness-audit        # Check harness health
+/system loop-start <task>    # Start autonomous agent loop
+/system loop-status          # Check loop progress
+/system model-route <task>   # Route by model complexity
+```
+
+### Evaluation
+
+```
+/eval                        # Run evaluation against criteria
+/eval quality-gate           # Run quality gates
+/eval checkpoint             # Save verification state
 ```
 
 ---
 
-## 3. Advanced Patterns
-
-### Multi-Agent Orchestration
+## 4. Multi-Agent Orchestration
 
 For complex tasks spanning multiple domains:
 
@@ -164,166 +123,110 @@ For complex tasks spanning multiple domains:
 /orchestrate Build a real-time chat feature with WebSocket support
 ```
 
-The `planner` agent decomposes the task and dispatches to specialized agents:
-- `architect` for system design
+The `ops` agent decomposes the task and dispatches:
+- `planner` for system design
 - `tdd-guide` for test-first implementation
-- `code-reviewer` for quality
-- `security-reviewer` for security
-- `build-error-resolver` if build fails
+- `reviewer` for quality and security
+- `e2e-runner` for end-to-end testing
 
-### Research-Driven Development
+### Orchestration Patterns
 
-For tasks requiring external research:
-
+**Sequential:** Later tasks depend on earlier results
 ```
-/plan Research and implement background job processing
+planner → tdd-guide → reviewer → e2e-runner
 ```
 
-The agent uses:
-- `websearch` for finding current solutions and libraries
-- `context7` MCP for live documentation lookup
-- `gh_grep` MCP for real-world code examples
-- `webfetch` for reading official docs
-
-### Documentation
-
+**Parallel:** Independent tasks run simultaneously
 ```
-/update-docs README for new API endpoint
-/update-codemaps
+planner →├→ reviewer
+         └→ e2e-runner
 ```
 
-The `doc-updater` agent reads your code and writes comprehensive documentation.
-
-### Autonomous Agent Loops
-
-For batch tasks that run unattended:
-
+**Fan-Out/Fan-In:** Multiple perspectives, then synthesis
 ```
-/loop-start Process all TODO comments in the codebase
-/loop-status              # Check progress
+         ┌→ agent-1 ─┐
+planner →├→ agent-2 ─┼→ synthesizer
+         └→ agent-3 ─┘
 ```
 
 ---
 
-## 4. Skill Selection Guide
+## 5. Skills — When to Load
 
-When to load each skill during your workflow:
+Skills are loaded on-demand when a task matches. Available skills:
 
-| Phase | Skills to Load |
-|-------|---------------|
-| Planning | `api-design`, `backend-patterns`, `frontend-patterns` |
-| Architecture | `coding-standards` |
-| Development (API) | `api-design`, `backend-patterns`, `database-reviewer` |
-| Development (Frontend) | `frontend-patterns`, `frontend-slides` |
-| Testing | `tdd-workflow`, `e2e-testing` |
-| Security | `security-review` |
-| Delivery | `eval-harness`, `strategic-compact` |
+| Skill | Use For |
+|-------|---------|
+| `coding-standards` | Naming conventions, immutability, code review |
+| `tdd-workflow` | Red → Green → Refactor patterns |
+| `e2e-testing` | Playwright integration, Page Object Model |
+| `strategic-compact` | Long sessions, context management |
 
-For Expo projects, additionally load: `expo-building-native-ui`, `expo-api-routes`, `expo-deployment`, `expo-upgrading-expo`, `expo-use-dom`, `expo-ui`, `expo-tailwind-setup`, `expo-module`, `expo-native-data-fetching`, `expo-observe`, `expo-add-app-clip`, `expo-brownfield`, `expo-cicd-workflows`, `expo-dev-client`, `expo-eas-update-insights`.
-
----
-
-## 5. Cost Optimization
-
-### Model Strategy
-- **Qwen 3.6 Plus** (default): Day-to-day coding, lightweight agents
-- **DeepSeek V4 Pro**: Complex architecture, code review, security, build errors, database optimization
-
-Use `/model-route` to route specific tasks to the right model:
-
+Skills auto-load when matching tasks are detected. You can also load explicitly:
 ```
-/model-route Design database schema --budget high
-/model-route Fix typo in README --budget low
+skill({ name: "tdd-workflow" })
 ```
 
-### Context Management
-- Run `/compact` at logical boundaries (after planning, after debugging, before switching features)
-- Don't compact mid-implementation
-- Save important state to files before compacting
-
-### Config Settings (from opencode.jsonc)
-- All tools enabled via `"permission": "allow"` — no approval prompts
-- MCP servers enabled: Context7 (docs), Grep by Vercel (code)
-- `websearch` available via `OPENCODE_ENABLE_EXA=1`
-- `lsp` available via `OPENCODE_EXPERIMENTAL_LSP_TOOL=true`
-- Model selection manual (no defaults set)
-
 ---
 
-## 6. Project Types
-
-### Web App (Next.js, etc.)
-
-1. `/init` → auto-detects TypeScript, npm, Next.js
-2. Use `api-design`, `frontend-patterns`, `backend-patterns` skills
-3. `/tdd` for features, `/code-review` after, `/security` before push
-
-### Expo / React Native
-
-1. `/init` → auto-detects TypeScript, Expo
-2. Load relevant Expo skills: `expo-building-native-ui`, `expo-api-routes`, `expo-deployment`
-3. Use Expo Go for development (`npx expo start`)
-
-### API / Backend
-
-1. `/init` → auto-detects framework
-2. Use `api-design`, `backend-patterns`, `database-reviewer` skills
-3. `/plan` for architecture decisions, `/tdd` for endpoints
-
-### Python / Data Science
-
-1. `/init` → auto-detects Python
-2. Use `python-reviewer` for code review
-3. `/code-review` with python type hints focus
-
----
-
-## 7. Quick Reference
+## 6. Quick Reference
 
 ### Essential Commands
 
 | Command | When |
 |---------|------|
-| `/plan <feature>` | Before implementing complex work |
+| `/plan <feature>` | Complex features, architecture decisions |
 | `/tdd <requirement>` | New features, bug fixes |
-| `/code-review` | After writing/modifying code |
-| `/security` | Code handling user input or auth |
-| `/verify` | Before delivery/commit |
-| `/build-fix` | When build fails |
+| `/review` | After writing/modifying code |
+| `/e2e <flow>` | End-to-end testing |
+| `/maintain` | Code cleanup, documentation |
+| `/docs <question>` | Library/framework docs lookup |
 | `/orchestrate <task>` | Complex multi-step tasks |
 | `/compact` | After completing a phase |
 
-### Essential Skills
-
-| Skill | Use for |
-|-------|---------|
-| `api-design` | REST API design patterns |
-| `backend-patterns` | Server architecture, caching, DB |
-| `frontend-patterns` | React, component design |
-| `tdd-workflow` | Test patterns, Red-Green-Refactor |
-| `security-review` | Security checklists |
-| `e2e-testing` | Playwright integration |
-| `database-reviewer` | SQL, schema, RLS policies |
-
-### Agent Quick Reference
+### Agent Permissions
 
 | Agent | Access | Use Case |
 |-------|--------|----------|
 | `build` | All tools | Day-to-day coding |
-| `planner` | Read-only | Analysis, planning |
+| `planner` | Read + bash | Analysis, planning (no write/edit) |
+| `reviewer` | All tools | Code review, security, build fix |
 | `tdd-guide` | All tools | Test-first development |
-| `code-reviewer` | Read + bash | Code quality review |
-| `security-reviewer` | All tools | Security audit |
-| `build-error-resolver` | All tools | Fix build/type errors |
-| `e2e-runner` | All tools | E2E Playwright tests |
+| `e2e-runner` | All tools | E2E tests |
+| `maintainer` | All tools | Cleanup, documentation |
+| `ops` | Read + bash + edit | System management, orchestration |
+
+### Context Management
+
+- Run `/compact` at logical boundaries (after planning, after debugging, before switching features)
+- Don't compact mid-implementation
+- Avoid the last 20% of context window for complex work
 
 ---
 
-## Behavioral Guardlines (Always Active)
+## 7. New Project Setup
 
-These rules apply to every task automatically (from INSTRUCTIONS.md):
+```bash
+cd ~/new-project
+opencode
+/init          # Creates AGENTS.md for this project
+```
 
-1. **Surface Assumptions** — State assumptions explicitly. If uncertain, ask. When confused, stop and clarify.
-2. **Minimum Code** — No features beyond what was asked. No speculative abstractions. If 200 lines could be 50, rewrite it.
-3. **Surgical Changes** — Touch only what you must. Don't refactor unbroken things. Remove only what YOUR changes made unused.
-4. **Define Success Criteria** — Transform "Add X" into "Write tests for X, then make them pass". Loop until verified.
+`/init` auto-detects:
+- Language and framework
+- Package manager (npm, pnpm, yarn, bun)
+- Test framework (Jest, Vitest, Playwright)
+- Build/lint commands
+
+Commit `AGENTS.md` to git — it's your project's instruction manual for every agent session.
+
+---
+
+## Behavioral Guardrails (Always Active)
+
+From INSTRUCTIONS.md — applied to every task automatically:
+
+1. **Surface Assumptions** — State explicitly, ask when uncertain, stop when confused.
+2. **Minimum Code** — No speculative features. If 200 lines could be 50, rewrite it.
+3. **Surgical Changes** — Touch only what you must. Don't refactor unbroken things.
+4. **Define Success Criteria** — "Add X" → "Write tests for X, then make them pass."

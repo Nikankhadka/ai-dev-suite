@@ -6,10 +6,6 @@
     "instructions/INSTRUCTIONS.md"
   ],
 
-  "plugin": [
-    "./plugins"
-  ],
-
   "agent": {
     "build": {
       "description": "Primary coding agent for development. Use for day-to-day coding, small fixes, and straightforward changes.",
