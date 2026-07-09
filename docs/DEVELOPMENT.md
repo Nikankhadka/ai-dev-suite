@@ -6,9 +6,9 @@ A practical guide to using this suite from prompt to shipped change. The full ag
 
 ## 1. The default flow
 
-For anything non-trivial, run `/ship <requirement>`. It executes plan -> build -> review -> test -> docs as one gated pipeline (see `commands/ship.md` for the exact gates). Nothing in it is stack-specific - the stack is detected fresh every time via `AGENTS.md` or the `stack-discovery` skill.
+For anything non-trivial, run `/ship <requirement>`. It executes spec (optional) -> plan -> build -> review -> test -> docs -> release (optional) as one gated pipeline (see `commands/ship.md` for the exact gates). Nothing in it is stack-specific - the stack is detected fresh every time via `AGENTS.md` or the `stack-discovery` skill.
 
-For a single stage, or a smaller task that doesn't need the full pipeline, use the standalone commands below.
+For product framing before planning, run `/spec <requirement>` first. For a single stage, or a smaller task that doesn't need the full pipeline, use the standalone commands below.
 
 ## 2. Standalone commands, stage by stage
 
@@ -85,17 +85,20 @@ Skills load on demand when a task matches their description; you never need to p
 | `stack-discovery` | starting work in a project without a mapped `AGENTS.md`, or another skill/agent says to load it |
 | `coding-standards` | writing or reviewing code for naming/readability/quality |
 | `testing` | writing tests, fixing bugs, or doing E2E work |
+| `lavish` | generating interactive HTML planning artifacts before `/plan` for complex features |
 | `strategic-compact` | a session is long or multi-phase and approaching context limits |
 
 ## 5. Quick reference
 
 | Command | When |
-|---|---|
+|---|---|---|
 | `/ship <requirement>` | the default for anything non-trivial |
+| `/spec <requirement>` | product framing before `/plan` |
 | `/plan <feature>` | architecture/complex-feature planning alone |
 | `/test <requirement>` | TDD, E2E, bug repro, or coverage alone |
 | `/review` | after writing/modifying code, outside `/ship` |
 | `/maintain` | cleanup/doc refresh alone |
+| `/firstmate <objective>` | launch parallel agent crew via tmux |
 | `/init-project` | first time in a new project, or `--refresh` to update the map |
 | `/audit` | check this suite or a project for drift |
 | `/docs <question>` | library/framework lookup |

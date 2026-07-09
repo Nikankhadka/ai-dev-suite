@@ -48,15 +48,17 @@ Tool hierarchy used throughout: native harness tools first, then axi CLIs (cheap
 
 Definitions live in `agents/*.md`. `build` has no Claude Code adapter (it maps to OpenCode's primary-agent concept, which Claude Code and Codex CLI don't need a translated file for - their main session already has full tool access).
 
-## Commands (12)
+## Commands (14)
 
 | Command | Agent | Purpose |
 |---|---|---|
-| `/ship` | build | full gated pipeline: plan -> build -> review -> test -> docs |
+| `/ship` | build | full gated pipeline: spec (optional) -> plan -> build -> review -> test -> docs -> release (optional) |
+| `/spec` | build | product framing: problem, target user, success criteria, scope; writes to `docs/specs/` |
 | `/plan` | planner | implementation plan; waits for approval before code |
 | `/test` | tester | TDD, E2E, bug repro, or coverage check |
 | `/review` | reviewer | quality/security/build-error review |
 | `/maintain` | maintainer | dead code, duplicates, doc/map/memory refresh |
+| `/firstmate` | build | launch a firstmate tmux orchestration session for parallel agent crew |
 | `/init-project` | build | generate `AGENTS.md` + `.agents/` for a project |
 | `/audit` | build | drift check for this suite, or for a project's `AGENTS.md`/`.agents/` freshness |
 | `/memory` | build | read/write `.agents/memory.md` |
@@ -65,15 +67,16 @@ Definitions live in `agents/*.md`. `build` has no Claude Code adapter (it maps t
 | `/gnhf` | build | `gnhf` CLI autonomous overnight loop |
 | `/treehouse` | build | `treehouse` CLI pooled git worktrees |
 
-Definitions live in `commands/*.md`. The last three wrap external axi CLIs and no-op with an install hint if the binary isn't on `PATH`.
+Definitions live in `commands/*.md`. Commands wrapping external tools guard with `command -v` first and stop with an install hint if the binary is missing.
 
-## Skills (4)
+## Skills (5)
 
 | Skill | Description |
 |---|---|
 | `stack-discovery` | runtime protocol for detecting a project's language/tooling instead of assuming one |
 | `coding-standards` | stack-agnostic naming, readability, immutability, error-handling, security-basics |
 | `testing` | TDD (RED-GREEN-REFACTOR) and E2E methodology, stack-agnostic |
+| `lavish` | interactive HTML planning artifacts for complex feature design; load before `/plan` |
 | `strategic-compact` | when to suggest manual `/compact` at task boundaries |
 
 Definitions live in `skills/*/SKILL.md`. Loaded on demand, never preloaded.
@@ -113,10 +116,10 @@ Check `command -v <tool>` before relying on one - `/audit` reports which are ins
 ## Workflow
 
 ```
-prompt -> plan -> build -> review -> test -> document
+prompt -> spec (product framing, optional) -> plan -> build -> review -> test -> document -> release (optional via /ship --release)
 ```
 
-Run `/ship` for the full gated version of this pipeline on anything non-trivial. Standalone commands (`/plan`, `/test`, `/review`, `/maintain`) exist for smaller, single-stage work.
+Run `/ship` for the full gated version of this pipeline on anything non-trivial. Standalone commands (`/spec`, `/plan`, `/test`, `/review`, `/maintain`) exist for smaller, single-stage work.
 
 ### New project setup
 
@@ -133,8 +136,8 @@ Run `/ship` for the full gated version of this pipeline on anything non-trivial.
 │   ├── RULES.md              # cross-harness rules, loaded by all three harnesses every session
 │   └── OPENCODE.md           # OpenCode-only notes
 ├── agents/                   # 5 agent definitions (OpenCode-native, auto-discovered)
-├── commands/                 # 12 command definitions (OpenCode-native, auto-discovered)
-├── skills/                   # 4 on-demand skills
+├── commands/                 # 14 command definitions (OpenCode-native, auto-discovered)
+├── skills/                   # 5 on-demand skills
 ├── templates/                # AGENTS.md.template, memory.md.template (used by /init-project)
 ├── adapters/claude/agents/   # generated Claude Code agent files - do not hand-edit
 ├── bin/sync-adapters.sh      # regenerates adapters, (re)creates all symlinks

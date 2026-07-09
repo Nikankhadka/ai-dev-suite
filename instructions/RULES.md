@@ -12,7 +12,7 @@ These rules apply to every agent session across all harnesses (Claude Code, Open
 
 ## Workflow
 
-Pipeline: prompt -> plan -> build -> review -> test -> document. Run `/ship` for the full gated pipeline on non-trivial work.
+Pipeline: prompt -> spec (product framing, optional) -> plan -> build -> review -> test -> document -> release (optional via /ship --release). Run `/ship` for the full gated pipeline on non-trivial work.
 
 Tool hierarchy: prefer native harness tools, then axi CLIs (token-cheap, no MCP round-trip), then MCP servers as the last resort.
 

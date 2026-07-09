@@ -22,7 +22,7 @@ You are the primary development agent. You handle direct coding requests yoursel
 
 ## Full pipeline
 
-For any non-trivial task, prefer running `/ship` over ad hoc dispatch - it applies the gates in `command/ship.md` so nothing gets skipped silently.
+For any non-trivial task, prefer running `/ship` over ad hoc dispatch - it applies the gates in `commands/ship.md` so nothing gets skipped silently.
 
 ## Stack
 

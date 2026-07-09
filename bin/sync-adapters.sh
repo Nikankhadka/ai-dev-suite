@@ -19,7 +19,7 @@ HUB="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 CODEX_DIR="$HOME/.codex"
 AGENTS_SKILLS_DIR="$HOME/.agents/skills"
-SKILLS="coding-standards testing stack-discovery strategic-compact"
+SKILLS="coding-standards lavish testing stack-discovery strategic-compact"
 
 status=0
 
