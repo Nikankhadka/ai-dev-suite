@@ -12,24 +12,21 @@ Skills are NOT preloaded. They are discovered automatically from `~/.config/open
 
 | Agent | Purpose | When to Use |
 |-------|---------|-------------|
-| planner | Implementation planning | Complex features, refactoring |
-| architect | System design | Architectural decisions |
+| planner | Planning + system design + database schema | Complex features, refactoring, architecture decisions |
+| build (primary) | Day-to-day coding | General development tasks |
+| reviewer | Code quality + security + build error fix | After writing code, security audit, build failures |
 | tdd-guide | Test-driven development | New features, bug fixes |
-| code-reviewer | Code review | After writing code |
-| security-reviewer | Security analysis | Before commits |
-| build-error-resolver | Fix build errors | When build fails |
-| e2e-runner | E2E testing | Critical user flows |
-| refactor-cleaner | Dead code cleanup | Code maintenance |
-| doc-updater | Documentation | Updating docs |
-| database-reviewer | Database optimization | SQL, schema design |
+| e2e-runner | E2E Playwright tests | Critical user flows |
+| maintainer | Dead code cleanup + documentation | Code maintenance, doc updates |
+| ops | Orchestration + memory + system control | Multi-agent pipelines, instincts, harness, loops |
 
-### Immediate Agent Usage
+### Workflow
 
-No user prompt needed:
-1. Complex feature requests - Use **planner** agent
-2. Code just written/modified - Use **code-reviewer** agent
-3. Bug fix or new feature - Use **tdd-guide** agent
-4. Architectural decision - Use **architect** agent
+```
+plan → build → review → test → document
+```
+
+For complex tasks, run `/orchestrate` to coordinate multiple agents.
 
 ---
 
@@ -63,19 +60,6 @@ Prevent common LLM coding mistakes (from [Karpathy's observations](https://x.com
 
 ## Performance Optimization
 
-### Model Selection Strategy
-
-**Qwen 3.6 Plus** (default, fast, cost-effective):
-- Day-to-day development tasks
-- Lightweight agents (tdd-guide, doc-updater, e2e-runner)
-- General coding and refactoring
-
-**DeepSeek V4 Pro** (deepest reasoning):
-- Complex architectural decisions (planner, architect)
-- Code and security review (code-reviewer, security-reviewer)
-- Build error resolution (build-error-resolver)
-- Database optimization (database-reviewer)
-
 ### Context Window Management
 
 Avoid last 20% of context window for:
@@ -84,14 +68,6 @@ Avoid last 20% of context window for:
 - Debugging complex interactions
 
 Suggest `/compact` at logical task boundaries (after planning, after debugging, before switching features) rather than relying on arbitrary auto-compaction. Do not compact mid-implementation.
-
-### Build Troubleshooting
-
-If build fails:
-1. Use **build-error-resolver** agent
-2. Analyze error messages
-3. Fix incrementally
-4. Verify after each fix
 
 ---
 
@@ -109,22 +85,31 @@ The ECC plugin provides automated hooks (loaded via `opencode.jsonc`):
 
 ### Commands Available (native opencode slash commands)
 
-| Command | Purpose | Agent |
-|---|---|---|
-| `/plan` | Implementation planning (no code til approved) | planner |
-| `/tdd` | Red → Green → Refactor with 80%+ coverage | tdd-guide |
-| `/code-review` | Quality/security/maintainability review | code-reviewer |
-| `/security` | Deep security audit | security-reviewer |
-| `/build-fix` | Fix TypeScript/build errors | build-error-resolver |
-| `/e2e` | E2E Playwright tests | e2e-runner |
-| `/refactor-clean` | Dead code cleanup | refactor-cleaner |
-| `/orchestrate` | Multi-agent pipeline | planner |
+#### Engineering Commands
+
+| Command | Agent | Purpose |
+|---------|-------|---------|
+| `/plan` | planner | Implementation planning with architecture and database design (no code til approved) |
+| `/tdd` | tdd-guide | Red → Green → Refactor with 80%+ coverage |
+| `/review` | reviewer | Code quality, security, and build error review |
+| `/e2e` | e2e-runner | E2E Playwright tests |
+| `/maintain` | maintainer | Dead code cleanup, consolidation, and documentation updates |
+| `/orchestrate` | ops | Multi-agent pipeline for complex tasks |
+
+#### System Commands
+
+| Command | Agent | Purpose |
+|---------|-------|---------|
+| `/memory` | ops | Instinct management, evolve, skill creation, project memory |
+| `/system` | ops | Harness, loops, project setup, model routing |
+| `/eval` | ops | Evaluation, verification, quality gates |
+| `/docs` | ops | Realtime documentation lookup via Context7 MCP |
 
 ---
 
 ## Project Initialization
 
-To initialize project-specific instructions for a new project, run `/init` in opencode. This creates an `AGENTS.md` file (the cross-compatible standard, analogous to `CLAUDE.md`) with build/lint/test commands, architecture notes, and conventions. Commit `AGENTS.md` to Git.
+To initialize project-specific instructions for a new project, run `/init` in opencode. This creates an `AGENTS.md` file with build/lint/test commands, architecture notes, and conventions. Commit `AGENTS.md` to Git.
 
 ---
 

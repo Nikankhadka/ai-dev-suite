@@ -1,34 +1,37 @@
 ---
-description: Create implementation plan with risk assessment
+description: Create implementation plan with architecture and database design
 agent: planner
 subtask: true
 ---
 
 # Plan Command
 
-Create a detailed implementation plan for: $ARGUMENTS
+Create a detailed implementation plan with architecture and database design: $ARGUMENTS
 
 ## Your Task
 
 1. **Restate Requirements** - Clarify what needs to be built
-2. **Identify Risks** - Surface potential issues, blockers, and dependencies
-3. **Create Step Plan** - Break down implementation into phases
-4. **Wait for Confirmation** - MUST receive user approval before proceeding
+2. **Architecture Design** - System design and component relationships
+3. **Database Design** - Schema, indexes, RLS, migrations (if applicable)
+4. **Identify Risks** - Surface potential issues, blockers, and dependencies
+5. **Create Step Plan** - Break down implementation into phases
+6. **Wait for Confirmation** - MUST receive user approval before proceeding
 
 ## Output Format
 
 ### Requirements Restatement
 [Clear, concise restatement of what will be built]
 
+### Architecture Changes
+[Components, data flow, integration points]
+
+### Database Changes (if applicable)
+[Schema changes, indexes, RLS policies, migrations]
+
 ### Implementation Phases
 [Phase 1: Description]
-- Step 1.1
-- Step 1.2
-...
-
-[Phase 2: Description]
-- Step 2.1
-- Step 2.2
+- Step 1.1 (File: path)
+- Step 1.2 (File: path)
 ...
 
 ### Dependencies
@@ -39,11 +42,6 @@ Create a detailed implementation plan for: $ARGUMENTS
 - MEDIUM: [Moderate risks to address]
 - LOW: [Minor concerns]
 
-### Estimated Complexity
-[HIGH/MEDIUM/LOW with time estimates]
-
 **WAITING FOR CONFIRMATION**: Proceed with this plan? (yes/no/modify)
-
----
 
 **CRITICAL**: Do NOT write any code until the user explicitly confirms with "yes", "proceed", or similar affirmative response.

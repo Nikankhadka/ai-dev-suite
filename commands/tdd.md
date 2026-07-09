@@ -1,5 +1,5 @@
 ---
-description: Enforce TDD workflow with 80%+ coverage
+description: Enforce TDD workflow with 80%+ test coverage or analyze coverage
 agent: tdd-guide
 subtask: true
 ---
