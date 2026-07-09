@@ -30,16 +30,9 @@ Strategic compaction at logical boundaries:
 
 ## How It Works
 
-The `suggest-compact.js` script runs on PreToolUse (Edit/Write) and combines two signals:
+There is no automated hook behind this skill — OpenCode's native compaction is configured via `"compaction"` in `opencode.jsonc` (auto-compacts near the context limit, with no awareness of task boundaries). This skill is a purely advisory prompt: when you notice you're approaching a logical boundary (see the decision guide below) or the conversation is getting long, proactively suggest `/compact` to the user yourself rather than waiting for automatic compaction to fire mid-task.
 
-1. **Context size (primary)** — Reads the latest `usage` record from the session transcript (`transcript_path` in the hook payload) and sums `input_tokens + cache_read_input_tokens + cache_creation_input_tokens` (the true context size of the turn). Suggests `/compact` at a window-scaled threshold — 160k tokens on a 200k window, 250k on a 1M window (detected from a `[1m]` model marker, or inferred when observed tokens already exceed 200k) — and re-reminds after every additional 60k tokens of context growth
-2. **Tool-call count (secondary)** — Counts tool invocations in session; suggests at a configurable threshold (default: 50 calls), then every 25 calls after
-
-Tool count alone is a weak proxy for window pressure: a few large file reads or MCP responses can fill the window in very few calls, while many tiny calls can cross 50 with a near-empty window. The context-size signal fires when it actually matters.
-
-## Hook Setup
-
-In OpenCode, compaction is configured via `opencode.jsonc`:
+If you want OpenCode to auto-compact, set it in `opencode.jsonc`:
 
 ```jsonc
 {
@@ -50,16 +43,6 @@ In OpenCode, compaction is configured via `opencode.jsonc`:
   }
 }
 ```
-
-For Claude Code compatibility, hooks can be configured in `~/.claude/settings.json` (see Claude Code docs for hook setup).
-
-## Configuration
-
-Environment variables:
-- `COMPACT_THRESHOLD` — Tool calls before first suggestion (default: 50)
-- `COMPACT_CONTEXT_THRESHOLD` — Context tokens before the context-size suggestion (default: 160000 on a 200k window, 250000 on a 1M window; `0` disables the context signal)
-- `COMPACT_CONTEXT_INTERVAL` — Additional context tokens before the suggestion repeats (default: 60000)
-- `COMPACT_STATE_TTL_DAYS` — Days before stale per-session state files in the temp dir are swept (default: 14)
 
 ## Compaction Decision Guide
 
@@ -82,16 +65,16 @@ Understanding what persists helps you compact with confidence:
 |----------|------|
 | AGENTS.md / CLAUDE.md instructions | Intermediate reasoning and analysis |
 | TodoWrite task list | File contents you previously read |
-| Session checkpoint files | Multi-step conversation context |
+| Files on disk (incl. `/memory` notes) | Multi-step conversation context |
 | Git state (commits, branches) | Tool call history and counts |
-| Files on disk | Nuanced user preferences stated verbally |
+| | Nuanced user preferences stated verbally |
 
 ## Best Practices
 
 1. **Compact after planning** — Once plan is finalized in TodoWrite, compact to start fresh
 2. **Compact after debugging** — Clear error-resolution context before continuing
 3. **Don't compact mid-implementation** — Preserve context for related changes
-4. **Read the suggestion** — The hook tells you *when*, you decide *if*
+4. **Suggest, don't force** — This skill tells you *when* to suggest `/compact`; the user decides *if*
 5. **Write before compacting** — Save important context to files or memory before compacting
 6. **Use `/compact` with a summary** — Add a custom message: `/compact Focus on implementing auth middleware next`
 
@@ -103,8 +86,8 @@ Instead of loading full skill content at session start, use a trigger table that
 | Trigger | Skill | Load When |
 |---------|-------|-----------|
 | "test", "tdd", "coverage" | tdd-workflow | User mentions testing |
-| "security", "auth", "xss" | security-review | Security-related work |
-| "deploy", "ci/cd" | deployment-patterns | Deployment context |
+| "e2e", "playwright", "user flow" | e2e-testing | End-to-end test work |
+| "naming", "refactor", "review" | coding-standards | Code quality/convention work |
 
 ### Context Composition Awareness
 Monitor what's consuming your context window:
@@ -119,12 +102,7 @@ Common sources of duplicate context:
 - Skills that repeat AGENTS.md instructions
 - Multiple skills covering overlapping domains
 
-### Context Optimization Tools
-- `token-optimizer` MCP — Automated 95%+ token reduction via content deduplication
-- `context-mode` — Context virtualization (315KB to 5.4KB demonstrated)
-
 ## Related
 
 - [The Longform Guide](https://x.com/affaanmustafa/status/2014040193557471352) — Token optimization section
-- Memory persistence hooks — For state that survives compaction
-- `continuous-learning` skill — Extracts patterns before session ends
+- Use `/memory` to save durable notes to a file before compacting away the reasoning that produced them

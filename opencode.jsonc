@@ -45,10 +45,10 @@
       "tools": { "read": true, "write": true, "edit": true, "bash": true }
     },
     "ops": {
-      "description": "Operations, orchestration, memory, and system control specialist. Handles multi-agent pipelines, instinct management, harness optimization, loop operations, project setup, and documentation lookup.",
+      "description": "Operations, orchestration, memory, and documentation specialist. Handles multi-agent pipelines, project memory notes, config audits, and documentation lookup.",
       "mode": "subagent",
       "prompt": "{file:prompts/agents/ops.txt}",
-      "tools": { "read": true, "bash": true, "edit": true }
+      "tools": { "read": true, "bash": true, "edit": true, "write": true }
     }
   },
 
@@ -90,13 +90,13 @@
       "subtask": true
     },
     "memory": {
-      "description": "Manage instincts, skills, and project memory",
+      "description": "Read and write project memory notes",
       "template": "{file:commands/memory.md}\n\n$ARGUMENTS",
       "agent": "ops",
       "subtask": true
     },
     "system": {
-      "description": "Harness, loops, project setup, and model routing",
+      "description": "Config audit and project package-manager setup",
       "template": "{file:commands/system.md}\n\n$ARGUMENTS",
       "agent": "ops",
       "subtask": true

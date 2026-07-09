@@ -1,28 +1,28 @@
 ---
-description: Harness, loops, project setup, and model routing
+description: Config audit and project setup
 agent: ops
 subtask: true
 ---
 
 # System Command
 
-Manage harness configuration, agent loops, project setup, and model routing: $ARGUMENTS
+Audit the current agent config or set up this project: $ARGUMENTS
 
 ## Operations
 
-### Harness
-- `harness-audit` - Audit harness reliability and eval readiness
-- `setup-pm` - Configure package manager for project
+### Config Audit
+- `audit` — Read `opencode.jsonc`, `instructions/INSTRUCTIONS.md`, the `commands/`, `prompts/agents/`, and `skills/` directories. Report:
+  - Commands/agents/skills referenced in docs that don't exist as files (or vice versa)
+  - Agent tool permissions that don't match what the agent's prompt claims to do
+  - MCP servers configured but not documented, or documented but not configured
+  - Stale references to removed functionality
+  This is a read-only documentation-vs-reality check, not a scored/automated pipeline.
 
-### Loops
-- `loop-start` - Start controlled agentic loops with clear stop conditions
-- `loop-status` - Check loop state and checkpoints
-
-### Routing
-- `model-route` - Route tasks by model complexity and budget
+### Package Manager Setup
+- `setup-pm` — Detect the project's package manager from lockfiles (`package-lock.json` → npm, `pnpm-lock.yaml` → pnpm, `yarn.lock` → yarn, `bun.lock` → bun) and report build/lint/test commands found in `package.json` scripts.
 
 ## Report Format
 
-List current configuration, changes made, and verification results.
+List what was checked, what was found, and any fixes applied (with file:line references).
 
-**TIP**: Run `/system harness-audit` to check harness health before starting loops.
+**TIP**: Run `/system audit` after editing `opencode.jsonc` or any agent/command/skill file to catch drift between what's documented and what's configured.

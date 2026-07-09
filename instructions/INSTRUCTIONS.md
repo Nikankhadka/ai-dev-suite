@@ -18,7 +18,7 @@ Skills are NOT preloaded. They are discovered automatically from `~/.config/open
 | tdd-guide | Test-driven development | New features, bug fixes |
 | e2e-runner | E2E Playwright tests | Critical user flows |
 | maintainer | Dead code cleanup + documentation | Code maintenance, doc updates |
-| ops | Orchestration + memory + system control | Multi-agent pipelines, instincts, harness, loops |
+| ops | Orchestration + memory + system control | Multi-agent pipelines, project memory notes, config audits, docs lookup |
 
 ### Workflow
 
@@ -71,19 +71,9 @@ Suggest `/compact` at logical task boundaries (after planning, after debugging, 
 
 ---
 
-## ECC Plugin Automation
+## Commands Available (native opencode slash commands)
 
-The ECC plugin provides automated hooks (loaded via `opencode.jsonc`):
-
-### Automatic (handled by plugin hooks)
-- **Prettier formatting** on JS/TS file edits (strict profile)
-- **TypeScript check** (`tsc --noEmit`) after each .ts/.tsx edit (strict profile)
-- **console.log detection** — warns on file edit and audits on session idle
-- **Security pre-checks** — warns before dangerous bash commands (`git push`, doc file creation)
-- **Desktop notification** on task completion
-- **Shell env injection** — PROJECT_ROOT, PACKAGE_MANAGER, DETECTED_LANGUAGES, ECC_VERSION
-
-### Commands Available (native opencode slash commands)
+There is no plugin or hook layer in this config — agents rely solely on OpenCode's native tools (read, write, edit, bash, LSP) plus the MCP servers below. Formatting, type-checking, and lint/security checks are run explicitly via `bash` (e.g. by the `reviewer` agent), not triggered automatically on file edit.
 
 #### Engineering Commands
 
@@ -100,8 +90,8 @@ The ECC plugin provides automated hooks (loaded via `opencode.jsonc`):
 
 | Command | Agent | Purpose |
 |---------|-------|---------|
-| `/memory` | ops | Instinct management, evolve, skill creation, project memory |
-| `/system` | ops | Harness, loops, project setup, model routing |
+| `/memory` | ops | Read/write project memory notes (decisions, conventions, gotchas) |
+| `/system` | ops | Config/harness audit and project package-manager setup |
 | `/eval` | ops | Evaluation, verification, quality gates |
 | `/docs` | ops | Realtime documentation lookup via Context7 MCP |
 

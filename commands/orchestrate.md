@@ -26,7 +26,7 @@ Orchestrate multiple specialized agents for this complex task: $ARGUMENTS
 | tdd-guide | Test-driven dev | Feature implementation |
 | e2e-runner | E2E testing | User flow testing |
 | maintainer | Code cleanup & docs | Dead code, documentation |
-| ops | Orchestration, memory, system | Multi-agent, instincts, loops |
+| ops | Orchestration, memory, docs | Multi-agent, project memory notes, config audits |
 
 ## Orchestration Patterns
 

@@ -52,7 +52,7 @@ Agents are specialized subagents dispatched by the primary `build` agent.
 | `tdd-guide` | Test-driven development | New features, bug fixes |
 | `e2e-runner` | E2E Playwright tests | Critical user flows |
 | `maintainer` | Dead code cleanup + documentation | Code maintenance, doc updates |
-| `ops` | Orchestration + memory + system | Multi-agent pipelines, instincts, loops |
+| `ops` | Orchestration + memory + docs | Multi-agent pipelines, project memory notes, config audits |
 
 ---
 

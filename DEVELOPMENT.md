@@ -87,22 +87,19 @@ The `maintainer` agent:
 
 Uses Context7 MCP to fetch current docs. Always prefer over training data.
 
-### Memory & Skills
+### Project Memory
 
 ```
-/memory instinct-status     # View learned instincts
-/memory evolve              # Cluster instincts into skills
-/memory skill-create        # Generate skills from git history
-/memory projects            # List known projects
+/memory                      # Show what's recorded in .opencode/MEMORY.md
+/memory note <text>          # Append a decision/gotcha to project memory
+/memory promote <topic>      # Copy a cross-project note into INSTRUCTIONS.md
 ```
 
 ### System Management
 
 ```
-/system harness-audit        # Check harness health
-/system loop-start <task>    # Start autonomous agent loop
-/system loop-status          # Check loop progress
-/system model-route <task>   # Route by model complexity
+/system audit                # Check docs/config for drift (stale refs, missing files)
+/system setup-pm              # Detect package manager and build/lint/test commands
 ```
 
 ### Evaluation
