@@ -23,16 +23,18 @@ opencode
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│  Agents (7)        │  Skills (4)    │  Commands (10)│
+│  Agents (7)        │  Skills (5+)    │  Commands (14)│
 │  Specialized AI    │  On-demand     │  Slash command │
 │  subagents         │  domain guides │  shortcuts     │
 ├──────────────────────────────────────────────────────┤
-│  Built-in Tools + 2 MCP Servers                      │
+│  CLI Tools (axi-family, primary) + MCP Servers       │
+│  gh-axi > gh_grep fallback                           │
 ├──────────────────────────────────────────────────────┤
-│  INSTRUCTIONS.md  │  MCP Servers                     │
-│  Core behavioral  │  context7,                       │
-│  rules + agent    │  gh_grep                         │
-│  orchestration    │                                  │
+│  Global Memory: ~/.claude/CLAUDE.md                  │
+│  Shared across Claude Code, OpenCode, Codex CLI     │
+├──────────────────────────────────────────────────────┤
+│  INSTRUCTIONS.md + ~/.claude/CLAUDE.md               │
+│  Cross-harness rules + OpenCode-specific             │
 ├──────────────────────────────────────────────────────┤
 │  opencode.jsonc — master configuration               │
 └──────────────────────────────────────────────────────┘
@@ -56,7 +58,7 @@ Agents are specialized subagents dispatched by the primary `build` agent.
 
 ---
 
-## Commands (10)
+## Commands (14)
 
 ### Engineering
 
@@ -68,6 +70,10 @@ Agents are specialized subagents dispatched by the primary `build` agent.
 | `/e2e` | e2e-runner | Playwright E2E tests |
 | `/maintain` | maintainer | Dead code cleanup + doc updates |
 | `/orchestrate` | ops | Multi-agent pipeline for complex tasks |
+| `/nomistakes` | ops | Validation pipeline (review, test, docs, lint, PR) |
+| `/gnhf` | ops | Autonomous overnight coding loop |
+| `/treehouse` | ops | Pooled git worktrees for parallel agents |
+| `/firstmate` | ops | Orchestrate a crew of sub-agents in worktrees |
 
 ### System
 
@@ -80,7 +86,7 @@ Agents are specialized subagents dispatched by the primary `build` agent.
 
 ---
 
-## Skills (4)
+## Skills (5+)
 
 Domain knowledge loaded on-demand via `skill({ name })` when a task matches.
 
@@ -90,15 +96,31 @@ Domain knowledge loaded on-demand via `skill({ name })` when a task matches.
 | `tdd-workflow` | Red → Green → Refactor with 80%+ coverage |
 | `e2e-testing` | Playwright patterns, Page Object Model, CI |
 | `strategic-compact` | Context window management for long sessions |
+| `lavish` | Interactive HTML planning artifacts for complex design |
 
 ---
 
-## MCP Servers
+## CLI Tools (Primary)
+
+CLI tools are preferred over MCP for lower token cost and no round-trip latency.
+
+| Tool | Use |
+|------|-----|
+| `gh-axi` | GitHub code search, PRs, issues (first choice) |
+| `chrome-devtools-axi` | Agent-ergonomic browser automation |
+| `gnhf` | Overnight autonomous coding loops |
+| `quota-axi` | LLM quota visibility across providers |
+| `no-mistakes` | Validation pipeline before push |
+| `treehouse` | Pooled git worktrees for parallel agents |
+| `firstmate` | Multi-agent crew orchestration in tmux |
+| `lavish-axi` | Interactive HTML planning artifacts |
+
+## MCP Servers (Fallback)
 
 | Server | Tools | Use |
 |--------|-------|-----|
 | `context7` | `query-docs`, `resolve-library-id` | Fetch current library docs |
-| `gh_grep` | `searchGitHub` | Search public GitHub code |
+| `gh_grep` | `searchGitHub` | Fallback when gh-axi unavailable |
 
 ## Workflow
 
@@ -125,16 +147,25 @@ export OPENCODE_EXPERIMENTAL=true  # enables LSP tool
 
 ---
 
+## Global Memory (Cross-Harness)
+
+```
+~/.claude/CLAUDE.md             # Global rules — loaded by all harnesses
+~/.codex/AGENTS.md              # Symlink → ~/.claude/CLAUDE.md
+```
+
 ## Directory Structure
 
 ```
 ~/.config/opencode/
 ├── opencode.jsonc              # Master config
+├── AGENTS.md.template          # Template for /init in new projects
 ├── instructions/
-│   └── INSTRUCTIONS.md         # Behavioral rules + orchestration
+│   └── INSTRUCTIONS.md         # OpenCode-specific orchestration rules
 ├── prompts/agents/             # Agent system prompts (6 .txt files)
-├── commands/                   # Command templates (10 .md files)
-├── skills/                     # 4 on-demand skills
+├── commands/                   # Command templates (10+4 .md files)
+├── skills/                     # 5 on-demand skills
+├── .agents/skills/lavish       # Lavish skill from npx installer
 ```
 
 ---

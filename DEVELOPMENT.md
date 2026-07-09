@@ -158,6 +158,7 @@ Skills are loaded on-demand when a task matches. Available skills:
 | `tdd-workflow` | Red → Green → Refactor patterns |
 | `e2e-testing` | Playwright integration, Page Object Model |
 | `strategic-compact` | Long sessions, context management |
+| `lavish` | Interactive HTML planning artifacts for complex design |
 
 Skills auto-load when matching tasks are detected. You can also load explicitly:
 ```
@@ -179,6 +180,10 @@ skill({ name: "tdd-workflow" })
 | `/maintain` | Code cleanup, documentation |
 | `/docs <question>` | Library/framework docs lookup |
 | `/orchestrate <task>` | Complex multi-step tasks |
+| `/nomistakes` | Before push: full validation pipeline |
+| `/gnhf <objective>` | Overnight autonomous coding loop |
+| `/treehouse <action>` | Manage pooled git worktrees |
+| `/firstmate` | Orchestrate sub-agent crew |
 | `/compact` | After completing a phase |
 
 ### Agent Permissions
@@ -201,7 +206,32 @@ skill({ name: "tdd-workflow" })
 
 ---
 
-## 7. New Project Setup
+## 7. Kunchen Tool Suite
+
+These CLI tools are installed globally and preferred over MCP equivalents where available.
+
+| Tool | Purpose | Install |
+|------|---------|---------|
+| `gh-axi` | GitHub code search, PRs, issues (primary) | `npm install -g gh-axi` |
+| `chrome-devtools-axi` | Browser automation for agents | `npm install -g chrome-devtools-axi` |
+| `no-mistakes` | Validation pipeline (review, test, docs, lint, PR) | Binary installer |
+| `gnhf` | Overnight autonomous iteration loops | `npm install -g gnhf` |
+| `treehouse` | Pooled git worktrees for parallel agents | `go install` |
+| `firstmate` | Multi-agent crew orchestrator in tmux | Clone + `cd firstmate && claude` |
+| `quota-axi` | LLM subscription quota visibility | `npm install -g quota-axi` |
+| `lavish-axi` | Interactive HTML planning artifacts | `npx skills add` |
+
+### Workflow Integration
+
+- Use `gh-axi` for GitHub operations (cheaper, faster than gh_grep MCP)
+- Run `/nomistakes` before pushing to validate changes
+- Use `/treehouse get` to spawn isolated worktrees for parallel tasks
+- Run `/firstmate` for complex multi-task projects
+- Use `/gnhf` for long-running autonomous loops
+
+---
+
+## 8. New Project Setup
 
 ```bash
 cd ~/new-project
