@@ -1,16 +1,27 @@
-# Nomistakes Command
+---
+description: Run the no-mistakes validation pipeline (review, test, docs, lint, PR) via the no-mistakes CLI
+agent: build
+subtask: true
+---
 
-Runs the `no-mistakes` validation pipeline in the current repository.
+# No-Mistakes
 
-## When to Use
-- Before pushing to `main` (or any protected branch)
-- After completing implementation, before opening a PR
-- When you need a full quality gate: review, test, docs, lint
+Runs the `no-mistakes` validation pipeline in the current repository: $ARGUMENTS
 
-## Pipeline Stages
-The pipeline runs: branch -> commit -> rebase -> adversarial review -> E2E test -> docs update -> lint -> PR
+## Guard
+
+First run `command -v no-mistakes`. If it is not found, tell the user it isn't installed and stop - do not simulate the pipeline yourself.
+
+## When to use
+
+Before pushing to `main` (or any protected branch); after completing implementation, before opening a PR; whenever a full quality gate is needed (review, test, docs, lint).
+
+## Pipeline stages
+
+branch -> commit -> rebase -> adversarial review -> E2E test -> docs update -> lint -> PR
 
 ## Usage
+
 ```
 /nomistakes
 /nomistakes run --scope changes
@@ -19,4 +30,5 @@ The pipeline runs: branch -> commit -> rebase -> adversarial review -> E2E test 
 ```
 
 ## Configuration
-Run `no-mistakes init` in the project to set up the local gate first.
+
+Run `no-mistakes init` in the project once to set up the local gate before first use.

@@ -1,23 +1,33 @@
-# GNHF Command (Good Night Have Fun)
+---
+description: Launch an autonomous overnight coding loop via the gnhf CLI, with commit/rollback
+agent: build
+subtask: true
+---
 
-Launches an autonomous overnight coding loop with automated commit/rollback.
+# GNHF (Good Night Have Fun)
 
-## When to Use
-- Long-running tasks that don't need supervision
-- Overnight autonomous iteration on a feature
-- Batch refactoring across multiple files
+Launches an autonomous overnight coding loop with automated commit/rollback: $ARGUMENTS
+
+## Guard
+
+First run `command -v gnhf`. If it is not found, tell the user it isn't installed and stop - do not attempt to imitate an unsupervised loop yourself.
+
+## When to use
+
+Long-running tasks that don't need supervision; overnight autonomous iteration on a feature; batch refactoring across multiple files.
 
 ## Usage
+
 ```
 /gnhf <objective> --max-iterations 5 --max-tokens 100000
 /gnhf status
 /gnhf stop
 ```
 
-## Stop Conditions
-- `--max-iterations`: Maximum loop iterations (default: 3)
-- `--max-tokens`: Token budget cap (default: 50000)
-- Manual: `/gnhf stop` ends the loop gracefully
+## Stop conditions
+
+`--max-iterations` (default 3), `--max-tokens` (default 50000), or manual `/gnhf stop`.
 
 ## Configuration
+
 `~/.gnhf/config.yml` for default settings and model selection.
