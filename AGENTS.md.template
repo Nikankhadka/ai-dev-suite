@@ -1,0 +1,19 @@
+# Project: [Project Name]
+
+## Project Context
+<!-- What does this project do? Who is it for? -->
+
+## Repo Layout
+<!-- Key directories and their purpose -->
+
+## Terminology
+<!-- Domain-specific terms, abbreviations, conventions -->
+
+## Conventions
+<!-- Code style, commit format, branch naming, testing approach -->
+
+## E2E Notes
+<!-- Playwright setup, test accounts, environment, fixtures -->
+
+## Architecture Overview
+<!-- Key components, data flow, external services -->

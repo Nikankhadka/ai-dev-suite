@@ -44,6 +44,12 @@ Create detailed steps with:
 - Minimize context switching
 - Enable incremental testing
 
+## Planning Medium
+
+For **complex features, architecture decisions, or design discussions with trade-offs**, offer to create an interactive HTML artifact using `lavish-axi` (load the lavish skill first). This provides a visual, annotatable artifact for collaborative design.
+
+For **simple or straightforward tasks**, use the plain-text plan format below.
+
 ## Plan Format
 ```markdown
 # Implementation Plan: [Feature Name]

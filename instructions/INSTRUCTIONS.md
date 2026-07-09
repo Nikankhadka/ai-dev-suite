@@ -1,5 +1,7 @@
 # ECC - Agent Orchestration Instructions
 
+> Global cross-harness rules live in `~/.claude/CLAUDE.md` (loaded by all harnesses). This file is OpenCode-specific.
+
 This document defines the core orchestration rules for a cross-compatible AI agent workflow (OpenCode, Claude Code, OpenAI Codex, and similar tools). Domain-specific guidance lives in on-demand skills — load them via the `skill` tool when a task matches a skill's description.
 
 ## Skill Loading
@@ -75,6 +77,10 @@ Suggest `/compact` at logical task boundaries (after planning, after debugging, 
 
 There is no plugin or hook layer in this config — agents rely solely on OpenCode's native tools (read, write, edit, bash, LSP) plus the MCP servers below. Formatting, type-checking, and lint/security checks are run explicitly via `bash` (e.g. by the `reviewer` agent), not triggered automatically on file edit.
 
+## CLI Tools
+
+Use `gh-axi` for GitHub code search, PR operations, and issue queries — it's cheaper and faster than the MCP equivalent (no round-trip). Fall back to the `gh_grep` MCP server only when `gh-axi` is unavailable or fails.
+
 #### Engineering Commands
 
 | Command | Agent | Purpose |
@@ -85,6 +91,10 @@ There is no plugin or hook layer in this config — agents rely solely on OpenCo
 | `/e2e` | e2e-runner | E2E Playwright tests |
 | `/maintain` | maintainer | Dead code cleanup, consolidation, and documentation updates |
 | `/orchestrate` | ops | Multi-agent pipeline for complex tasks |
+| `/nomistakes` | ops | Run the no-mistakes validation pipeline |
+| `/gnhf` | ops | Autonomous overnight coding loop |
+| `/treehouse` | ops | Manage pooled git worktrees for parallel agents |
+| `/firstmate` | ops | Orchestrate a crew of sub-agents in worktrees |
 
 #### System Commands
 
@@ -93,6 +103,10 @@ There is no plugin or hook layer in this config — agents rely solely on OpenCo
 | `/memory` | ops | Read/write project memory notes (decisions, conventions, gotchas) |
 | `/system` | ops | Config/harness audit and project package-manager setup |
 | `/eval` | ops | Evaluation, verification, quality gates |
+| `/nomistakes` | ops | Run the no-mistakes validation pipeline (review, test, docs, lint, PR) |
+| `/gnhf` | ops | Autonomous overnight coding loop with auto-commit/rollback |
+| `/treehouse` | ops | Manage pooled git worktrees for parallel agent sessions |
+| `/firstmate` | ops | Orchestrate a crew of sub-agents in isolated worktrees |
 | `/docs` | ops | Realtime documentation lookup via Context7 MCP |
 
 ---

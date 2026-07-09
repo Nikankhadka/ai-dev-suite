@@ -3,7 +3,8 @@
   "default_agent": "build",
 
   "instructions": [
-    "instructions/INSTRUCTIONS.md"
+    "instructions/INSTRUCTIONS.md",
+    "~/.claude/CLAUDE.md"
   ],
 
   "agent": {
@@ -110,6 +111,30 @@
     "docs": {
       "description": "Look up current library/framework documentation via Context7 MCP",
       "template": "{file:commands/docs.md}\n\n$ARGUMENTS",
+      "agent": "ops",
+      "subtask": true
+    },
+    "nomistakes": {
+      "description": "Run the no-mistakes validation pipeline (review, test, docs, lint, PR)",
+      "template": "{file:commands/nomistakes.md}\n\n$ARGUMENTS",
+      "agent": "ops",
+      "subtask": true
+    },
+    "gnhf": {
+      "description": "Launch autonomous overnight coding loop with auto-commit/rollback",
+      "template": "{file:commands/gnhf.md}\n\n$ARGUMENTS",
+      "agent": "ops",
+      "subtask": true
+    },
+    "treehouse": {
+      "description": "Manage pooled git worktrees for parallel agent sessions",
+      "template": "{file:commands/treehouse.md}\n\n$ARGUMENTS",
+      "agent": "ops",
+      "subtask": true
+    },
+    "firstmate": {
+      "description": "Orchestrate a crew of sub-agents in isolated worktrees",
+      "template": "{file:commands/firstmate.md}\n\n$ARGUMENTS",
       "agent": "ops",
       "subtask": true
     }
