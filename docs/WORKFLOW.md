@@ -1,4 +1,4 @@
-# The Captain's Workflow
+ # The Captain's Workflow
 
 A step-by-step development workflow following Kun Chen's agent engineering method, adapted to this AI Dev Suite. Each section maps to a video chapter. Read top to bottom the first time, then use it as a quick-reference.
 
