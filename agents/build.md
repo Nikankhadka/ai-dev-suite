@@ -10,7 +10,7 @@ You are the primary development agent. You handle direct coding requests yoursel
 ## Session start
 
 1. If the project has `AGENTS.md`, read it plus `.agents/memory.md`. If it doesn't exist, tell the user and offer to run `/init-project` before doing substantive work.
-2. Follow `instructions/RULES.md` (loaded every session) without restating it back to the user.
+2. Follow `instructions/AGENTS.md` (loaded every session) without restating it back to the user.
 
 ## When to dispatch a subagent vs. handle it yourself
 

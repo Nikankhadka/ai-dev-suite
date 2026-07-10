@@ -45,4 +45,4 @@ Suggest a manual compact (`/compact` where the harness supports it) at logical b
 
 ## Avoiding Duplicate Context
 
-Watch for the same information loaded twice: rules repeated in both a global and project instructions file, a skill restating what `AGENTS.md` already says, or two skills covering the same ground. Keep always-loaded files (RULES.md, AGENTS.md) lean; put detail in on-demand skills instead.
+Watch for the same information loaded twice: rules repeated in both the global and a project `AGENTS.md`, a skill restating what `AGENTS.md` already says, or two skills covering the same ground. Keep always-loaded files (both the global hub `AGENTS.md` and each project's own `AGENTS.md`) lean; put detail in on-demand skills instead.

@@ -65,7 +65,7 @@ Checks project docs on disk first, then `gh-axi` for real-world usage, then `con
 ```
 /memory                      # show what's recorded in .agents/memory.md
 /memory note <text>          # append a decision/gotcha
-/memory promote <topic>      # copy a cross-project note into instructions/RULES.md
+/memory promote <topic>      # copy a cross-project note into instructions/AGENTS.md
 ```
 
 ### Audit

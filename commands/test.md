@@ -1,5 +1,6 @@
 ---
 description: Test-first implementation, E2E flow testing, bug reproduction, or coverage check - stack-agnostic
+argument-hint: <requirement> | e2e <flow> | coverage
 agent: tester
 subtask: true
 ---

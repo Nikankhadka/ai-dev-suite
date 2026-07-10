@@ -1,5 +1,6 @@
 ---
 description: Full gated pipeline - plan, build, review, test, document - for one requirement
+argument-hint: <requirement> [--auto] [--release]
 agent: build
 subtask: false
 ---

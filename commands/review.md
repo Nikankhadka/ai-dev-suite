@@ -1,5 +1,6 @@
 ---
 description: Review changed code for quality, security, and build errors; fix CRITICAL/HIGH findings and build errors with minimal diffs
+argument-hint: [focus]
 agent: reviewer
 subtask: true
 ---

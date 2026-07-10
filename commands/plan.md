@@ -1,5 +1,7 @@
 ---
 description: Create a stack-agnostic implementation plan; wait for approval before any code is written
+argument-hint: <feature or requirement>
+allowed-tools: Read, Grep, Glob, Bash
 agent: planner
 subtask: true
 ---

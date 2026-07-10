@@ -1,5 +1,6 @@
 ---
 description: Product framing - problem, target user, success criteria, scope cuts
+argument-hint: <requirement>
 agent: build
 subtask: false
 ---

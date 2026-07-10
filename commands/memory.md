@@ -1,5 +1,6 @@
 ---
 description: Read or write the project memory file at .agents/memory.md
+argument-hint: [note <text> | promote <topic> | status]
 agent: build
 subtask: true
 ---
@@ -16,7 +17,7 @@ A plain markdown notes file - `.agents/memory.md` in the current project - where
 
 - **View** - no argument, or `status`: read `.agents/memory.md` if it exists and summarize what's recorded. If it doesn't exist, say so and offer to run `/init-project`.
 - **Add** - `note <text>`: append a dated entry under the relevant heading. Create the file from `templates/memory.md.template` if it doesn't exist yet.
-- **Promote** - `promote <topic>`: a note here applies beyond this one project (a workflow preference, not a project-specific fact). Copy it into `instructions/RULES.md` or an existing skill instead, so every project benefits - do not build a new storage mechanism to do this.
+- **Promote** - `promote <topic>`: a note here applies beyond this one project (a workflow preference, not a project-specific fact). Copy it into `instructions/AGENTS.md` or an existing skill instead, so every project benefits - do not build a new storage mechanism to do this.
 
 ## What to record
 

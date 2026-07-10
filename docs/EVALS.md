@@ -4,10 +4,10 @@ How this suite is verified, across harnesses and across model tiers. Run the sta
 
 ## 1. Static checks (`/audit`, suite mode)
 
-- Every file referenced by `README.md`, `instructions/RULES.md`, `instructions/OPENCODE.md`, and any `SKILL.md` exists on disk, and every real agent/command/skill file is listed in `README.md` (both directions).
+- Every file referenced by `README.md`, `instructions/AGENTS.md`, and any `SKILL.md` exists on disk, and every real agent/command/skill file is listed in `README.md` (both directions).
 - Every file in `commands/` has valid frontmatter (`description`, `agent`, `subtask`) and its `agent:` value matches a real file in `agents/`.
 - Every symlink in the cross-harness map (README's "Cross-harness wiring" table) resolves.
-- Every file in `adapters/claude/agents/` is newer than its source in `agents/` (rerun `bin/sync-adapters.sh` if not).
+- Every file in `adapters/claude/agents/` and `adapters/codex/agents/` is newer than its source in `agents/` (rerun `bin/sync-adapters.sh` if not).
 - No em dash (U+2014) anywhere in `*.md`/`*.jsonc`.
 - No references to removed things: `query-docs`, `firstmate`, `lavish`, `frontend-patterns`, `backend-patterns`, `tdd-guide`, `e2e-runner`, `/orchestrate`, `tdd-workflow`, `e2e-testing`.
 - `command -v` for each axi CLI a command wraps (`gnhf`, `treehouse`, `no-mistakes`, `gh-axi`, `quota-axi`, `chrome-devtools-axi`) - report missing ones, don't fail the audit for it.

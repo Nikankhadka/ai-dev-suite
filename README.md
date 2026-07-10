@@ -109,7 +109,7 @@ bash bin/sync-adapters.sh
 ```bash
 # Check the symlinks were created
 ls -la ~/.claude/CLAUDE.md
-# Should show: ~/.claude/CLAUDE.md -> ~/.config/opencode/instructions/RULES.md
+# Should show: ~/.claude/CLAUDE.md -> ~/.config/opencode/instructions/AGENTS.md
 
 ls -la ~/.agents/skills
 # Should list several skills (stack-discovery, coding-standards, testing, etc.)
@@ -298,12 +298,12 @@ common vocabulary: API, npm, git, GitHub, TypeScript, JavaScript, Python, React,
 
 #### Global memory (applies to every project)
 
-This lives in `~/.config/opencode/instructions/RULES.md` and `~/.claude/CLAUDE.md` (which are symlinked together). Every agent session reads this file.
+This lives in `~/.config/opencode/instructions/AGENTS.md` - the one neutral hub file every harness's native entry point resolves to (`~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md` are both symlinked to it; OpenCode reads it directly). Every agent session reads this file.
 
 The sync script already set this up. You can see what's in it:
 
 ```bash
-cat ~/.config/opencode/instructions/RULES.md
+cat ~/.config/opencode/instructions/AGENTS.md
 ```
 
 It contains rules like:
@@ -315,7 +315,7 @@ It contains rules like:
 **Edit it**: add your own preferences. Keep it short (under 30 lines) to save tokens:
 
 ```bash
-echo "- Always use single quotes in JavaScript/TypeScript" >> ~/.config/opencode/instructions/RULES.md
+echo "- Always use single quotes in JavaScript/TypeScript" >> ~/.config/opencode/instructions/AGENTS.md
 ```
 
 > **Tip**: don't put too much in the global file. Project-specific things go in the project memory (next section).
@@ -575,6 +575,8 @@ tmux new-session -s firstmate -c ~/firstmate
 | `tester` | subagent | Test-first implementation and E2E bug repro |
 | `maintainer` | subagent | Dead-code cleanup, doc/map/memory refresh |
 
+`build` is OpenCode's primary/dispatcher agent and has no equivalent in the other two harnesses. The four specialists are generated for both Claude Code (`adapters/claude/agents/`) and Codex CLI (`adapters/codex/agents/`, TOML) from the same source in `agents/` - full parity across all three harnesses.
+
 ### Commands
 
 | Command | Agent | Purpose |
@@ -630,12 +632,13 @@ Created by `bin/sync-adapters.sh`. These symlinks make Claude Code and Codex CLI
 
 | Link | Target |
 |---|---|
-| `~/.claude/CLAUDE.md` | `instructions/RULES.md` |
+| `~/.claude/CLAUDE.md` | `instructions/AGENTS.md` |
 | `~/.claude/commands` | `commands/` (whole directory) |
 | `~/.claude/agents` | `adapters/claude/agents/` (generated) |
 | `~/.claude/skills/<name>` | `skills/<name>/` (one per skill) |
-| `~/.codex/AGENTS.md` | `instructions/RULES.md` |
+| `~/.codex/AGENTS.md` | `instructions/AGENTS.md` |
 | `~/.codex/prompts` | `commands/` (whole directory) |
+| `~/.codex/agents` | `adapters/codex/agents/` (generated, TOML) |
 | `~/.agents/skills/<name>` | `skills/<name>/` (one per skill) |
 
 ### Directory structure
@@ -644,13 +647,14 @@ Created by `bin/sync-adapters.sh`. These symlinks make Claude Code and Codex CLI
 ~/.config/opencode/
 ├── opencode.jsonc            # OpenCode config (instructions, LSP, MCP)
 ├── instructions/
-│   ├── RULES.md              # Cross-harness rules (loaded every session)
-│   └── OPENCODE.md           # OpenCode-specific notes
+│   └── AGENTS.md             # Single neutral hub - rules, dispatch guidance, resource index (loaded every session)
 ├── agents/                   # 5 agent definitions (auto-discovered)
 ├── commands/                 # 14 command definitions
 ├── skills/                   # 5 on-demand skills
 ├── templates/                # AGENTS.md.template, memory.md.template
-├── adapters/claude/agents/   # Claude Code agent files (generated - don't edit)
+├── adapters/
+│   ├── claude/agents/        # Claude Code agent files (generated - don't edit)
+│   └── codex/agents/         # Codex CLI agent files, TOML (generated - don't edit)
 ├── bin/sync-adapters.sh      # Installs symlinks for all harnesses
 └── docs/
     ├── DEVELOPMENT.md        # Detailed command usage guide

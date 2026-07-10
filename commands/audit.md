@@ -12,10 +12,10 @@ Determine scope: if run inside `~/.config/opencode` (or any clone of this suite)
 
 ## Suite audit checklist
 
-- [ ] Every file referenced by `README.md`, `instructions/RULES.md`, `instructions/OPENCODE.md`, and any `SKILL.md` exists on disk, and every real agent/command/skill file is listed in `README.md` (both directions).
+- [ ] Every file referenced by `README.md`, `instructions/AGENTS.md`, and any `SKILL.md` exists on disk, and every real agent/command/skill file is listed in `README.md` (both directions).
 - [ ] Every command file in `commands/` has valid frontmatter (`description`, `agent`, `subtask`) and its `agent:` value matches a real file in `agents/`.
 - [ ] Every symlink in the cross-harness map (see `bin/sync-adapters.sh`) resolves and is not dangling.
-- [ ] Every file in `adapters/claude/agents/` is newer than its source in `agents/` (regenerate with `bin/sync-adapters.sh` if not).
+- [ ] Every file in `adapters/claude/agents/` and `adapters/codex/agents/` is newer than its source in `agents/` (regenerate with `bin/sync-adapters.sh` if not).
 - [ ] No em dash (Unicode U+2014) anywhere in `*.md`/`*.jsonc`/`*.txt` - run `grep -rn $'—' . --include='*.md' --include='*.jsonc' --include='*.txt'`.
 - [ ] No references to removed things: `query-docs`, `frontend-patterns`, `backend-patterns`, `tdd-guide`, `e2e-runner`, `/orchestrate`.
 - [ ] Positive checks:

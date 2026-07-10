@@ -1,5 +1,6 @@
 ---
 description: Generate the standard per-project footprint - AGENTS.md, .agents/map.md, .agents/memory.md, CLAUDE.md symlink
+argument-hint: [--refresh]
 agent: build
 subtask: true
 ---

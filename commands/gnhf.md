@@ -1,5 +1,6 @@
 ---
 description: Launch an autonomous overnight coding loop via the gnhf CLI, with commit/rollback
+argument-hint: <objective> [--max-iterations N] [--max-tokens N] | status | stop
 agent: build
 subtask: true
 ---

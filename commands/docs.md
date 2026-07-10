@@ -1,5 +1,6 @@
 ---
 description: Look up current library/framework documentation, cheapest source first
+argument-hint: <question>
 agent: build
 subtask: true
 ---

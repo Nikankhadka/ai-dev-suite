@@ -1,5 +1,6 @@
 ---
 description: Clean dead code, consolidate duplicates, and refresh documentation/project map/memory
+argument-hint: [scope]
 agent: maintainer
 subtask: true
 ---

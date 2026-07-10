@@ -1,5 +1,6 @@
 ---
 description: Run the no-mistakes validation pipeline (review, test, docs, lint, PR) via the no-mistakes CLI
+argument-hint: [run --scope changes | status | help]
 agent: build
 subtask: true
 ---

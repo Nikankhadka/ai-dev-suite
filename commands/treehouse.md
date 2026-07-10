@@ -1,5 +1,6 @@
 ---
 description: Manage pooled git worktrees for parallel agent sessions via the treehouse CLI
+argument-hint: get <branch-name> | status | return | cleanup
 agent: build
 subtask: true
 ---

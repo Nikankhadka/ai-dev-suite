@@ -1,5 +1,6 @@
 ---
 description: Launch a firstmate tmux orchestration session for parallel agent crew
+argument-hint: <objective>
 agent: build
 subtask: false
 ---

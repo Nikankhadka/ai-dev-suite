@@ -513,11 +513,12 @@ A **symlink** (symbolic link) is like a shortcut on your desktop. It looks like 
 The `bin/sync-adapters.sh` script creates symlinks so that:
 
 ```
-~/.claude/CLAUDE.md        -> ~/.config/opencode/instructions/RULES.md
-~/.codex/AGENTS.md         -> ~/.config/opencode/instructions/RULES.md
+~/.claude/CLAUDE.md        -> ~/.config/opencode/instructions/AGENTS.md
+~/.codex/AGENTS.md         -> ~/.config/opencode/instructions/AGENTS.md
 ~/.claude/commands/        -> ~/.config/opencode/commands/
 ~/.codex/prompts/          -> ~/.config/opencode/commands/
 ~/.claude/agents/          -> ~/.config/opencode/adapters/claude/agents/
+~/.codex/agents/           -> ~/.config/opencode/adapters/codex/agents/
 ~/.claude/skills/<name>/   -> ~/.config/opencode/skills/<name>/
 ~/.agents/skills/<name>/   -> ~/.config/opencode/skills/<name>/
 ```

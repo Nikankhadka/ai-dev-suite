@@ -3,8 +3,7 @@
   "default_agent": "build",
 
   "instructions": [
-    "instructions/RULES.md",
-    "instructions/OPENCODE.md"
+    "instructions/AGENTS.md"
   ],
 
   "permission": "allow",
