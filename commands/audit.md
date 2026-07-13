@@ -1,8 +1,8 @@
 ---
-description: Drift check for this suite (or, inside a project, for AGENTS.md/.agents/map.md freshness)
+
+## description: Drift check for this suite (or, inside a project, for AGENTS.md/.agents/map.md freshness)
 agent: build
 subtask: true
----
 
 # Audit
 

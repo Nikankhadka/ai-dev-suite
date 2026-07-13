@@ -26,7 +26,7 @@ HUB="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 CODEX_DIR="$HOME/.codex"
 AGENTS_SKILLS_DIR="$HOME/.agents/skills"
-SKILLS="coding-standards lavish testing stack-discovery strategic-compact"
+SKILLS="lavish stack-discovery testing"
 SHARED_AGENTS="planner reviewer tester maintainer"
 
 status=0
@@ -138,6 +138,18 @@ for a in $SHARED_AGENTS; do
 done
 # build.md is OpenCode's primary agent, not a subagent - no Claude Code or
 # Codex adapter exists for it.
+
+echo
+echo "== Cleaning stale skill symlinks =="
+stale_skills="coding-standards strategic-compact"
+for s in $stale_skills; do
+  for d in "$CLAUDE_DIR/skills/$s" "$AGENTS_SKILLS_DIR/$s"; do
+    if [ -L "$d" ]; then
+      rm "$d"
+      echo "removed:  $d (stale - skill no longer in SKILLS)"
+    fi
+  done
+done
 
 echo
 echo "== Wiring Claude Code (~/.claude) =="

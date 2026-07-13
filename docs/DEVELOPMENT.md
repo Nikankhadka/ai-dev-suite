@@ -83,10 +83,8 @@ Skills load on demand when a task matches their description; you never need to p
 | Skill | Loads when |
 |---|---|
 | `stack-discovery` | starting work in a project without a mapped `AGENTS.md`, or another skill/agent says to load it |
-| `coding-standards` | writing or reviewing code for naming/readability/quality |
 | `testing` | writing tests, fixing bugs, or doing E2E work |
 | `lavish` | generating interactive HTML planning artifacts before `/plan` for complex features |
-| `strategic-compact` | a session is long or multi-phase and approaching context limits |
 
 ## 5. Quick reference
 
@@ -109,8 +107,7 @@ Skills load on demand when a task matches their description; you never need to p
 
 ## 6. Context management
 
-- Compact at logical boundaries (after planning, after debugging, before switching features) - see the `strategic-compact` skill for the full decision table.
-- Never compact mid-implementation.
+- Compact at logical boundaries (after planning, after debugging, before switching features). Never compact mid-implementation.
 - Avoid the last 20% of context window for complex, multi-file work.
 
 ## 7. Axi CLI tools

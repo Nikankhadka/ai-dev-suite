@@ -112,7 +112,7 @@ ls -la ~/.claude/CLAUDE.md
 # Should show: ~/.claude/CLAUDE.md -> ~/.config/opencode/instructions/AGENTS.md
 
 ls -la ~/.agents/skills
-# Should list several skills (stack-discovery, coding-standards, testing, etc.)
+# Should list several skills (stack-discovery, testing, lavish, etc.)
 ```
 
 **Idempotent**: you can run `sync-adapters.sh` as many times as you want. It's smart about not breaking existing correct symlinks.
@@ -345,10 +345,8 @@ Skills are bundles of instructions that only load when needed. Unlike memory fil
 | Skill | What it does |
 |---|---|
 | `stack-discovery` | Detects what language/framework a project uses instead of guessing |
-| `coding-standards` | Naming, readability, error handling, security basics |
 | `testing` | Test-driven development methodology (RED-GREEN-REFACTOR) and E2E testing |
 | `lavish` | Creates interactive HTML planning pages for designing features |
-| `strategic-compact` | When to suggest manually compacting the conversation to save context |
 
 **Installing the Skill Creator** (for making your own skills):
 
@@ -601,10 +599,8 @@ tmux new-session -s firstmate -c ~/firstmate
 | Skill | Description | Loads when |
 |---|---|---|
 | `stack-discovery` | Runtime protocol for detecting a project's language/tooling instead of assuming one | Starting work in a project without a mapped AGENTS.md |
-| `coding-standards` | Stack-agnostic naming, readability, immutability, error-handling, security-basics | Writing or reviewing code |
 | `testing` | TDD (RED-GREEN-REFACTOR) and E2E methodology, stack-agnostic | Writing tests, fixing bugs, or doing E2E work |
 | `lavish` | Interactive HTML planning artifacts for complex feature design | Planning complex features |
-| `strategic-compact` | When to suggest manual compact at task boundaries | Long sessions approaching context limits |
 
 ### Axi CLI tools
 
@@ -648,9 +644,9 @@ Created by `bin/sync-adapters.sh`. These symlinks make Claude Code and Codex CLI
 ├── opencode.jsonc            # OpenCode config (instructions, LSP, MCP)
 ├── instructions/
 │   └── AGENTS.md             # Single neutral hub - rules, dispatch guidance, resource index (loaded every session)
-├── agents/                   # 5 agent definitions (auto-discovered)
+├── agents/                   # 4 agent definitions (auto-discovered)
 ├── commands/                 # 14 command definitions
-├── skills/                   # 5 on-demand skills
+├── skills/                   # 3 on-demand skills
 ├── templates/                # AGENTS.md.template, memory.md.template
 ├── adapters/
 │   ├── claude/agents/        # Claude Code agent files (generated - don't edit)

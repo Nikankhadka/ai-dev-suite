@@ -133,9 +133,9 @@ When you run `/ship Add dark mode`, the build agent:
 1. Dispatches `planner` -- creates a plan
 2. Shows you the plan -- you approve it
 3. Builds the feature
-4. Dispatches `reviewer` -- checks the code
-5. Dispatches `tester` -- runs the tests
-6. Dispatches `maintainer` -- updates docs/memory
+4. Dispatches `reviewer` - checks the code
+5. Dispatches `tester` - runs the tests
+6. Dispatches `maintainer` - updates docs/memory
 
 Each subagent gets a **fresh context** -- it does not see the full conversation, only the relevant information it needs.
 
@@ -202,10 +202,8 @@ Think of skills like tool belts:
 | Skill | What it teaches the agent | When it loads |
 |---|---|---|
 | `stack-discovery` | How to detect what language/framework a project uses | Starting work in a new project |
-| `coding-standards` | Naming conventions, error handling, security basics | Writing or reviewing code |
 | `testing` | TDD methodology (RED-GREEN-REFACTOR) | Writing tests |
 | `lavish` | How to create interactive HTML planning pages | Planning complex features |
-| `strategic-compact` | When to suggest compacting the conversation | Long sessions |
 
 ### Global vs. project skills
 
@@ -607,7 +605,7 @@ This can happen:
 - **Automatically** -- the harness decides it is running out of space and compacts
 - **Manually** -- you or the agent suggest it
 
-The `strategic-compact` skill teaches the agent to suggest compaction at logical boundaries, before the harness forces it. This is better because the agent can decide what is important to keep.
+The agent should suggest compaction at logical boundaries (after planning, after debugging, before switching features), before the harness forces it. This is better because the agent can decide what is important to keep.
 
 ### How to avoid context problems
 
@@ -861,7 +859,7 @@ You (the developer)
   |     |
   |     |-- runs the build agent (your main coding assistant)
   |     |     |
-  |     |     |-- dispatches subagents (planner, reviewer, tester, maintainer)
+   |     |     |-- dispatches subagents (planner, reviewer, tester, maintainer)
   |     |     |-- uses commands (/ship, /test, /review, etc.)
   |     |     |-- loads skills on demand (stack-discovery, testing, etc.)
   |     |     |-- reads/writes memory (global + project)

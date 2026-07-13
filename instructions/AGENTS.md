@@ -42,6 +42,10 @@ Applies wherever the harness supports delegating to a specialist (`planner`, `re
 - If your harness has no subagent dispatch available (or you're already running as one), do the work inline yourself rather than skipping a stage.
 - Prefer `/ship` over ad hoc dispatch for any non-trivial task - it applies the gates in `commands/ship.md` so nothing gets skipped silently.
 
+### Context compaction
+
+In long sessions, compact (`/compact` where the harness supports it) at logical task boundaries - after planning, after a debugging session, between unrelated tasks - never mid-implementation. Write anything important to a file or `.agents/memory.md` first.
+
 ### Skills
 
 Skills are never preloaded - each harness discovers them from `skills/<name>/SKILL.md` (via `~/.claude/skills`, `~/.agents/skills`, or this repo's own `skills/` directory for OpenCode) and loads one only when a task matches its description. You never need to preload a skill manually.
