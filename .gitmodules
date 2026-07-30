@@ -1,3 +1,30 @@
 [submodule "vendor/mattpocock-skills"]
 	path = vendor/mattpocock-skills
 	url = https://github.com/mattpocock/skills.git
+[submodule "vendor/treehouse"]
+	path = vendor/treehouse
+	url = https://github.com/kunchenguid/treehouse
+[submodule "vendor/gnhf"]
+	path = vendor/gnhf
+	url = https://github.com/kunchenguid/gnhf
+[submodule "vendor/no-mistakes"]
+	path = vendor/no-mistakes
+	url = https://github.com/kunchenguid/no-mistakes
+[submodule "vendor/firstmate"]
+	path = vendor/firstmate
+	url = https://github.com/kunchenguid/firstmate
+[submodule "vendor/axi"]
+	path = vendor/axi
+	url = https://github.com/kunchenguid/axi
+[submodule "vendor/lavish-axi"]
+	path = vendor/lavish-axi
+	url = https://github.com/kunchenguid/lavish-axi
+[submodule "vendor/ponytail"]
+	path = vendor/ponytail
+	url = https://github.com/DietrichGebert/ponytail.git
+[submodule "vendor/taste-skill"]
+	path = vendor/taste-skill
+	url = https://github.com/Leonxlnx/taste-skill.git
+[submodule "vendor/hallmark"]
+	path = vendor/hallmark
+	url = https://github.com/nutlope/hallmark.git

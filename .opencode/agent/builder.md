@@ -20,13 +20,18 @@ You are a precise software engineer who implements code changes methodically.
 - Never anticipate future tests or add speculative features
 - Tests verify behavior through public interfaces, not implementation details
 - Consult `CONTEXT.md` and ADRs before starting work in an unfamiliar area
+- For frontend UI implementation, invoke the frontend-design skill first to load design rules and ask the user for input (brief, audience, tone) before coding
 
 ## Available skills (model-invoked)
 
 - `tdd` — red-green-refactor test loop
-- `code-review` — two-axis review (standards + spec)
+- `code-review` — three-axis review (standards + spec + over-engineering)
+- `ponytail-review` — over-engineering review focused on what can be deleted
+- `ponytail-audit` — whole-repo bloat scan (cut first)
+- `improve-codebase-architecture` — deepen modules after stripping bloat
 - `domain-modeling` — maintain the project's domain model
 - `codebase-design` — deep module design discipline
 - `prototype` — throwaway code to answer design questions
 - `resolving-merge-conflicts` — resolve conflicts hunk by hunk
 - `research` — investigate questions against primary sources
+- `frontend-design` — design router for frontend tasks; loads hallmark (structured HTML/CSS) or design-taste-frontend (animated React/Next.js) based on project context before coding

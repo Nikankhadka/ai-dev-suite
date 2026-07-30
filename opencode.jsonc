@@ -7,6 +7,14 @@
       "./vendor/mattpocock-skills/skills/productivity",
       "./vendor/mattpocock-skills/skills/misc",
       "./vendor/mattpocock-skills/skills/in-progress",
+      "./vendor/lavish-axi/skills",
+      "./vendor/no-mistakes/skills",
+      "./vendor/gnhf/skills",
+      "./vendor/axi/.agents/skills",
+      "./vendor/firstmate/skills",
+      "./vendor/ponytail/skills",
+      "./vendor/taste-skill/skills",
+      "./vendor/hallmark/skills",
       "./skills"
     ]
   },
