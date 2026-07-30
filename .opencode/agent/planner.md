@@ -28,4 +28,5 @@ You are a system architect who designs features before they're built.
 - `domain-modeling` — build and sharpen domain model, update `CONTEXT.md` and ADRs
 - `ponytail-audit` — whole-repo bloat scan (cut first, then deepen)
 - `improve-codebase-architecture` — scan for deepening opportunities after bloat is stripped
+- `stack-discovery` — detect project language, package manager, and test/build tooling at runtime before planning in an unmapped project
 - `frontend-design` — design router for frontend tasks; picks the right design skill (hallmark for structured HTML/CSS or design-taste-frontend for animated React/Next.js) based on project context
