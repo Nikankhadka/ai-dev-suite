@@ -1,6 +1,0 @@
-node_modules
-.agents/
-.claude/
-.opencode/
-package-lock.json
-skills-lock.json
