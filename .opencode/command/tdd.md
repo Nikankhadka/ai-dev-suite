@@ -1,5 +1,6 @@
 ---
 description: Test-driven development — red-green-refactor loop at pre-agreed seams
+agent: builder
 ---
 
 Run the TDD skill: build features or fix bugs one vertical slice at a time.

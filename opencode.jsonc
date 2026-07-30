@@ -12,31 +12,23 @@
   },
 
   "mcp": {
-    "servers": {
-      "github": {
-        "command": "npx",
-        "args": ["-y", "@modelcontextprotocol/server-github"]
+    "github": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_TOKEN}"
       }
     }
   },
 
-  "permissions": {
-    "allow": [
-      "Bash",
-      "Read",
-      "Write",
-      "Edit",
-      "Glob",
-      "Grep",
-      "Task",
-      "WebFetch",
-      "WebSearch"
-    ],
-    "deny": [
-      "Bash(git push:*)",
-      "Bash(git reset --hard:*)",
-      "Bash(git branch -D:*)",
-      "Bash(git clean -fd:*)"
-    ]
+  "permission": {
+    "edit": "allow",
+    "bash": {
+      "git push *": "deny",
+      "git reset --hard *": "deny",
+      "git branch -D *": "deny",
+      "git clean -fd *": "deny",
+      "*": "allow"
+    }
   }
 }
