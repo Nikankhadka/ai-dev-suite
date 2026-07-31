@@ -16,8 +16,8 @@ A plain markdown notes file - `.agents/memory.md` in the current project - where
 ## Operations
 
 - **View** - no argument, or `status`: read `.agents/memory.md` if it exists and summarize what's recorded. If it doesn't exist, say so and note that the project hasn't been initialized with one yet.
-- **Add** - `note <text>`: append a dated entry under the relevant heading. Create the file from `templates/memory.md.template` if it doesn't exist yet.
-- **Promote** - `promote <topic>`: a note here applies beyond this one project (a workflow preference, not a project-specific fact). Copy it into `instructions/AGENTS.md` or an existing skill instead, so every project benefits - do not build a new storage mechanism to do this.
+- **Add** - `note <text>`: append a dated entry under the relevant heading. Create the file from `~/.config/opencode/templates/memory.md.template` if it doesn't exist yet (that path is the suite root, not the current project - if it is missing, use the File format below directly).
+- **Promote** - `promote <topic>`: a note here applies beyond this one project (a workflow preference, not a project-specific fact). Copy it into `~/.config/opencode/instructions/AGENTS.md` or an existing skill instead, so every project benefits - do not build a new storage mechanism to do this.
 
 ## What to record
 

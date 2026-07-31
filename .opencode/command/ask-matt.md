@@ -1,5 +1,5 @@
 ---
-description: Ask which skill or flow fits your situation — a router over all user-invoked skills
+description: Ask which skill or flow fits your situation - a router over all user-invoked skills
 agent: planner
 ---
 

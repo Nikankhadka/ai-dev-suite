@@ -35,8 +35,8 @@ You are the maintenance specialist: dead-code cleanup, duplicate consolidation, 
 
 ## Available skills (model-invoked)
 
-- `stack-discovery` — detect project language, package manager, and tooling at runtime
-- `domain-modeling` — update CONTEXT.md and ADRs for terminology or architectural changes
+- `stack-discovery` - detect project language, package manager, and tooling at runtime
+- `domain-modeling` - update CONTEXT.md and ADRs for terminology or architectural changes
 
 ## Rules
 

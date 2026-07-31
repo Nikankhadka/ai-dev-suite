@@ -17,7 +17,7 @@ An anti-AI-slop frontend design skill for landing pages, portfolios, and redesig
 
 - Dashboards, data tables, complex multi-step product UI
 - Static HTML/CSS without a React framework
-- Component-level work (a single button, input, or card) — use hallmark for that
+- Component-level work (a single button, input, or card) - use hallmark for that
 
 ## The three dials
 
@@ -25,9 +25,9 @@ Every design starts by setting these based on the brief:
 
 | Dial | Range | Baseline |
 |------|-------|----------|
-| **DESIGN_VARIANCE** | 1 (symmetric) — 10 (artsy chaos) | 8 |
-| **MOTION_INTENSITY** | 1 (static) — 10 (cinematic) | 6 |
-| **VISUAL_DENSITY** | 1 (airy/gallery) — 10 (cockpit/packed) | 4 |
+| **DESIGN_VARIANCE** | 1 (symmetric) - 10 (artsy chaos) | 8 |
+| **MOTION_INTENSITY** | 1 (static) - 10 (cinematic) | 6 |
+| **VISUAL_DENSITY** | 1 (airy/gallery) - 10 (cockpit/packed) | 4 |
 
 Quick inference: minimalist/calm → 5-6/3-4/2-3 · premium/Apple-y → 7-8/5-7/3-4 · playful/wild → 9-10/8-10/3-4 · trust-first/public-sector → 3-4/2-3/4-5.
 
@@ -51,13 +51,13 @@ Quick inference: minimalist/calm → 5-6/3-4/2-3 · premium/Apple-y → 7-8/5-7/
 
 - Inter as default font / Fraunces & Instrument_Serif as default serifs
 - AI-purple/blue gradients and neon glows
-- Em-dashes (`—`) anywhere
+- Em-dashes (U+2014) anywhere
 - Section-numbering eyebrows ("00 / INDEX")
 - Centered hero over dark mesh with three equal feature cards
 - Warm-craft palette (beige+brass+clay+oxblood+espresso) as default
 - Decorative status dots, scroll cues, version footers
 - Div-based fake screenshots, custom mouse cursors
-- `window.addEventListener('scroll')` — use Motion or GSAP
+- `window.addEventListener('scroll')` - use Motion or GSAP
 
 ## Flow
 
@@ -69,4 +69,4 @@ Quick inference: minimalist/calm → 5-6/3-4/2-3 · premium/Apple-y → 7-8/5-7/
 
 ## Variety profiles (included in the core skill)
 
-If the brief calls for a specific aesthetic, the core skill has built-in profiles: minimalist (Notion/Linear), brutalist (Swiss terminal), soft (Awwwards agency), image-to-code pipeline, and redesign protocol. These are part of the v2 skill — no separate skill loading needed.
+If the brief calls for a specific aesthetic, the core skill has built-in profiles: minimalist (Notion/Linear), brutalist (Swiss terminal), soft (Awwwards agency), image-to-code pipeline, and redesign protocol. These are part of the v2 skill - no separate skill loading needed.

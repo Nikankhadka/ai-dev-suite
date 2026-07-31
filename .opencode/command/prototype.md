@@ -1,5 +1,5 @@
 ---
-description: Build a throwaway prototype to answer a design question — logic/state model or UI variations
+description: Build a throwaway prototype to answer a design question - logic/state model or UI variations
 agent: builder
 ---
 

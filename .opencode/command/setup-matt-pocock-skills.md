@@ -1,5 +1,5 @@
 ---
-description: Configure the repo for mattpocock engineering skills — issue tracker, triage labels, domain doc layout
+description: Configure the repo for mattpocock engineering skills - issue tracker, triage labels, domain doc layout
 agent: planner
 ---
 
