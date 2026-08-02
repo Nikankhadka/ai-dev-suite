@@ -54,9 +54,10 @@ link_instructions "$HOME/.codex/AGENTS.md"
 link_instructions "$HOME/.agents/CLAUDE.md"
 
 # 7. Remove links from the pre-.opencode layout
-# Commands and agents are OpenCode-specific and live in $OPENDIR/.opencode/.
-# Older installs pointed ~/.claude at directories that no longer exist.
-for stale in "$HOME/.claude/commands" "$HOME/.claude/agents"; do
+# Commands and agents live in $OPENDIR/agent and $OPENDIR/command (global for
+# opencode). Older installs pointed ~/.claude and ~/.codex at directories that
+# no longer exist.
+for stale in "$HOME/.claude/commands" "$HOME/.claude/agents" "$HOME/.codex/agents" "$HOME/.codex/prompts"; do
   if [ -L "$stale" ] && [ ! -e "$stale" ]; then
     rm -f "$stale"
     echo "-> Removed dead symlink $stale"
@@ -66,9 +67,10 @@ done
 # 8. Verify
 echo ""
 echo "=== Installation Complete ==="
-echo "Skills:          $OPENDIR/skills, $OPENDIR/vendor/*/skills"
-echo "OpenCode config: $OPENDIR/opencode.jsonc"
-echo "Instructions:    $INSTRUCTIONS (linked into Claude Code and Codex)"
+echo "Skills:          $OPENDIR/skills, $OPENDIR/vendor/*/skills (symlinked into"
+echo "                 ~/.claude/skills and ~/.agents/skills - read by opencode, Claude Code, Codex)"
+echo "OpenCode config: $OPENDIR/opencode.jsonc (agents: $OPENDIR/agent, commands: $OPENDIR/command)"
+echo "Instructions:    $INSTRUCTIONS (linked into Claude Code, Codex, and opencode)"
 echo ""
 echo "Commands are OpenCode-only ($OPENDIR/.opencode/command). Skills work everywhere."
 echo ""

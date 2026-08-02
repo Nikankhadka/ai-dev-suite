@@ -49,16 +49,18 @@ curl -fsSL https://raw.githubusercontent.com/Nikankhadka/ai-dev-suite/main/setup
 ```
 
 This clones to `~/.config/opencode`, initializes the submodules, symlinks skills into
-`~/.claude/skills` and `~/.agents/skills`, and links `instructions/AGENTS.md` as the global
-instruction file for Claude Code and Codex.
+`~/.claude/skills` and `~/.agents/skills`, and links `instructions/AGENTS.md` as the shared global
+instruction file for opencode, Claude Code, and Codex.
 
 ## Supported Agents
 
-Skills work everywhere. Slash commands are OpenCode-only.
+Skills are symlinked into `~/.claude/skills` and `~/.agents/skills`, which all three harnesses read
+globally - one source of truth, synced across every project. Slash commands and subagents are
+OpenCode-only and live in the global `~/.config/opencode/` dirs.
 
 | Harness | Skills | Commands | Agents |
 |---------|--------|----------|--------|
-| **OpenCode** | `skills.paths` in `opencode.jsonc` | `.opencode/command/` | `.opencode/agent/` |
+| **OpenCode** | `~/.claude/skills` + `~/.agents/skills` symlinks | `~/.config/opencode/command/` | `~/.config/opencode/agent/` |
 | **Claude Code** | `~/.claude/skills/` | not provided | not provided |
 | **Codex** | `~/.agents/skills/` | not provided | not provided |
 | **Cursor / Windsurf** | markdown docs in `vendor/` | not provided | not provided |
@@ -127,12 +129,13 @@ vendor/ponytail/              # Git submodule (Ponytail, lazy senior dev mode)
 vendor/taste-skill/           # Git submodule (loaded on demand by frontend-design)
 vendor/hallmark/              # Git submodule (loaded on demand by frontend-design)
 skills/                       # Repo-owned local skills
-instructions/AGENTS.md        # Global instructions, linked into every harness
+instructions/AGENTS.md        # Shared global instructions, linked into every harness
 docs/                         # Workflow guides and documentation
 templates/                    # File templates (project memory)
-.opencode/agent/              # OpenCode agent definitions
-.opencode/command/            # OpenCode slash commands
-scripts/link-skills.sh        # Symlink skills for Claude Code and Codex
+agent/                        # OpenCode global agent definitions
+command/                      # OpenCode global slash commands
+.opencode/                    # Project-scoped opencode state (plans)
+scripts/link-skills.sh        # Symlink skills for Claude Code, OpenCode, and Codex
 scripts/patch-skills.sh       # Apply agent-agnostic modifications
 scripts/sync-upstream.sh      # Guided update when vendored skills change
 setup.sh                      # One-line installer

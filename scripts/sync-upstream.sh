@@ -186,8 +186,8 @@ phase_analyze() {
   echo "  Checking documentation references..."
   analyze_docs "$REPO_ROOT" "$registry" >> "$output_file" 2>/dev/null || true
 
-  # 5. Check config paths
-  echo "  Checking opencode.jsonc paths..."
+  # 5. Check config sync state
+  echo "  Checking opencode.jsonc sync state..."
   analyze_config "$REPO_ROOT" >> "$output_file" 2>/dev/null || true
 
   # 6. Discover unmapped vendor skills (only ones changed since last sync)
@@ -248,7 +248,7 @@ phase_review() {
     type=$(echo "$item" | jq -r '.type // empty')
 
     # Types that can be auto-applied (well-defined changes)
-    local auto_types="cmd-desc skill-rename agent-orphan config-path-missing config-no-paths vendor-ref-missing doc-stale-ref"
+    local auto_types="cmd-desc skill-rename agent-orphan vendor-ref-missing doc-stale-ref"
 
     if [[ "$YES_MODE" == "true" ]]; then
       if echo "$auto_types" | grep -qw "$type"; then
@@ -268,7 +268,7 @@ phase_review() {
           cmd-removed|cmd-missing|agent-missing|doc-missing|local-skill-missing)
             echo "$item" | jq -r '"  " + "\u001b[31m[\(.type)]\u001b[0m" + " \(.file // .skill // "")"'
             ;;
-          config-path-ok)
+          config-path-ok|config-instruction-ok|config-skill-links-ok)
             ;;  # silent — paths that exist
           *)
             echo "  $(dim "[$type]") $(echo "$item" | jq -r '.skill_name // .path // .file // ""' 2>/dev/null)"
@@ -333,15 +333,13 @@ apply_item() {
       MODIFIED_FILES+=("$agent_file")
       echo "    $(green 'Removed orphan from:') $agent_file"
       ;;
-    config-path-missing)
+    config-instruction-missing|config-skill-links-missing)
       local path
       path=$(echo "$item" | jq -r '.path')
-      apply_config_remove_path "$REPO_ROOT" "$path"
-      MODIFIED_FILES+=("opencode.jsonc")
-      echo "    $(green 'Removed path from opencode.jsonc:') $path"
+      echo "    $(dim 'Manual fix needed -') $path: $(echo "$item" | jq -r '.reason')"
       ;;
-    config-no-paths|config-path-ok|vendor-ref-missing|doc-stale-ref)
-      echo "    $(dim 'Review item — may need manual update')"
+    config-path-ok|vendor-ref-missing|doc-stale-ref)
+      echo "    $(dim 'Review item - may need manual update')"
       ;;
     *)
       echo "    $(dim 'No action for type:') $type"

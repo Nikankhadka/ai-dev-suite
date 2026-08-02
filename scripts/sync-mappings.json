@@ -3,46 +3,46 @@
   "description": "Maps vendor submodule SKILL.md files to local files they influence. Update when adding, removing, or renaming skills, commands, or agents.",
 
   "commands": {
-    "tdd":                  { "file": ".opencode/command/tdd.md",                  "upstream": "vendor/mattpocock-skills/skills/engineering/tdd/SKILL.md",                  "agent": "builder" },
-    "code-review":          { "file": ".opencode/command/code-review.md",          "upstream": "vendor/mattpocock-skills/skills/engineering/code-review/SKILL.md",          "agent": "reviewer" },
-    "diagnosing-bugs":      { "file": ".opencode/command/diagnosing-bugs.md",      "upstream": "vendor/mattpocock-skills/skills/engineering/diagnosing-bugs/SKILL.md",      "agent": "debugger" },
-    "implement":            { "file": ".opencode/command/implement.md",            "upstream": "vendor/mattpocock-skills/skills/engineering/implement/SKILL.md",            "agent": "builder" },
-    "to-spec":              { "file": ".opencode/command/to-spec.md",             "upstream": "vendor/mattpocock-skills/skills/engineering/to-spec/SKILL.md",              "agent": "planner" },
-    "to-tickets":           { "file": ".opencode/command/to-tickets.md",          "upstream": "vendor/mattpocock-skills/skills/engineering/to-tickets/SKILL.md",           "agent": "planner" },
-    "triage":               { "file": ".opencode/command/triage.md",              "upstream": "vendor/mattpocock-skills/skills/engineering/triage/SKILL.md",               "agent": "planner" },
-    "wayfinder":            { "file": ".opencode/command/wayfinder.md",           "upstream": "vendor/mattpocock-skills/skills/engineering/wayfinder/SKILL.md",            "agent": "planner" },
-    "grill-me":             { "file": ".opencode/command/grill-me.md",            "upstream": "vendor/mattpocock-skills/skills/productivity/grill-me/SKILL.md",            "agent": "planner" },
-    "grill-with-docs":      { "file": ".opencode/command/grill-with-docs.md",     "upstream": "vendor/mattpocock-skills/skills/engineering/grill-with-docs/SKILL.md",      "agent": "planner" },
-    "handoff":              { "file": ".opencode/command/handoff.md",             "upstream": "vendor/mattpocock-skills/skills/productivity/handoff/SKILL.md",             "agent": "builder" },
-    "teach":                { "file": ".opencode/command/teach.md",              "upstream": "vendor/mattpocock-skills/skills/productivity/teach/SKILL.md",               "agent": "planner" },
-    "prototype":            { "file": ".opencode/command/prototype.md",           "upstream": "vendor/mattpocock-skills/skills/engineering/prototype/SKILL.md",            "agent": "builder" },
-    "ask-matt":             { "file": ".opencode/command/ask-matt.md",            "upstream": "vendor/mattpocock-skills/skills/engineering/ask-matt/SKILL.md",             "agent": "planner" },
+    "tdd":                  { "file": "command/tdd.md",                  "upstream": "vendor/mattpocock-skills/skills/engineering/tdd/SKILL.md",                  "agent": "builder" },
+    "code-review":          { "file": "command/code-review.md",          "upstream": "vendor/mattpocock-skills/skills/engineering/code-review/SKILL.md",          "agent": "reviewer" },
+    "diagnosing-bugs":      { "file": "command/diagnosing-bugs.md",      "upstream": "vendor/mattpocock-skills/skills/engineering/diagnosing-bugs/SKILL.md",      "agent": "debugger" },
+    "implement":            { "file": "command/implement.md",            "upstream": "vendor/mattpocock-skills/skills/engineering/implement/SKILL.md",            "agent": "builder" },
+    "to-spec":              { "file": "command/to-spec.md",             "upstream": "vendor/mattpocock-skills/skills/engineering/to-spec/SKILL.md",              "agent": "planner" },
+    "to-tickets":           { "file": "command/to-tickets.md",          "upstream": "vendor/mattpocock-skills/skills/engineering/to-tickets/SKILL.md",           "agent": "planner" },
+    "triage":               { "file": "command/triage.md",              "upstream": "vendor/mattpocock-skills/skills/engineering/triage/SKILL.md",               "agent": "planner" },
+    "wayfinder":            { "file": "command/wayfinder.md",           "upstream": "vendor/mattpocock-skills/skills/engineering/wayfinder/SKILL.md",            "agent": "planner" },
+    "grill-me":             { "file": "command/grill-me.md",            "upstream": "vendor/mattpocock-skills/skills/productivity/grill-me/SKILL.md",            "agent": "planner" },
+    "grill-with-docs":      { "file": "command/grill-with-docs.md",     "upstream": "vendor/mattpocock-skills/skills/engineering/grill-with-docs/SKILL.md",      "agent": "planner" },
+    "handoff":              { "file": "command/handoff.md",             "upstream": "vendor/mattpocock-skills/skills/productivity/handoff/SKILL.md",             "agent": "builder" },
+    "teach":                { "file": "command/teach.md",              "upstream": "vendor/mattpocock-skills/skills/productivity/teach/SKILL.md",               "agent": "planner" },
+    "prototype":            { "file": "command/prototype.md",           "upstream": "vendor/mattpocock-skills/skills/engineering/prototype/SKILL.md",            "agent": "builder" },
+    "ask-matt":             { "file": "command/ask-matt.md",            "upstream": "vendor/mattpocock-skills/skills/engineering/ask-matt/SKILL.md",             "agent": "planner" },
     "improve-codebase-architecture": {
-      "file": ".opencode/command/improve-codebase-architecture.md",
+      "file": "command/improve-codebase-architecture.md",
       "upstream": "vendor/mattpocock-skills/skills/engineering/improve-codebase-architecture/SKILL.md",
       "agent": "planner"
     },
     "setup-matt-pocock-skills": {
-      "file": ".opencode/command/setup-matt-pocock-skills.md",
+      "file": "command/setup-matt-pocock-skills.md",
       "upstream": "vendor/mattpocock-skills/skills/engineering/setup-matt-pocock-skills/SKILL.md",
       "agent": "planner"
     },
-    "lavish":               { "file": ".opencode/command/lavish.md",              "upstream": "vendor/lavish-axi/skills/lavish/SKILL.md",                                 "agent": "planner" },
-    "no-mistakes":          { "file": ".opencode/command/no-mistakes.md",         "upstream": "vendor/no-mistakes/skills/no-mistakes/SKILL.md",                            "agent": "builder" },
-    "gnhf":                 { "file": ".opencode/command/gnhf.md",                "upstream": "vendor/gnhf/skills/gnhf/SKILL.md",                                          "agent": "builder" },
-    "ponytail":             { "file": ".opencode/command/ponytail.md",            "upstream": "vendor/ponytail/skills/ponytail/SKILL.md",                                  "agent": null },
-    "ponytail-review":      { "file": ".opencode/command/ponytail-review.md",     "upstream": "vendor/ponytail/skills/ponytail-review/SKILL.md",                           "agent": null },
-    "ponytail-audit":       { "file": ".opencode/command/ponytail-audit.md",      "upstream": "vendor/ponytail/skills/ponytail-audit/SKILL.md",                            "agent": null },
-    "ponytail-debt":        { "file": ".opencode/command/ponytail-debt.md",       "upstream": "vendor/ponytail/skills/ponytail-debt/SKILL.md",                             "agent": null },
-    "ponytail-gain":        { "file": ".opencode/command/ponytail-gain.md",       "upstream": "vendor/ponytail/skills/ponytail-gain/SKILL.md",                             "agent": null },
-    "ponytail-help":        { "file": ".opencode/command/ponytail-help.md",       "upstream": "vendor/ponytail/skills/ponytail-help/SKILL.md",                             "agent": null }
+    "lavish":               { "file": "command/lavish.md",              "upstream": "vendor/lavish-axi/skills/lavish/SKILL.md",                                 "agent": "planner" },
+    "no-mistakes":          { "file": "command/no-mistakes.md",         "upstream": "vendor/no-mistakes/skills/no-mistakes/SKILL.md",                            "agent": "builder" },
+    "gnhf":                 { "file": "command/gnhf.md",                "upstream": "vendor/gnhf/skills/gnhf/SKILL.md",                                          "agent": "builder" },
+    "ponytail":             { "file": "command/ponytail.md",            "upstream": "vendor/ponytail/skills/ponytail/SKILL.md",                                  "agent": null },
+    "ponytail-review":      { "file": "command/ponytail-review.md",     "upstream": "vendor/ponytail/skills/ponytail-review/SKILL.md",                           "agent": null },
+    "ponytail-audit":       { "file": "command/ponytail-audit.md",      "upstream": "vendor/ponytail/skills/ponytail-audit/SKILL.md",                            "agent": null },
+    "ponytail-debt":        { "file": "command/ponytail-debt.md",       "upstream": "vendor/ponytail/skills/ponytail-debt/SKILL.md",                             "agent": null },
+    "ponytail-gain":        { "file": "command/ponytail-gain.md",       "upstream": "vendor/ponytail/skills/ponytail-gain/SKILL.md",                             "agent": null },
+    "ponytail-help":        { "file": "command/ponytail-help.md",       "upstream": "vendor/ponytail/skills/ponytail-help/SKILL.md",                             "agent": null }
   },
 
-  "local_only_commands": ["memory", "ship", "maintain", "design"],
+  "local_only_commands": ["memory", "ship", "maintain", "design", "strategic-compact"],
 
   "agents": {
     "builder": {
-      "file": ".opencode/agent/builder.md",
+      "file": "agent/builder.md",
       "skills": [
         "tdd", "code-review", "ponytail-review", "ponytail-audit",
         "improve-codebase-architecture", "domain-modeling", "codebase-design",
@@ -51,22 +51,22 @@
       ]
     },
     "planner": {
-      "file": ".opencode/agent/planner.md",
+      "file": "agent/planner.md",
       "skills": [
         "grilling", "research", "domain-modeling", "ponytail-audit",
         "improve-codebase-architecture", "stack-discovery", "frontend-design"
       ]
     },
     "reviewer": {
-      "file": ".opencode/agent/reviewer.md",
+      "file": "agent/reviewer.md",
       "skills": ["code-review", "ponytail-review", "codebase-design"]
     },
     "debugger": {
-      "file": ".opencode/agent/debugger.md",
+      "file": "agent/debugger.md",
       "skills": ["diagnosing-bugs", "prototype", "research"]
     },
     "maintainer": {
-      "file": ".opencode/agent/maintainer.md",
+      "file": "agent/maintainer.md",
       "skills": ["stack-discovery", "domain-modeling"]
     }
   },
@@ -78,6 +78,10 @@
         "vendor/taste-skill/skills/taste-skill/SKILL.md",
         "vendor/hallmark/skills/hallmark/SKILL.md"
       ]
+    },
+    "strategic-compact": {
+      "file": "skills/strategic-compact/SKILL.md",
+      "vendor_refs": []
     }
   },
 
@@ -91,7 +95,7 @@
 
   "config": {
     "file": "opencode.jsonc",
-    "checks": ["skill_paths_exist"]
+    "checks": ["instruction_paths_exist", "skill_links_exist"]
   },
 
   "submodules": {

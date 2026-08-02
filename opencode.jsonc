@@ -1,26 +1,19 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  // Every skill listed here costs description tokens in every prompt, so the
-  // list is curated. Deliberately absent:
+  // Skills are NOT registered here: scripts/link-skills.sh symlinks them into
+  // ~/.claude/skills and ~/.agents/skills, and opencode reads both globally in
+  // every project, so all three harnesses (opencode, Claude Code, Codex) see
+  // the same set. Deliberately absent from that set:
   //   - taste-skill and hallmark: skills/frontend-design/SKILL.md loads them by
   //     file path on demand, so registering them buys nothing.
   //   - mattpocock in-progress: unblessed upstream work.
-  // scripts/link-skills.sh must stay in sync with this list.
-  "skills": {
-    "paths": [
-      "./vendor/mattpocock-skills/skills/engineering",
-      "./vendor/mattpocock-skills/skills/productivity",
-      "./vendor/mattpocock-skills/skills/misc",
-      "./vendor/lavish-axi/skills",
-      "./vendor/no-mistakes/skills",
-      "./vendor/gnhf/skills",
-      "./vendor/axi/.agents/skills",
-      "./vendor/firstmate/skills",
-      "./vendor/ponytail/skills",
-      "./skills"
-    ]
-  },
+  //   - git-guardrails-claude-code: patch-skills.sh produces the agent-agnostic
+  //     git-guardrails fork from it; linking both registers the same skill twice.
+  //
+  // Same shared instruction file as Claude Code and Codex, in every project.
+  // The ~/ prefix resolves against $HOME regardless of the opened project.
+  "instructions": ["~/.config/opencode/instructions/AGENTS.md"],
 
   "mcp": {
     "github": {

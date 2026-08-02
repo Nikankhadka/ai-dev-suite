@@ -68,9 +68,9 @@ The suite installs itself, submodules included:
 curl -fsSL https://raw.githubusercontent.com/Nikankhadka/ai-dev-suite/main/setup.sh | bash
 ```
 
-That clones to `~/.config/opencode`, initializes every vendored submodule, symlinks the skills into `~/.claude/skills` and `~/.agents/skills`, and links `instructions/AGENTS.md` as the global instruction file for Claude Code and Codex.
+That clones to `~/.config/opencode`, initializes every vendored submodule, symlinks the skills into `~/.claude/skills` and `~/.agents/skills` (read by opencode, Claude Code, and Codex alike), and links `instructions/AGENTS.md` as the shared global instruction file for all three harnesses.
 
-Slash commands are OpenCode-only and live in `.opencode/command/`. Skills work on every harness.
+Slash commands are OpenCode-only and live in `~/.config/opencode/command/`. Skills work on every harness.
 
 To install an upstream skill set on its own, without this suite, use the Vercel skills CLI, for example `npx skills@latest add mattpocock/skills`.
 
@@ -311,6 +311,8 @@ Outputs a "safe-to-end" verdict and a RESUME POINTER - exactly which files a fre
 ```
 
 Use when you're passing work between agents or clearing context for the next ticket.
+
+**Strategic Compact** suggests manual context compaction at logical task boundaries instead of relying on arbitrary auto-compaction. Load it when a session is long, multi-phase, or approaching 75% context limits - it tells you *when* to suggest `/compact`, the user decides *if*.
 
 ### Architecture Health
 

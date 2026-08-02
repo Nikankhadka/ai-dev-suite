@@ -48,7 +48,7 @@ Before reaching for a CLI, know what the harness already gives you.
 
 - Commands with `subtask: true` in their frontmatter run in a child session, so a long procedure
   does not consume the main context. `/maintain` and `/memory` already do this.
-- The five personas in `.opencode/agent/` are the loop roles: `planner` frames, `builder` builds,
+- The five personas in `agent/` (the opencode global agent dir) are the loop roles: `planner` frames, `builder` builds,
   `reviewer` checks, `debugger` diagnoses, `maintainer` cleans. Each is `mode: subagent`, so
   routing a command at a persona is how you get a clean context for that phase.
 
@@ -99,7 +99,7 @@ return only its assigned phase. If a pipeline-control command returns `nested_ga
 and hand back to the outer executor. Only `status`, `logs`, `help` and `doctor` are safe from the
 inside.
 
-**`/ship` is the same idea, local and staged.** `.opencode/command/ship.md` runs Context, Plan,
+**`/ship` is the same idea, local and staged.** `command/ship.md` runs Context, Plan,
 Build, Review, Test, Docs and optional Release with a hard gate on each (G0 through G6), a max
 attempt count per gate, and a mandatory report table. It never proceeds past a FAIL. Use `/ship`
 for one requirement end to end inside a session; use `no-mistakes` when the work is already
@@ -409,6 +409,9 @@ The boundary between the three, since it is not obvious:
   it before a context reset or a long break.
 - **`/handoff`** compacts the live conversation so a different agent can continue *this* work. It
   is about continuity, not knowledge.
+- **`strategic-compact`** (a skill, not a command) suggests manual compaction at natural task
+  boundaries - research to plan, debugging to next feature, after a failed approach. Load it
+  during long or multi-phase sessions before context pressure degrades responses.
 
 Record only what the code cannot tell you: decisions and their reasoning, gotchas found the hard
 way, conventions you were corrected on. Never record file structure or dependency lists.

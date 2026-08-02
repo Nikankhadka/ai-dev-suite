@@ -17,10 +17,10 @@ Start with [docs/unified-flow.md](docs/unified-flow.md) for the full suite, and
 
 ## Key Files
 
-- `opencode.jsonc` - OpenCode configuration (skills, permissions, MCP). The `skills.paths` list is curated: every entry costs description tokens in every prompt
-- `instructions/AGENTS.md` - Global instructions, symlinked into Claude Code and Codex by `setup.sh`. Harness-specific commands must never be referenced here
-- `.opencode/agent/*.md` - Agent persona definitions
-- `.opencode/command/*.md` - Slash command definitions (OpenCode only)
+- `opencode.jsonc` - OpenCode configuration (instructions, permissions, MCP). Skills are NOT listed here; `scripts/link-skills.sh` symlinks them into `~/.claude/skills` and `~/.agents/skills`, which opencode, Claude Code, and Codex all read globally
+- `instructions/AGENTS.md` - Global instructions, symlinked into Claude Code and Codex by `setup.sh` and loaded by opencode via the `instructions` key in `opencode.jsonc`. Harness-specific commands must never be referenced here
+- `agent/*.md` - Agent persona definitions (global for opencode, `~/.config/opencode/agent/`)
+- `command/*.md` - Slash command definitions (global for opencode, `~/.config/opencode/command/`, OpenCode only)
 - `vendor/mattpocock-skills/` - Submodule: Matt Pocock engineering skills
 - `vendor/lavish-axi/` - Submodule: Lavish visual planning (skill + CLI)
 - `vendor/no-mistakes/` - Submodule: No-Mistakes validation pipeline (skill + CLI)
@@ -32,7 +32,7 @@ Start with [docs/unified-flow.md](docs/unified-flow.md) for the full suite, and
 - `vendor/taste-skill/` - Submodule: animated React/Next.js design. Not registered as a skill; loaded on demand by the router
 - `vendor/hallmark/` - Submodule: structured HTML/CSS design. Not registered as a skill; loaded on demand by the router
 - `skills/frontend-design/` - Local: design router skill + index wrappers for hallmark and taste-skill
-- `scripts/link-skills.sh` - Symlinks skills into `~/.claude/skills` and `~/.agents/skills`. Must stay in sync with `skills.paths`
+- `scripts/link-skills.sh` - Symlinks skills into `~/.claude/skills` and `~/.agents/skills`. Single source of truth for skills on every harness
 - `scripts/patch-skills.sh` - Applies agent-agnostic modifications to submodules
 - `scripts/sync-upstream.sh` - Guided update when vendored skills change, driven by `scripts/sync-mappings.json`
 - `setup.sh` - One-line installer for new machines
