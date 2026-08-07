@@ -6,8 +6,11 @@ Comprehensive agent skills suite for real software engineering, not vibe coding.
 
 **Skills - Matt Pocock** (powered by [mattpocock/skills](https://github.com/mattpocock/skills)):
 - **Engineering**: tdd, code-review, diagnosing-bugs, to-spec, to-tickets, implement, triage, wayfinder, grill-with-docs, domain-modeling, codebase-design, prototype, research, resolving-merge-conflicts
-- **Productivity**: grill-me, handoff, teach, writing-great-skills, grilling
-- **Misc**: git-guardrails, scaffold-exercises, setup-pre-commit, migrate-to-shoehorn
+- **Productivity**: grill-me, handoff, grilling
+- **Misc**: git-guardrails, setup-pre-commit
+
+Vendored but not registered (see the `SKIP` list in `scripts/link-skills.sh`): ask-matt, teach,
+writing-great-skills, scaffold-exercises, migrate-to-shoehorn.
 
 **Skills - Kunchen** (powered by [kunchenguid](https://github.com/kunchenguid) tools):
 - **lavish** - Visual planning with interactive HTML artifacts, annotations, and decisions
@@ -69,7 +72,6 @@ OpenCode-only and live in the global `~/.config/opencode/` dirs.
 
 | Command | Description |
 |---------|------------|
-| `/ask-matt` | Router: which skill fits this situation |
 | `/grill-me` / `/grill-with-docs` | Grilling interviews (the second also writes ADRs) |
 | `/to-spec` / `/to-tickets` | Spec and ticket generation |
 | `/wayfinder` | Map work too large for one session |
@@ -92,7 +94,7 @@ OpenCode-only and live in the global `~/.config/opencode/` dirs.
 | `/maintain` | Dead code, duplicates, docs and memory refresh |
 | `/memory` | Maintain `.agents/memory.md` |
 | `/stow` | Sweep the session for durable knowledge before a reset |
-| `/handoff` / `/teach` | Productivity tools |
+| `/handoff` | Compact a session for another agent to continue |
 | `/improve-codebase-architecture` | Codebase health scan |
 | `/setup-matt-pocock-skills` | Configure issue tracker and labels |
 

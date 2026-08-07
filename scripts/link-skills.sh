@@ -10,9 +10,9 @@ set -euo pipefail
 # Not linked on purpose:
 #   - taste-skill and hallmark: skills/frontend-design/SKILL.md loads them by
 #     file path, so registering them as skills only costs context.
-#   - in-progress: unblessed upstream work.
-#   - git-guardrails-claude-code: patch-skills.sh produces the agent-agnostic
-#     git-guardrails fork from it; linking both registers the same skill twice.
+#   - mattpocock deprecated/, in-progress/, personal/, productivity/ and misc/:
+#     unblessed, superseded, or upstream's own course-authoring tooling. Only
+#     engineering/ is sourced, plus the individual skills named in EXTRAS.
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 DESTS=("$HOME/.claude/skills" "$HOME/.agents/skills")
@@ -21,8 +21,6 @@ BACKUPS="$HOME/.ai-dev-suite-backups/$(date +%Y%m%d-%H%M%S)"
 # Directories that contain skill folders (each holding a SKILL.md).
 SOURCES=(
   "$REPO/vendor/mattpocock-skills/skills/engineering"
-  "$REPO/vendor/mattpocock-skills/skills/productivity"
-  "$REPO/vendor/mattpocock-skills/skills/misc"
   "$REPO/vendor/lavish-axi/skills"
   "$REPO/vendor/no-mistakes/skills"
   "$REPO/vendor/gnhf/skills"
@@ -32,25 +30,45 @@ SOURCES=(
   "$REPO/skills"
 )
 
-SKIP=("git-guardrails-claude-code")
+# Individual skills kept from directories that are otherwise not sourced.
+EXTRAS=(
+  "$REPO/vendor/mattpocock-skills/skills/productivity/grill-me"
+  "$REPO/vendor/mattpocock-skills/skills/productivity/grilling"
+)
+
+# Vendored and inside a sourced directory, but deliberately not registered.
+# Adding a name here is how a skill leaves the global set without leaving the
+# submodule, which is what you reach for when an upstream bump adds one you
+# do not want. Empty is the normal state.
+SKIP=()
 
 should_skip() {
   local name="$1"
+  [ ${#SKIP[@]} -eq 0 ] && return 1
   for s in "${SKIP[@]}"; do [ "$name" = "$s" ] && return 0; done
   return 1
 }
 
-# Every skill name this run intends to link, resolved before anything is
-# written so the prune pass knows what is still wanted.
-WANTED=()
+# Every skill directory this run intends to link, resolved once so the prune
+# pass and the link pass cannot disagree about what is wanted.
+SKILL_DIRS=()
 for source in "${SOURCES[@]}"; do
   [ -d "$source" ] || { echo "Skipping missing source: $source"; continue; }
   for skill_dir in "$source"/*/; do
     [ -f "$skill_dir/SKILL.md" ] || continue
-    name="$(basename "$skill_dir")"
-    should_skip "$name" && continue
-    WANTED+=("$name")
+    SKILL_DIRS+=("${skill_dir%/}")
   done
+done
+for extra in "${EXTRAS[@]}"; do
+  [ -f "$extra/SKILL.md" ] || { echo "Skipping missing skill: $extra"; continue; }
+  SKILL_DIRS+=("$extra")
+done
+
+WANTED=()
+for skill_dir in "${SKILL_DIRS[@]}"; do
+  name="$(basename "$skill_dir")"
+  should_skip "$name" && continue
+  WANTED+=("$name")
 done
 
 is_wanted() {
@@ -116,18 +134,14 @@ done
 
 echo "Linking skills..."
 count=0
-for source in "${SOURCES[@]}"; do
-  [ -d "$source" ] || continue
-  for skill_dir in "$source"/*/; do
-    [ -f "$skill_dir/SKILL.md" ] || continue
-    name="$(basename "$skill_dir")"
-    should_skip "$name" && continue
-    for dest in "${DESTS[@]}"; do
-      link_skill "${skill_dir%/}" "$dest" "$name"
-    done
-    count=$((count + 1))
-    echo "  $name"
+for skill_dir in "${SKILL_DIRS[@]}"; do
+  name="$(basename "$skill_dir")"
+  should_skip "$name" && continue
+  for dest in "${DESTS[@]}"; do
+    link_skill "$skill_dir" "$dest" "$name"
   done
+  count=$((count + 1))
+  echo "  $name"
 done
 
 echo "Done. $count skills linked into ${DESTS[*]}"

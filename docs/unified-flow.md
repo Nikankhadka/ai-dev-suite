@@ -142,10 +142,9 @@ Specialized aesthetics live alongside taste-skill in `vendor/taste-skill/skills/
 
 For architectural and non-visual decisions, the Matt Pocock skills provide a rigorous interview-and-document cycle:
 
-1. **`/ask-matt`** - Router that tells you which skill fits your situation. "How do I get started?" is a valid prompt.
-2. **`/grill-with-docs`** - Relentless interview that walks the entire decision tree. Produces a shared understanding plus ADRs and glossary entries. This is where "I want to change X" becomes a crisp, defensible plan.
-3. **`/domain-modeling`** - Build and maintain the project's ubiquitous language. Record architectural decisions, pin down terminology.
-4. **`/wayfinder`** - For truly massive work (more than one agent session can hold), create a shared map of decision tickets on the tracker and resolve them one at a time.
+1. **`/grill-with-docs`** - Relentless interview that walks the entire decision tree. Produces a shared understanding plus ADRs and glossary entries. This is where "I want to change X" becomes a crisp, defensible plan.
+2. **`/domain-modeling`** - Build and maintain the project's ubiquitous language. Record architectural decisions, pin down terminology.
+3. **`/wayfinder`** - For truly massive work (more than one agent session can hold), create a shared map of decision tickets on the tracker and resolve them one at a time.
 
 ---
 
@@ -345,11 +344,6 @@ Periodically run these to keep the codebase lean:
 
 `/resolving-merge-conflicts` handles in-progress git merge/rebase conflicts methodically - useful when parallel worktrees eventually converge.
 
-### Learning
-
-`/teach` teaches you a new skill or concept interactively within the current workspace.
-
----
 
 ## Part 9: The Captain's Workflow - End-to-End Example
 
@@ -410,7 +404,6 @@ Here's what a real day looks like with the unified flow:
 | **minimalist-ui** | Clean editorial style, warm monochrome | Load by path from vendor/taste-skill/skills/ |
 | **high-end-visual-design** | Agency-grade fonts, spacing, shadows | Load by path from vendor/taste-skill/skills/ |
 | **redesign-existing-projects** | Audit and upgrade existing sites | Load by path from vendor/taste-skill/skills/ |
-| **ask-matt** | Flow router - which skill fits your situation | `/ask-matt` |
 | **grill-with-docs** | Interview + ADRs + glossary | `/grill-with-docs` |
 | **grill-me** | Relentless interview (no docs) | `/grill-me` |
 | **domain-modeling** | Build ubiquitous language, record ADRs | `/domain-modeling` |
@@ -457,7 +450,6 @@ Here's what a real day looks like with the unified flow:
 | **resolving-merge-conflicts** | Resolve in-progress git conflicts | `/resolving-merge-conflicts` |
 | **improve-codebase-architecture** | Scan for deepening opportunities | `/improve-codebase-architecture` |
 | **maintain** | Clean dead code, consolidate, refresh docs | `/maintain` |
-| **teach** | Learn a new concept interactively | `/teach` |
 | **stack-discovery** | Detect project language/tooling from manifests | Skill auto-load |
 | **setup-matt-pocock-skills** | Configure tracker, labels, domain docs | `/setup-matt-pocock-skills` |
 
