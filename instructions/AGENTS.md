@@ -16,6 +16,17 @@ These rules apply to every agent session across all harnesses (Claude Code, Open
   If you see one, even if it is not caused by what you are working on right now, still get it fixed.
 - Before using "dynamic workflows", "ultra code" or any harness feature that immediately spawns a large swarm of subagents, always explain the tradeoffs and ask the user for explicit approval.
 
+# Git Workflow for Branches
+
+When the user plans work (plan mode) and then switches to build mode to execute it - bug fixes, features, documentation, or any other change - never mix the work into the current branch:
+
+- Create a dedicated branch first: branch off the current base (usually `main`) before touching anything, named `<type>/<short-slug>` (e.g. `fix/auth-session-loop`, `feat/checkout-redesign`, `docs/pricing-rules`) - the slug is a 2-5 word description of the work.
+- One branch per piece of work: if multiple issues or tasks surface during a session, each gets its own branch; never stack multiple pieces of work in one branch.
+- Commit to that branch: all work for the task (code, tests, docs) lands on its branch with a clear commit message.
+- Push to origin: `git push -u origin <branch>` so the work is visible on the remote.
+- Merge and clean up: when the work is done and checks pass, return to the base branch, squash-merge the branch (one clean commit), and delete the branch both locally and on origin.
+- If the working tree already holds unrelated uncommitted changes when a task starts, commit or stash them first so the branch starts clean.
+
 # Project Structure Preferences
 
 Default to feature-based / vertical-slice structure when creating new code, unless the project already has an established structure - then match the repo.
