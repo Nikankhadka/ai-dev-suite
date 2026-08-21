@@ -76,3 +76,24 @@ Follow the route/page model, feature-based:
 - Shared reusable components live OUTSIDE the route tree (e.g. `app/ui/` or `src/components/ui/` for SPAs)
 
 When code becomes shared across features, promote it to the shared folder rather than duplicating.
+
+# Project Progress Tracking
+
+Every project tracks its work in `.agents/progress.md`, next to `.agents/memory.md`.
+Created on first use - no init step.
+
+## Format
+
+Two levels - milestones and tickets with checkbox statuses:
+
+## M1: <milestone name>
+- [ ] T1: <one-line summary>                      (open)
+- [~] T2: <one-line summary> - done: X, next: Y   (in progress)
+- [x] T3: <one-line summary> (YYYY-MM-DD)         (done)
+
+## Rules
+
+- Read both `.agents/memory.md` and `.agents/progress.md` at session start, before starting new work
+- After committing, update every ticket touched: flip status, refresh the one-line summary
+- During cleanup sessions, prune finished milestones and stale tickets
+- Keep summaries to one line - details live in commits, PRs, and memory.md
