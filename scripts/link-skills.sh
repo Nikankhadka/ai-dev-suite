@@ -4,8 +4,9 @@ set -euo pipefail
 # Symlink this repo's skills into every harness's global skills directory.
 #
 # Claude Code reads ~/.claude/skills, Codex reads ~/.agents/skills. OpenCode
-# reads both ~/.claude/skills and ~/.agents/skills globally too, so the set
-# linked here is the single source of truth for all three harnesses.
+# reads both ~/.claude/skills and ~/.agents/skills globally too, and Pi reads
+# ~/.agents/skills globally, so the set linked here is the single source of
+# truth for all four harnesses.
 #
 # Not linked on purpose:
 #   - taste-skill and hallmark: skills/frontend-design/SKILL.md loads them by

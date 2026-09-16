@@ -53,7 +53,15 @@ link_instructions "$HOME/.claude/CLAUDE.md"
 link_instructions "$HOME/.codex/AGENTS.md"
 link_instructions "$HOME/.agents/CLAUDE.md"
 
-# 7. Remove links from the pre-.opencode layout
+# 7. Link the suite into Pi (instructions, prompts, skills paths).
+# Pi reads ~/.agents/skills natively, so no skill symlinks are needed -
+# link-pi.sh covers AGENTS.md, command/*.md as prompt templates, and
+# settings.json skills paths. Runs even when the pi CLI is not installed
+# yet so the config is ready on first run.
+echo "-> Linking suite into Pi..."
+bash "$OPENDIR/scripts/link-pi.sh"
+
+# 8. Remove links from the pre-.opencode layout
 # Commands and agents live in $OPENDIR/agent and $OPENDIR/command (global for
 # opencode). Older installs pointed ~/.claude and ~/.codex at directories that
 # no longer exist.
@@ -64,15 +72,16 @@ for stale in "$HOME/.claude/commands" "$HOME/.claude/agents" "$HOME/.codex/agent
   fi
 done
 
-# 8. Verify
+# 9. Verify
 echo ""
 echo "=== Installation Complete ==="
 echo "Skills:          $OPENDIR/skills, $OPENDIR/vendor/*/skills (symlinked into"
-echo "                 ~/.claude/skills and ~/.agents/skills - read by opencode, Claude Code, Codex)"
+echo "                 ~/.claude/skills and ~/.agents/skills - read by opencode, Claude Code, Codex, Pi)"
 echo "OpenCode config: $OPENDIR/opencode.jsonc (agents: $OPENDIR/agent, commands: $OPENDIR/command)"
-echo "Instructions:    $INSTRUCTIONS (linked into Claude Code, Codex, and opencode)"
+echo "Instructions:    $INSTRUCTIONS (linked into Claude Code, Codex, opencode, and Pi)"
+echo "Pi prompts:      $OPENDIR/command (symlinked into ~/.pi/agent/prompts)"
 echo ""
-echo "Commands are OpenCode-only ($OPENDIR/.opencode/command). Skills work everywhere."
+echo "Commands work in OpenCode and Pi ($OPENDIR/command). Skills work everywhere."
 echo ""
 echo "  Plan:      /grill-me  /grill-with-docs  /to-spec  /to-tickets  /wayfinder"
 echo "             /design    /lavish           /ask-matt"
