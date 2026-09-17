@@ -10,12 +10,13 @@ A comprehensive guide merging [Matt Pocock's engineering skills](https://github.
 2. **Process** - Planning, implementation, and validation skills that you orchestrate but don't micromanage
 3. **Orchestration** - Parallel crews, autonomous runs, and knowledge capture that let you give direction once and ship many times
 
-**Never review diffs manually.** Trust the validation pipeline. Review the evidence - screenshots, logs, risk assessments - not the raw code.
+**Review evidence first.** Use screenshots, logs, tests, and risk assessments, then spot-check the diff in proportion to risk.
 
-**Voice first. Plan visually. Parallelize fearlessly.**
+**Voice first. Plan visually. Parallelize only independent read or review work by default.**
 
 For how to run these tools as iterate-verify-commit loops and parallel crews, see
-[loop-flow.md](loop-flow.md). This doc covers the tools; that one covers the loop discipline.
+[loop-flow.md](loop-flow.md). For role and model defaults, context limits, and hybrid handoffs, see
+[supervised-model-routing.md](supervised-model-routing.md).
 
 ---
 
@@ -37,7 +38,7 @@ Voice is 3x faster than typing. Use **[OpenSuperWhisper](https://github.com/supe
 
 Two tiers, progressively disclosed:
 
-**Global Memory** - one file, `instructions/AGENTS.md` in this repo, symlinked to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, and `~/.agents/CLAUDE.md` by `setup.sh`. Loaded into every session across all projects and harnesses. Keep it minimal: personal preferences, coding principles, gotchas. Never let it bloat, and never reference a harness-specific command in it - it is read by harnesses that do not have those commands.
+**Global Memory** - one file, `instructions/AGENTS.md` in this repo, symlinked to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.agents/CLAUDE.md`, and `~/.pi/agent/AGENTS.md` by `setup.sh`. Loaded into every session across all projects and harnesses. Keep it minimal: personal preferences, coding principles, gotchas. Never let it bloat, and never reference a harness-specific command in it - it is read by harnesses that do not have those commands.
 
 **Project Memory** (`AGENTS.md` / `CLAUDE.md` per project) - Built incrementally:
 - Project context and repo layout
@@ -68,9 +69,11 @@ The suite installs itself, submodules included:
 curl -fsSL https://raw.githubusercontent.com/Nikankhadka/ai-dev-suite/main/setup.sh | bash
 ```
 
-That clones to `~/.config/opencode`, initializes every vendored submodule, symlinks the skills into `~/.claude/skills` and `~/.agents/skills` (read by opencode, Claude Code, and Codex alike), and links `instructions/AGENTS.md` as the shared global instruction file for all three harnesses.
+That clones to `~/.config/opencode`, initializes every vendored submodule, links the shared skills
+and instructions, merges native model defaults, and installs bounded Claude, Codex, and Pi routing.
+Settings merges preserve unrelated keys and create timestamped backups when values change.
 
-Slash commands are OpenCode-only and live in `~/.config/opencode/command/`. Skills work on every harness.
+Slash commands live in OpenCode and are linked into Pi as prompt templates. Skills work on every harness.
 
 To install an upstream skill set on its own, without this suite, use the Vercel skills CLI, for example `npx skills@latest add mattpocock/skills`.
 
@@ -93,10 +96,12 @@ The suite defines specialized agent personas, each with tailored skill access:
 
 | Agent | Role | Key Skills |
 |-------|------|-----------|
-| **builder** | Writes code | `/tdd`, `/implement`, `/prototype`, `/code-review` |
-| **planner** | Designs features | `/grill-me`, `/to-spec`, `/to-tickets`, `/wayfinder`, `/lavish` |
-| **reviewer** | Reviews code | `/code-review` (three-axis: standards + spec + over-engineering) |
-| **debugger** | Fixes bugs | `/diagnosing-bugs` (6-phase loop) |
+| **supervisor** | Owns planning, delegation, review, and acceptance | global supervised workflow |
+| **reader** | Returns bounded read-only evidence | repository search and inspection |
+| **builder** | Implements one bounded slice | `/tdd`, `/implement`, `/prototype` |
+| **planner** | Reformulates requirements and defines DoD/tests | `/grill-me`, `/to-spec`, `/to-tickets`, `/wayfinder`, `/lavish` |
+| **reviewer** | Reviews one assigned axis without editing | `/code-review` or `/ponytail-review` |
+| **debugger** | Diagnoses without fixing | `/diagnosing-bugs` (6-phase loop) |
 | **maintainer** | Cleans house | `/maintain`, `stack-discovery`, `domain-modeling` |
 
 ---
@@ -221,7 +226,7 @@ Firstmate realizes these are 3 parallel tasks, spawns tmux tabs for each, create
 
 ### No-Mistakes Pipeline
 
-When the agent says it's done, don't review the diff. Send it through the **[No-Mistakes](https://github.com/kunchenguid/no-mistakes)** pipeline:
+When the agent says it's done, review evidence first. Send it through the **[No-Mistakes](https://github.com/kunchenguid/no-mistakes)** pipeline:
 
 ```
 Branch → Commit → Isolated Worktree → Intent Analysis → Rebase →
@@ -243,17 +248,19 @@ Two invocation modes:
 
 You must supply `--intent` - what you set out to accomplish, not a description of the diff.
 
-**Risk assessment**: For low-risk changes, the pipeline catches everything you would. Only spend review time on high-risk changes.
+**Risk assessment**: For low-risk changes, evidence and a targeted diff check are usually enough. Spend deeper review time on high-risk changes.
 
 ### Code Review Integration
 
-No-Mistakes' adversarial review step can run `/code-review` in a fresh context - three axes as parallel sub-agents:
+No-Mistakes' adversarial review step can run `/code-review` in fresh contexts. The supervisor may
+assign up to three flat, read-only review workers:
 
 - **Standards** - 12 Fowler code smells + repo's documented standards
 - **Spec** - Compare implementation against the originating spec/PRD
 - **Over-engineering** - What can be deleted or simplified
 
-Sub-agents are critical: the agent that wrote the code is the worst reviewer of its own work. Fresh contexts with no knowledge of the author catch what the author would miss.
+Workers cannot spawn workers. Fresh review context keeps implementation assumptions from masking
+specification, standards, simplicity, or evidence gaps.
 
 ---
 
@@ -303,15 +310,17 @@ It captures: user preferences (working style, tooling), project facts (build/tes
 
 Outputs a "safe-to-end" verdict and a RESUME POINTER - exactly which files a fresh session should load to continue.
 
-**Handoff** compacts the current session into a document for another agent:
+**Handoff** writes the supervisor-owned `.agent-handoff.md` ledger for a fresh session:
 
 ```
 /handoff
 ```
 
-Use when you're passing work between agents or clearing context for the next ticket.
+Use at the 100K soft threshold, when passing between harnesses, or before clearing context. The
+receiving supervisor verifies the ledger and deletes it after completion.
 
-**Strategic Compact** suggests manual context compaction at logical task boundaries instead of relying on arbitrary auto-compaction. Load it when a session is long, multi-phase, or approaching 75% context limits - it tells you *when* to suggest `/compact`, the user decides *if*.
+**Strategic Compact** prefers a fresh handoff at 100K and forbids starting new work at 160K.
+Compaction is the fallback when a fresh session is unavailable.
 
 ### Architecture Health
 
@@ -363,7 +372,7 @@ Here's what a real day looks like with the unified flow:
 
 5. **To-spec + to-tickets** - The dashboard is multi-session work. Compress the Lavish-augmented plan into a spec, then break into tracer-bullet tickets with dependency edges.
 
-6. **Firstmate launch** - Talk to one agent: "Implement ticket 1 (auth bug) and ticket 2 (dashboard data layer)." Firstmate spawns two tmux tabs, two Treehouse worktrees, two agents running in parallel.
+6. **Firstmate launch** - Talk to one agent: "Implement ticket 1 (auth bug) and ticket 2 (dashboard data layer)." With explicit approval for parallel implementation, Firstmate spawns two tmux tabs, two Treehouse worktrees, two agents running in parallel.
 
 7. **Implement with ponytail** - Each agent uses `/implement` with ponytail (lite): TDD at seams, minimal dependencies, no speculative abstractions. Typechecking runs continuously. Tests run per-file, then full suite at the end.
 

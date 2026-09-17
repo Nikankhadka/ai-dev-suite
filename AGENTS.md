@@ -17,10 +17,10 @@ Start with [docs/unified-flow.md](docs/unified-flow.md) for the full suite, and
 
 ## Key Files
 
-- `opencode.jsonc` - OpenCode configuration (instructions, permissions, MCP). Skills are NOT listed here; `scripts/link-skills.sh` symlinks them into `~/.claude/skills` and `~/.agents/skills`, which opencode, Claude Code, and Codex all read globally
-- `instructions/AGENTS.md` - Global instructions, symlinked into Claude Code and Codex by `setup.sh` and loaded by opencode via the `instructions` key in `opencode.jsonc`. Harness-specific commands must never be referenced here
+- `opencode.jsonc` - OpenCode configuration (instructions, permissions, MCP). Skills are NOT listed here; `scripts/link-skills.sh` symlinks them into `~/.claude/skills` and `~/.agents/skills`, which OpenCode, Claude Code, Codex, and Pi read globally
+- `instructions/AGENTS.md` - Global instructions, symlinked into Claude Code, Codex, and Pi by `setup.sh` and loaded by OpenCode via the `instructions` key in `opencode.jsonc`. Harness-specific commands must never be referenced here
 - `agent/*.md` - Agent persona definitions (global for opencode, `~/.config/opencode/agent/`)
-- `command/*.md` - Slash command definitions (global for opencode, `~/.config/opencode/command/`, OpenCode only)
+- `command/*.md` - Slash command definitions (global for OpenCode and linked as Pi prompt templates)
 - `vendor/mattpocock-skills/` - Submodule: Matt Pocock engineering skills
 - `vendor/lavish-axi/` - Submodule: Lavish visual planning (skill + CLI)
 - `vendor/no-mistakes/` - Submodule: No-Mistakes validation pipeline (skill + CLI)

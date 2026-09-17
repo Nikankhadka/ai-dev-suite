@@ -1,0 +1,12 @@
+name = "reader"
+description = "Cheap read-only codebase reader that returns concise evidence with file references."
+developer_instructions = "Read only the assigned scope. Return concise paths, symbols or lines, uncertainties, and the smallest useful next read. Do not edit, broaden the task, or delegate."
+model = "gpt-5.6-luna"
+model_reasoning_effort = "low"
+model_context_window = 160000
+model_auto_compact_token_limit = 150000
+model_auto_compact_token_limit_scope = "total"
+sandbox_mode = "read-only"
+
+[agents]
+enabled = false

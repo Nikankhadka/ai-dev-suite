@@ -3,7 +3,7 @@
 
   // Skills are NOT registered here: scripts/link-skills.sh symlinks them into
   // ~/.claude/skills and ~/.agents/skills, and opencode reads both globally in
-  // every project, so all three harnesses (opencode, Claude Code, Codex) see
+  // every project, while Pi reads ~/.agents/skills, so all four harnesses see
   // the same set. Deliberately absent from that set:
   //   - taste-skill and hallmark: skills/frontend-design/SKILL.md loads them by
   //     file path on demand, so registering them buys nothing.
@@ -14,6 +14,11 @@
   // Same shared instruction file as Claude Code and Codex, in every project.
   // The ~/ prefix resolves against $HOME regardless of the opened project.
   "instructions": ["~/.config/opencode/instructions/AGENTS.md"],
+
+  "model": "opencode-go/deepseek-v4.1-flash",
+  "small_model": "opencode/muse-spark-1.3-contributor-free",
+  "default_agent": "supervisor",
+  "subagent_depth": 1,
 
   "mcp": {
     "github": {

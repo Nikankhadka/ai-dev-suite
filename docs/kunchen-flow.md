@@ -101,7 +101,7 @@ Lavish uses the project's design system so artifacts look consistent with the ac
 
 ## 5. Validation with No-Mistakes
 
-When the agent says it's done, don't review the diff manually. Send it through the **[No-Mistakes](https://github.com/kunchenguid/no-mistakes)** pipeline:
+When the agent says it's done, review evidence first. Send it through the **[No-Mistakes](https://github.com/kunchenguid/no-mistakes)** pipeline:
 
 ```
 Branch → Commit → Isolated Worktree → Intent Analysis → Rebase →
@@ -119,7 +119,7 @@ Key features:
 
 **Trigger with:** `git push no-mistakes` or the `/no-mistakes` skill.
 
-**Risk assessment:** For low-risk changes, the pipeline catches everything you would. Only spend review time on high-risk changes.
+**Risk assessment:** For low-risk changes, evidence and a targeted diff check are usually enough. Spend deeper review time on high-risk changes.
 
 ---
 
