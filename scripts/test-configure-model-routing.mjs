@@ -34,7 +34,7 @@ assert.equal(claude.theme, "dark");
 assert.equal(claude.model, "claude-opus-5");
 assert.equal(claude.effortLevel, "high");
 assert.equal(claude.env.KEEP_ME, "yes");
-assert.equal(claude.env.CLAUDE_CODE_CONTEXT_WINDOW, "160000");
+assert.equal(claude.env.CLAUDE_CODE_MAX_CONTEXT_TOKENS, "160000");
 assert.equal(claude.env.CLAUDE_CODE_AUTO_COMPACT_WINDOW, "160000");
 
 const codex = fs.readFileSync(path.join(home, ".codex", "config.toml"), "utf8");

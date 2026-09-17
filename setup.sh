@@ -67,6 +67,15 @@ link_suite_file "$INSTRUCTIONS" "$HOME/.claude/CLAUDE.md"
 link_suite_file "$INSTRUCTIONS" "$HOME/.codex/AGENTS.md"
 link_suite_file "$INSTRUCTIONS" "$HOME/.agents/CLAUDE.md"
 
+# Clear dangling symlinks left over from the pre-.opencode layout so mkdir -p
+# below can recreate these paths as real directories.
+for stale in "$HOME/.claude/agents" "$HOME/.codex/agents"; do
+  if [ -L "$stale" ] && [ ! -e "$stale" ]; then
+    rm -f "$stale"
+    echo "-> Removed dead symlink $stale"
+  fi
+done
+
 for role in reader implementer; do
   link_suite_file "$OPENDIR/claude/agents/$role.md" "$HOME/.claude/agents/$role.md"
 done

@@ -60,7 +60,7 @@ function updateClaudeSettings() {
     ...(settings.env && typeof settings.env === "object" && !Array.isArray(settings.env)
       ? settings.env
       : {}),
-    CLAUDE_CODE_CONTEXT_WINDOW: "160000",
+    CLAUDE_CODE_MAX_CONTEXT_TOKENS: "160000",
     CLAUDE_CODE_AUTO_COMPACT_WINDOW: "160000",
   };
 
