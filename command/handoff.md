@@ -1,6 +1,6 @@
 ---
 description: Write a supervisor-owned .agent-handoff.md for another agent to continue
-agent: builder
+agent: supervisor
 ---
 
 Write or refresh `.agent-handoff.md` in the current repo only when another agent or fresh session must continue this exact task.

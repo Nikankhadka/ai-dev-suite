@@ -13,7 +13,7 @@
     "wayfinder":            { "file": "command/wayfinder.md",           "upstream": "vendor/mattpocock-skills/skills/engineering/wayfinder/SKILL.md",            "agent": "planner" },
     "grill-me":             { "file": "command/grill-me.md",            "upstream": "vendor/mattpocock-skills/skills/productivity/grill-me/SKILL.md",            "agent": "planner" },
     "grill-with-docs":      { "file": "command/grill-with-docs.md",     "upstream": "vendor/mattpocock-skills/skills/engineering/grill-with-docs/SKILL.md",      "agent": "planner" },
-    "handoff":              { "file": "command/handoff.md",             "upstream": "vendor/mattpocock-skills/skills/productivity/handoff/SKILL.md",             "agent": "builder" },
+    "handoff":              { "file": "command/handoff.md",             "upstream": "vendor/mattpocock-skills/skills/productivity/handoff/SKILL.md",             "agent": "supervisor" },
     "prototype":            { "file": "command/prototype.md",           "upstream": "vendor/mattpocock-skills/skills/engineering/prototype/SKILL.md",            "agent": "builder" },
     "ask-matt":             { "file": "command/ask-matt.md",            "upstream": "vendor/mattpocock-skills/skills/engineering/ask-matt/SKILL.md",             "agent": "planner" },
     "improve-codebase-architecture": {
