@@ -53,6 +53,14 @@ Before reaching for a CLI, know what the harness already gives you.
   `debugger` diagnoses; `maintainer` cleans. Routing a command at a persona gives that phase a
   clean context.
 
+**Pi**
+
+- Pi loads the same global `AGENTS.md`, skills, and command prompt templates as the other harnesses.
+- The default session is the Sol supervisor. Start bounded reader and implementer sessions with the
+  native model, thinking, and tool flags documented in `supervised-model-routing.md`.
+- Pi does not gain a hidden subagent control plane from this suite. Separate role sessions exchange
+  verified state through the supervisor-owned `.agent-handoff.md` when continuity is necessary.
+
 Layer 0 covers more than people expect. Reach past it only when you need durability across
 sessions (`gnhf`), a real gate (`no-mistakes`), or true filesystem isolation (`treehouse`).
 

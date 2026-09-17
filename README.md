@@ -56,22 +56,24 @@ curl -fsSL https://raw.githubusercontent.com/Nikankhadka/ai-dev-suite/main/setup
 
 This clones to `~/.config/opencode`, initializes the submodules, links shared skills and global
 instructions, merges native model defaults without replacing unrelated settings, and installs
-suite-owned Claude and Codex role definitions. Changed user settings receive timestamped backups.
+suite-owned Claude, Codex, and Pi integration. Changed user settings receive timestamped backups.
 
 ## Supported Agents
 
-Skills are symlinked into `~/.claude/skills` and `~/.agents/skills`, which all three harnesses read
-globally - one source of truth, synced across every project. Slash commands remain OpenCode-only.
-OpenCode personas live in this repo, while setup installs native Claude and Codex role definitions.
+Skills are symlinked into `~/.claude/skills` and `~/.agents/skills`, which all four harnesses read
+globally - one source of truth, synced across every project. Pi receives the OpenCode commands as
+prompt templates. OpenCode personas live in this repo, while setup
+installs native Claude and Codex roles plus Pi model, context, instruction, and prompt settings.
 
 | Harness | Skills | Commands | Agents |
 |---------|--------|----------|--------|
 | **OpenCode** | `~/.claude/skills` + `~/.agents/skills` symlinks | `~/.config/opencode/command/` | `~/.config/opencode/agent/` |
 | **Claude Code** | `~/.claude/skills/` | not provided | `~/.claude/agents/` |
 | **Codex** | `~/.agents/skills/` | not provided | `~/.codex/agents/` plus named profiles |
+| **Pi** | `~/.agents/skills/` + `~/.claude/skills/` | `~/.pi/agent/prompts/` | shared global policy plus native CLI role flags |
 | **Cursor / Windsurf** | markdown docs in `vendor/` | not provided | not provided |
 
-## Commands (OpenCode)
+## Commands (OpenCode and Pi prompt templates)
 
 | Command | Description |
 |---------|------------|
@@ -140,7 +142,7 @@ templates/                    # File templates (project memory)
 agent/                        # OpenCode global agent definitions
 command/                      # OpenCode global slash commands
 .opencode/                    # Project-scoped opencode state (plans)
-scripts/link-skills.sh        # Symlink skills for Claude Code, OpenCode, and Codex
+scripts/link-skills.sh        # Symlink skills for Claude Code, OpenCode, Codex, and Pi
 scripts/patch-skills.sh       # Apply agent-agnostic modifications
 scripts/sync-upstream.sh      # Guided update when vendored skills change
 setup.sh                      # One-line installer

@@ -3,7 +3,7 @@
 
   // Skills are NOT registered here: scripts/link-skills.sh symlinks them into
   // ~/.claude/skills and ~/.agents/skills, and opencode reads both globally in
-  // every project, so all three harnesses (opencode, Claude Code, Codex) see
+  // every project, while Pi reads ~/.agents/skills, so all four harnesses see
   // the same set. Deliberately absent from that set:
   //   - taste-skill and hallmark: skills/frontend-design/SKILL.md loads them by
   //     file path on demand, so registering them buys nothing.

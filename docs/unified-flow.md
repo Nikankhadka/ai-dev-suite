@@ -38,7 +38,7 @@ Voice is 3x faster than typing. Use **[OpenSuperWhisper](https://github.com/supe
 
 Two tiers, progressively disclosed:
 
-**Global Memory** - one file, `instructions/AGENTS.md` in this repo, symlinked to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, and `~/.agents/CLAUDE.md` by `setup.sh`. Loaded into every session across all projects and harnesses. Keep it minimal: personal preferences, coding principles, gotchas. Never let it bloat, and never reference a harness-specific command in it - it is read by harnesses that do not have those commands.
+**Global Memory** - one file, `instructions/AGENTS.md` in this repo, symlinked to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.agents/CLAUDE.md`, and `~/.pi/agent/AGENTS.md` by `setup.sh`. Loaded into every session across all projects and harnesses. Keep it minimal: personal preferences, coding principles, gotchas. Never let it bloat, and never reference a harness-specific command in it - it is read by harnesses that do not have those commands.
 
 **Project Memory** (`AGENTS.md` / `CLAUDE.md` per project) - Built incrementally:
 - Project context and repo layout
@@ -70,10 +70,10 @@ curl -fsSL https://raw.githubusercontent.com/Nikankhadka/ai-dev-suite/main/setup
 ```
 
 That clones to `~/.config/opencode`, initializes every vendored submodule, links the shared skills
-and instructions, merges native model defaults, and installs bounded Claude and Codex roles.
+and instructions, merges native model defaults, and installs bounded Claude, Codex, and Pi routing.
 Settings merges preserve unrelated keys and create timestamped backups when values change.
 
-Slash commands are OpenCode-only and live in `~/.config/opencode/command/`. Skills work on every harness.
+Slash commands live in OpenCode and are linked into Pi as prompt templates. Skills work on every harness.
 
 To install an upstream skill set on its own, without this suite, use the Vercel skills CLI, for example `npx skills@latest add mattpocock/skills`.
 

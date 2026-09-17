@@ -38,33 +38,82 @@ function writeChanged(file, before, after) {
   return true;
 }
 
-function updateClaudeSettings() {
-  const file = path.join(home, ".claude", "settings.json");
+function readJsonObject(file) {
   const before = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
-  let settings = {};
+  let value = {};
   if (before.trim()) {
     try {
-      settings = JSON.parse(before);
+      value = JSON.parse(before);
     } catch (error) {
       throw new Error(`Cannot update invalid JSON in ${file}: ${error.message}`);
     }
   }
-  if (!settings || Array.isArray(settings) || typeof settings !== "object") {
+  if (!value || Array.isArray(value) || typeof value !== "object") {
     throw new Error(`Expected a JSON object in ${file}`);
   }
+  return { before, value };
+}
+
+function objectOrEmpty(value) {
+  return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+}
+
+function updateClaudeSettings() {
+  const file = path.join(home, ".claude", "settings.json");
+  const { before, value: settings } = readJsonObject(file);
 
   settings.model = "claude-opus-5";
   settings.effortLevel = "high";
   settings.autoCompactEnabled = true;
   settings.env = {
-    ...(settings.env && typeof settings.env === "object" && !Array.isArray(settings.env)
-      ? settings.env
-      : {}),
+    ...objectOrEmpty(settings.env),
     CLAUDE_CODE_MAX_CONTEXT_TOKENS: "160000",
     CLAUDE_CODE_AUTO_COMPACT_WINDOW: "160000",
   };
 
   writeChanged(file, before, `${JSON.stringify(settings, null, 2)}\n`);
+}
+
+function updatePiSettings() {
+  const file = path.join(home, ".pi", "agent", "settings.json");
+  const { before, value: settings } = readJsonObject(file);
+  const existingSkills = Array.isArray(settings.skills) ? settings.skills : [];
+
+  settings.defaultProvider = "openai-codex";
+  settings.defaultModel = "gpt-5.6-sol";
+  settings.defaultThinkingLevel = "high";
+  settings.modelThinkingLevels = {
+    ...objectOrEmpty(settings.modelThinkingLevels),
+    "openai-codex/gpt-5.6-sol": "high",
+    "openai-codex/gpt-5.6-luna": "low",
+    "openai-codex/gpt-5.6-terra": "xhigh",
+  };
+  settings.compaction = {
+    ...objectOrEmpty(settings.compaction),
+    enabled: true,
+  };
+  settings.skills = [...new Set([...existingSkills, "~/.agents/skills", "~/.claude/skills"])];
+  settings.enableSkillCommands = true;
+
+  writeChanged(file, before, `${JSON.stringify(settings, null, 2)}\n`);
+}
+
+function updatePiModels() {
+  const file = path.join(home, ".pi", "agent", "models.json");
+  const { before, value: models } = readJsonObject(file);
+  const providers = objectOrEmpty(models.providers);
+  const codex = objectOrEmpty(providers["openai-codex"]);
+  const overrides = objectOrEmpty(codex.modelOverrides);
+
+  for (const model of ["gpt-5.6-sol", "gpt-5.6-luna", "gpt-5.6-terra"]) {
+    const existing = objectOrEmpty(overrides[model]);
+    overrides[model] = { ...existing, contextWindow: 160000 };
+  }
+  codex.modelOverrides = overrides;
+  providers["openai-codex"] = codex;
+  models.providers = providers;
+
+  writeChanged(file, before, `${JSON.stringify(models, null, 2)}\n`);
 }
 
 function tomlValue(value) {
@@ -148,6 +197,8 @@ function updateCodexConfig() {
 try {
   updateClaudeSettings();
   updateCodexConfig();
+  updatePiSettings();
+  updatePiModels();
 } catch (error) {
   process.stderr.write(`${error.message}\n`);
   process.exitCode = 1;

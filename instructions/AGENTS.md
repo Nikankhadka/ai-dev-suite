@@ -1,6 +1,6 @@
 # Global Agent Instructions
 
-These rules apply to every agent session across all harnesses (Claude Code, OpenCode, Codex CLI).
+These rules apply to every agent session across all harnesses (Claude Code, OpenCode, Codex CLI, Pi).
 
 - Never use the em dash (U+2014). Use plain dash "-" instead
 - When writing commit messages, NEVER auto-add your agent name as co-author
@@ -18,19 +18,20 @@ These rules apply to every agent session across all harnesses (Claude Code, Open
 
 # Default Supervised Development
 
-Use this as the default development workflow for all coding agents, without creating a separate workflow skill. One supervisor owns planning, delegation, review, and acceptance. Workers are flat and bounded: readers and reviewers are read-only; implementers get one clearly scoped slice; no worker may spawn another worker unless the user explicitly approves it. Run at most three parallel read-only or review workers. Implementation is sequential unless the user explicitly approves parallel builds.
+This is the default coding workflow, not a separate skill. One supervisor owns planning, delegation, review, and acceptance. Workers are flat and bounded: readers and reviewers are read-only; implementers get one scoped slice; no worker may spawn another worker unless the user explicitly approves it. Run at most three parallel read-only or review workers. Implementation is sequential unless the user explicitly approves parallel builds.
 
 Before implementation, restate the requested outcome, define a proportional Definition of Done, and write the verification plan. Include the standard path and important edge cases before coding. Compare two approaches only when the work is substantial, ambiguous, risky, architectural, or spans multiple files; otherwise choose the simplest correct path. Ponytail still applies: the reliability gate informs the work, but never justifies extra architecture, unrequested dependencies, or speculative scaffolding.
 
-When planning starts and the user has not named a flow, ask once for the preferred flow: Codex native, Claude native, OpenCode native, Opus-led Codex workers, Sol-led OpenCode workers, or custom. If the user already chose a flow, continue without re-asking.
+When planning starts and the user has not named a flow, ask once for the preferred flow: Codex native, Claude native, OpenCode native, Pi native, Opus-led Codex workers, Sol-led OpenCode workers, or custom. If the user already chose a flow, continue without re-asking.
 
 | Harness | Supervisor | Reader | Implementer |
 |---|---|---|---|
 | Codex | Sol, high | Luna, low | Terra, xhigh |
 | Claude | Opus, high | Haiku, low | Sonnet, xhigh |
 | OpenCode | DeepSeek V4.1 Flash | Muse Spark 1.3 free | DeepSeek V4.1 Flash |
+| Pi | Sol, high | Luna, low | Terra, xhigh |
 
-Review independently against the original specification, project standards, simplicity, and evidence. Verify with the project-aware local, development, or staging checks that are authorized and available. Reread the original request before declaring completion, and reject omissions, scope creep, skipped tests, or unsupported claims. Include a compact per-task summary of workers, models, token/context usage, retries, and verification results whenever the harness exposes that data.
+Review independently against the original specification, project standards, simplicity, and evidence. Verify with authorized project-aware local, development, or staging checks. Reread the original request before declaring completion, and reject omissions, scope creep, skipped tests, or unsupported claims. Include a compact per-task summary of workers, models, token/context usage, retries, and verification results whenever the harness exposes that data.
 
 Use a fresh handoff around 100K context. Do not intentionally start new work beyond 160K; hand off first. Use a supervisor-owned `.agent-handoff.md` only when continuity is needed, exclude it locally, and delete it after completion.
 

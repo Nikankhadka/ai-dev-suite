@@ -38,7 +38,7 @@ echo "-> Patching skills for agent-agnostic compatibility..."
 bash "$OPENDIR/scripts/patch-skills.sh"
 
 # 5. Link skills for all agents
-echo "-> Linking skills for Claude Code, OpenCode, Codex..."
+echo "-> Linking skills for Claude Code, OpenCode, Codex, and Pi..."
 bash "$OPENDIR/scripts/link-skills.sh"
 
 # 6. Merge native model defaults without replacing unrelated settings
@@ -66,13 +66,28 @@ link_suite_file() {
 link_suite_file "$INSTRUCTIONS" "$HOME/.claude/CLAUDE.md"
 link_suite_file "$INSTRUCTIONS" "$HOME/.codex/AGENTS.md"
 link_suite_file "$INSTRUCTIONS" "$HOME/.agents/CLAUDE.md"
+link_suite_file "$INSTRUCTIONS" "$HOME/.pi/agent/AGENTS.md"
 
 # Clear dangling symlinks left over from the pre-.opencode layout so mkdir -p
 # below can recreate these paths as real directories.
-for stale in "$HOME/.claude/agents" "$HOME/.codex/agents"; do
+for stale in "$HOME/.claude/agents" "$HOME/.codex/agents" "$HOME/.pi/agent/prompts"; do
   if [ -L "$stale" ] && [ ! -e "$stale" ]; then
     rm -f "$stale"
     echo "-> Removed dead symlink $stale"
+  fi
+done
+
+for command in "$OPENDIR"/command/*.md; do
+  link_suite_file "$command" "$HOME/.pi/agent/prompts/$(basename "$command")"
+done
+
+for prompt in "$HOME"/.pi/agent/prompts/*.md; do
+  if [ -L "$prompt" ]; then
+    target="$(readlink "$prompt")"
+    if [[ "$target" == "$OPENDIR/command/"* ]] && [ ! -e "$prompt" ]; then
+      rm -f "$prompt"
+      echo "-> Removed stale Pi prompt $prompt"
+    fi
   fi
 done
 
@@ -100,17 +115,18 @@ done
 echo ""
 echo "=== Installation Complete ==="
 echo "Skills:          $OPENDIR/skills, $OPENDIR/vendor/*/skills (symlinked into"
-echo "                 ~/.claude/skills and ~/.agents/skills - read by opencode, Claude Code, Codex)"
+echo "                 ~/.claude/skills and ~/.agents/skills - read by OpenCode, Claude, Codex, Pi)"
 echo "OpenCode config: $OPENDIR/opencode.jsonc (agents: $OPENDIR/agent, commands: $OPENDIR/command)"
 echo "Claude agents:   $HOME/.claude/agents/{reader,implementer}.md"
 echo "Codex profiles:  $HOME/.codex/{supervisor,reader,implementer}.config.toml"
 echo "Codex agents:    $HOME/.codex/agents/{supervisor,reader,implementer}.toml"
-echo "Instructions:    $INSTRUCTIONS (linked into Claude Code, Codex, and opencode)"
+echo "Pi config:       $HOME/.pi/agent/{settings,models}.json (commands linked as prompts)"
+echo "Instructions:    $INSTRUCTIONS (linked into Claude Code, Codex, Pi, and opencode)"
 if [ -d "$BACKUPS" ]; then
   echo "Backups:         $BACKUPS"
 fi
 echo ""
-echo "Commands are OpenCode-only ($OPENDIR/.opencode/command). Skills work everywhere."
+echo "Commands are native in OpenCode and linked as Pi prompt templates. Skills work everywhere."
 echo ""
 echo "  Plan:      /grill-me  /grill-with-docs  /to-spec  /to-tickets  /wayfinder"
 echo "             /design    /lavish           /ask-matt"
@@ -133,3 +149,4 @@ echo "  npx skills add kunchenguid/axi       # AXI design principles"
 echo "  npm install -g gnhf                  # gnhf autonomous runner"
 echo "  curl -fsSL https://raw.githubusercontent.com/kunchenguid/treehouse/main/docs/install.sh | sh"
 echo "  curl -fsSL https://raw.githubusercontent.com/kunchenguid/no-mistakes/main/docs/install.sh | sh"
+echo "  npm install -g @earendil-works/pi-coding-agent # Pi harness, if not already installed"

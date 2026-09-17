@@ -13,8 +13,8 @@ why the supervised flow replaced the prior single-context pipeline.
 
 | Layer | Count | Scope | Always in context |
 |---|---|---|---|
-| Skills (symlinked to `~/.claude/skills` and `~/.agents/skills`) | 40 | all three harnesses | descriptions only, ~10.5K chars, ~2.6K tokens |
-| Commands (`command/`) | 33 | **OpenCode only** | yes, ~1K tokens |
+| Skills (symlinked to `~/.claude/skills` and `~/.agents/skills`) | 40 | all four harnesses | descriptions only, ~10.5K chars, ~2.6K tokens |
+| Commands (`command/`) | 33 | OpenCode plus Pi prompt templates | yes, ~1K tokens |
 | Agents (`agent/`) | 5 | OpenCode only | on dispatch |
 | Vendored submodules | 10 | - | - |
 | Workflow docs (`docs/`) | 5 files, 12K words | - | - |
@@ -257,16 +257,16 @@ For the unattended version, that per-ticket block is exactly a `gnhf` worker pro
 `--stop-when "<the ticket's acceptance criterion>"` and `--worktree`. No new machinery is needed.
 `/ship` is now a thin OpenCode wrapper around this shared policy.
 
-**Cross-harness behavior.** `/ship` remains an OpenCode convenience command. Codex, Claude Code,
-and OpenCode receive the same default behavior from `instructions/AGENTS.md`, so no duplicate
-workflow skill is needed. Native model and agent configuration supplies the role routing.
+**Cross-harness behavior.** `/ship` is an OpenCode command and a Pi prompt template. Codex, Claude
+Code, OpenCode, and Pi receive the same default behavior from `instructions/AGENTS.md`, so no
+duplicate workflow skill is needed. Native model and agent configuration supplies role routing.
 
 ---
 
 ## 7. Recommendations, ranked
 
 1. **Delete the command layer, keep 4.** 29 of 33 are skill wrappers, and skills are invocable by
-   name on all three harnesses without them. Keep `ship`, `maintain`, `memory`, `design`, the four
+   name on all four harnesses without them. Keep `ship`, `maintain`, `memory`, `design`, the four
    with no skill behind them. If agent routing is needed, put the persona hint in the skill body,
    not a parallel file tree. This removes 29 files, ~1K tokens of permanent OpenCode context, and
    the entire reason `sync-upstream.sh` exists.
