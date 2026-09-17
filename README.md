@@ -140,10 +140,14 @@ instructions/AGENTS.md        # Shared global instructions, linked into every ha
 docs/                         # Workflow guides and documentation
 templates/                    # File templates (project memory)
 agent/                        # OpenCode global agent definitions
-command/                      # OpenCode global slash commands
+command/                      # OpenCode global slash commands, linked as Pi prompt templates
+claude/agents/                # Claude Code named agents (reader, implementer)
+codex/agents/                 # Codex named agents (supervisor, reader, implementer)
+codex/profiles/               # Codex CLI profiles (supervisor, reader, implementer)
 .opencode/                    # Project-scoped opencode state (plans)
 scripts/link-skills.sh        # Symlink skills for Claude Code, OpenCode, Codex, and Pi
 scripts/patch-skills.sh       # Apply agent-agnostic modifications
 scripts/sync-upstream.sh      # Guided update when vendored skills change
+scripts/configure-model-routing.mjs # Merge native model defaults, preserving unrelated settings
 setup.sh                      # One-line installer
 ```

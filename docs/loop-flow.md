@@ -500,6 +500,7 @@ The default role, model, context, and handoff policy is documented in
 ## Related docs
 
 - [unified-flow.md](unified-flow.md) - the full suite, tool by tool
+- [supervised-model-routing.md](supervised-model-routing.md) - default roles, model presets, context, and handoffs
 - [combined-workflow.md](combined-workflow.md) - the earlier merged Matt Pocock and Kunchen guide
 - [matt-flow.md](matt-flow.md) - the Matt Pocock engineering skills on their own
 - [kunchen-flow.md](kunchen-flow.md) - the Kunchen infrastructure on its own

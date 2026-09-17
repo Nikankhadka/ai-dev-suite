@@ -226,7 +226,7 @@ Firstmate realizes these are 3 parallel tasks, spawns tmux tabs for each, create
 
 ### No-Mistakes Pipeline
 
-When the agent says it's done, don't review the diff. Send it through the **[No-Mistakes](https://github.com/kunchenguid/no-mistakes)** pipeline:
+When the agent says it's done, review evidence first. Send it through the **[No-Mistakes](https://github.com/kunchenguid/no-mistakes)** pipeline:
 
 ```
 Branch → Commit → Isolated Worktree → Intent Analysis → Rebase →
@@ -248,7 +248,7 @@ Two invocation modes:
 
 You must supply `--intent` - what you set out to accomplish, not a description of the diff.
 
-**Risk assessment**: For low-risk changes, the pipeline catches everything you would. Only spend review time on high-risk changes.
+**Risk assessment**: For low-risk changes, evidence and a targeted diff check are usually enough. Spend deeper review time on high-risk changes.
 
 ### Code Review Integration
 
@@ -372,7 +372,7 @@ Here's what a real day looks like with the unified flow:
 
 5. **To-spec + to-tickets** - The dashboard is multi-session work. Compress the Lavish-augmented plan into a spec, then break into tracer-bullet tickets with dependency edges.
 
-6. **Firstmate launch** - Talk to one agent: "Implement ticket 1 (auth bug) and ticket 2 (dashboard data layer)." Firstmate spawns two tmux tabs, two Treehouse worktrees, two agents running in parallel.
+6. **Firstmate launch** - Talk to one agent: "Implement ticket 1 (auth bug) and ticket 2 (dashboard data layer)." With explicit approval for parallel implementation, Firstmate spawns two tmux tabs, two Treehouse worktrees, two agents running in parallel.
 
 7. **Implement with ponytail** - Each agent uses `/implement` with ponytail (lite): TDD at seams, minimal dependencies, no speculative abstractions. Typechecking runs continuously. Tests run per-file, then full suite at the end.
 

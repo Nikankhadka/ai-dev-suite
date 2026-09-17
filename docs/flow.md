@@ -300,5 +300,6 @@ duplicate, or an upstream skill for work that is not done here.
 
 - [unified-flow.md](unified-flow.md) - the full suite, tool by tool
 - [loop-flow.md](loop-flow.md) - loop engineering and multi-agent work
+- [supervised-model-routing.md](supervised-model-routing.md) - the implemented target's operational guidance
 - [matt-flow.md](matt-flow.md), [kunchen-flow.md](kunchen-flow.md),
   [combined-workflow.md](combined-workflow.md) - the per-upstream guides this analysis covers
