@@ -29,10 +29,12 @@ writing-great-skills, scaffold-exercises, migrate-to-shoehorn.
 - **firstmate** - Agent distro for crew orchestration (talk to one, ship with many)
 
 **Agents** (defined for OpenCode):
-- `builder` - Implements code with TDD + code review
-- `planner` - Designs features with grilling + specs
-- `reviewer` - Reviews code on three axes (standards + spec + over-engineering)
-- `debugger` - Diagnoses bugs with a 6-phase loop
+- `supervisor` - Plans, delegates, reviews evidence, and accepts work
+- `reader` / `fallback-reader` - Bounded read-only discovery on low-cost models
+- `builder` - Implements one bounded slice with TDD and evidence
+- `planner` - Read-only requirements and test planning
+- `reviewer` - Read-only review of one assigned axis
+- `debugger` - Diagnoses bugs without implementing fixes
 - `maintainer` - Removes dead code, consolidates duplicates, refreshes docs and memory
 
 ## Documentation
@@ -41,6 +43,7 @@ writing-great-skills, scaffold-exercises, migrate-to-shoehorn.
 |-----|----------------|
 | [docs/unified-flow.md](docs/unified-flow.md) | The full suite, tool by tool. Start here. |
 | [docs/loop-flow.md](docs/loop-flow.md) | Loop engineering and multi-agent work: gates, autonomous runs, parallel crews, failure recovery |
+| [docs/supervised-model-routing.md](docs/supervised-model-routing.md) | Default model presets, bounded roles, context limits, handoffs, and usage accounting |
 | [docs/combined-workflow.md](docs/combined-workflow.md) | Earlier merged Matt Pocock + Kunchen guide |
 | [docs/matt-flow.md](docs/matt-flow.md) | Matt Pocock engineering skills on their own |
 | [docs/kunchen-flow.md](docs/kunchen-flow.md) | Kunchen infrastructure on its own |
@@ -51,21 +54,21 @@ writing-great-skills, scaffold-exercises, migrate-to-shoehorn.
 curl -fsSL https://raw.githubusercontent.com/Nikankhadka/ai-dev-suite/main/setup.sh | bash
 ```
 
-This clones to `~/.config/opencode`, initializes the submodules, symlinks skills into
-`~/.claude/skills` and `~/.agents/skills`, and links `instructions/AGENTS.md` as the shared global
-instruction file for opencode, Claude Code, and Codex.
+This clones to `~/.config/opencode`, initializes the submodules, links shared skills and global
+instructions, merges native model defaults without replacing unrelated settings, and installs
+suite-owned Claude and Codex role definitions. Changed user settings receive timestamped backups.
 
 ## Supported Agents
 
 Skills are symlinked into `~/.claude/skills` and `~/.agents/skills`, which all three harnesses read
-globally - one source of truth, synced across every project. Slash commands and subagents are
-OpenCode-only and live in the global `~/.config/opencode/` dirs.
+globally - one source of truth, synced across every project. Slash commands remain OpenCode-only.
+OpenCode personas live in this repo, while setup installs native Claude and Codex role definitions.
 
 | Harness | Skills | Commands | Agents |
 |---------|--------|----------|--------|
 | **OpenCode** | `~/.claude/skills` + `~/.agents/skills` symlinks | `~/.config/opencode/command/` | `~/.config/opencode/agent/` |
-| **Claude Code** | `~/.claude/skills/` | not provided | not provided |
-| **Codex** | `~/.agents/skills/` | not provided | not provided |
+| **Claude Code** | `~/.claude/skills/` | not provided | `~/.claude/agents/` |
+| **Codex** | `~/.agents/skills/` | not provided | `~/.codex/agents/` plus named profiles |
 | **Cursor / Windsurf** | markdown docs in `vendor/` | not provided | not provided |
 
 ## Commands (OpenCode)
@@ -81,7 +84,7 @@ OpenCode-only and live in the global `~/.config/opencode/` dirs.
 | `/prototype` | Throwaway prototype for design questions |
 | `/tdd` | Test-driven development loop |
 | `/implement` | Implement from spec/tickets |
-| `/ship` | Full gated pipeline for one requirement (G0 to G6) |
+| `/ship` | Thin entrypoint to the global supervised workflow |
 | `/code-review` | Three-axis code review |
 | `/ponytail` | Switch lazy-dev intensity (lite, full, ultra, off) |
 | `/ponytail-review` / `/ponytail-audit` | Over-engineering review of a diff, or of the whole repo |
@@ -94,7 +97,7 @@ OpenCode-only and live in the global `~/.config/opencode/` dirs.
 | `/maintain` | Dead code, duplicates, docs and memory refresh |
 | `/memory` | Maintain `.agents/memory.md` |
 | `/stow` | Sweep the session for durable knowledge before a reset |
-| `/handoff` | Compact a session for another agent to continue |
+| `/handoff` | Write the supervisor-owned `.agent-handoff.md` ledger |
 | `/improve-codebase-architecture` | Codebase health scan |
 | `/setup-matt-pocock-skills` | Configure issue tracker and labels |
 

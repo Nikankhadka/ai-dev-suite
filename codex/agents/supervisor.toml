@@ -1,0 +1,13 @@
+name = "supervisor"
+description = "Senior supervisor for planning, delegation, review, and acceptance. Does not implement."
+developer_instructions = "Follow the shared AGENTS.md supervised workflow. Restate requirements, define the Definition of Done and verification plan, delegate bounded work, and review evidence. Stay read-only and never ask workers to spawn workers."
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
+model_context_window = 160000
+model_auto_compact_token_limit = 150000
+model_auto_compact_token_limit_scope = "total"
+sandbox_mode = "read-only"
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3

@@ -6,13 +6,18 @@ set -euo pipefail
 
 OPENDIR="${AI_DEVSUITE_DIR:-$HOME/.config/opencode}"
 REPO_URL="${AI_DEVSUITE_REPO:-https://github.com/Nikankhadka/ai-dev-suite.git}"
+BACKUPS="$HOME/.ai-dev-suite-backups/$(date +%Y%m%d-%H%M%S)"
 
 echo "=== AI Dev Suite Installer ==="
 
 # 1. Clone or update repo
-if [ -d "$OPENDIR/.git" ]; then
-  echo "-> Updating existing repo at $OPENDIR..."
-  git -C "$OPENDIR" pull --recurse-submodules
+if git -C "$OPENDIR" rev-parse --git-dir >/dev/null 2>&1; then
+  if git -C "$OPENDIR" rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' >/dev/null 2>&1; then
+    echo "-> Updating existing repo at $OPENDIR..."
+    git -C "$OPENDIR" pull --recurse-submodules
+  else
+    echo "-> Existing repo has no upstream branch; using its current checkout."
+  fi
 else
   echo "-> Cloning ai-dev-suite to $OPENDIR..."
   git clone --recursive "$REPO_URL" "$OPENDIR"
@@ -36,41 +41,65 @@ bash "$OPENDIR/scripts/patch-skills.sh"
 echo "-> Linking skills for Claude Code, OpenCode, Codex..."
 bash "$OPENDIR/scripts/link-skills.sh"
 
-# 6. Link the shared instruction file into each harness
-echo "-> Linking global instructions..."
+# 6. Merge native model defaults without replacing unrelated settings
+echo "-> Configuring native model routing..."
+node "$OPENDIR/scripts/configure-model-routing.mjs" --home "$HOME" --backup-dir "$BACKUPS"
+
+# 7. Link shared instructions and suite-owned role definitions
+echo "-> Linking global instructions and role definitions..."
 INSTRUCTIONS="$OPENDIR/instructions/AGENTS.md"
-link_instructions() {
-  local dest="$1"
+link_suite_file() {
+  local source="$1"
+  local dest="$2"
   mkdir -p "$(dirname "$dest")"
   if [ -e "$dest" ] && [ ! -L "$dest" ]; then
-    mv "$dest" "$dest.bak"
-    echo "   backed up existing $dest -> $dest.bak"
+    local relative="${dest#"$HOME"/}"
+    local backup="$BACKUPS/$relative"
+    mkdir -p "$(dirname "$backup")"
+    cp -R "$dest" "$backup"
+    rm -rf "$dest"
+    echo "   backed up existing $dest -> $backup"
   fi
-  ln -sfn "$INSTRUCTIONS" "$dest"
-  echo "   $dest -> $INSTRUCTIONS"
+  ln -sfn "$source" "$dest"
+  echo "   $dest -> $source"
 }
-link_instructions "$HOME/.claude/CLAUDE.md"
-link_instructions "$HOME/.codex/AGENTS.md"
-link_instructions "$HOME/.agents/CLAUDE.md"
+link_suite_file "$INSTRUCTIONS" "$HOME/.claude/CLAUDE.md"
+link_suite_file "$INSTRUCTIONS" "$HOME/.codex/AGENTS.md"
+link_suite_file "$INSTRUCTIONS" "$HOME/.agents/CLAUDE.md"
 
-# 7. Remove links from the pre-.opencode layout
+for role in reader implementer; do
+  link_suite_file "$OPENDIR/claude/agents/$role.md" "$HOME/.claude/agents/$role.md"
+done
+
+for role in supervisor reader implementer; do
+  link_suite_file "$OPENDIR/codex/profiles/$role.config.toml" "$HOME/.codex/$role.config.toml"
+  link_suite_file "$OPENDIR/codex/agents/$role.toml" "$HOME/.codex/agents/$role.toml"
+done
+
+# 8. Remove links from the pre-.opencode layout
 # Commands and agents live in $OPENDIR/agent and $OPENDIR/command (global for
 # opencode). Older installs pointed ~/.claude and ~/.codex at directories that
 # no longer exist.
-for stale in "$HOME/.claude/commands" "$HOME/.claude/agents" "$HOME/.codex/agents" "$HOME/.codex/prompts"; do
+for stale in "$HOME/.claude/commands" "$HOME/.codex/prompts"; do
   if [ -L "$stale" ] && [ ! -e "$stale" ]; then
     rm -f "$stale"
     echo "-> Removed dead symlink $stale"
   fi
 done
 
-# 8. Verify
+# 9. Verify
 echo ""
 echo "=== Installation Complete ==="
 echo "Skills:          $OPENDIR/skills, $OPENDIR/vendor/*/skills (symlinked into"
 echo "                 ~/.claude/skills and ~/.agents/skills - read by opencode, Claude Code, Codex)"
 echo "OpenCode config: $OPENDIR/opencode.jsonc (agents: $OPENDIR/agent, commands: $OPENDIR/command)"
+echo "Claude agents:   $HOME/.claude/agents/{reader,implementer}.md"
+echo "Codex profiles:  $HOME/.codex/{supervisor,reader,implementer}.config.toml"
+echo "Codex agents:    $HOME/.codex/agents/{supervisor,reader,implementer}.toml"
 echo "Instructions:    $INSTRUCTIONS (linked into Claude Code, Codex, and opencode)"
+if [ -d "$BACKUPS" ]; then
+  echo "Backups:         $BACKUPS"
+fi
 echo ""
 echo "Commands are OpenCode-only ($OPENDIR/.opencode/command). Skills work everywhere."
 echo ""
@@ -85,6 +114,7 @@ echo ""
 echo "Workflow guides:"
 echo "  $OPENDIR/docs/unified-flow.md    # the full suite, tool by tool"
 echo "  $OPENDIR/docs/loop-flow.md       # loops and multi-agent work"
+echo "  $OPENDIR/docs/supervised-model-routing.md # model roles, context, handoffs, usage"
 echo ""
 echo "Keeping vendored skills current:"
 echo "  bash $OPENDIR/scripts/sync-upstream.sh --dry-run"

@@ -1,10 +1,11 @@
 # Flow: Suite Analysis and Target Architecture
 
-Written 2026-08-06. An audit of this suite's sprawl, a verdict on the two vendored
-ecosystems, and the target shape of the build loop.
+Written 2026-08-06 and updated 2026-09-17. Sections 1-5 preserve the audit of the prior state;
+section 6 records the implemented supervised target. Current operational guidance lives in
+[supervised-model-routing.md](supervised-model-routing.md).
 
-The other docs in `docs/` describe what the tools are and how to run them. This one describes
-what is wrong with the current arrangement and what to change.
+The other docs in `docs/` describe what the tools are and how to run them. This document explains
+why the supervised flow replaced the prior single-context pipeline.
 
 ---
 
@@ -128,7 +129,7 @@ stage.
 |---|---|---|
 | Where the human sits | Upstream, heavily. 20-question grilling before a line is written | Downstream and thin. "Engineering director", do not review diffs |
 | What prevents defects | Shared understanding, specs as contracts | Pipeline gates, adversarial agents, E2E evidence |
-| Context window | Explicit budget, clear between tickets, stay under 140K | Not a stated concern; parallelism sidesteps it |
+| Context window | 100K soft handoff, 160K stop before new work | Fresh bounded workers keep noisy reads out of the supervisor context |
 | Cost to adopt | Markdown. Zero runtime | Real software: daemons, TUIs, CLIs, tmux, CI integration |
 
 Matt assumes the expensive failure is building the wrong thing. Kunchen assumes it is your
@@ -222,7 +223,7 @@ rather than automatic.
 
 ---
 
-## 6. Target loop
+## 6. Implemented target loop
 
 ```
 [human, one window]  /grill-with-docs -> /to-spec -> /to-tickets
@@ -241,25 +242,24 @@ rather than automatic.
    /no-mistakes --intent "<spec problem statement>"  -> push, PR, CI
 ```
 
-Concrete edits to get there:
+The suite now implements this through the shared global policy:
 
-- **Stage 1 becomes a precondition, not a stage.** `/ship` reads `spec.md` and `tickets/` from disk.
-  If they are absent it stops and says to grill first. That removes the grilling ambiguity.
-- **Stages 2 through 4 move to `subtask: true`**, one subagent invocation per ticket. The five
-  personas in `agent/` are already `mode: subagent` and are already exactly these roles. The wiring
-  exists; `/ship` does not use it.
-- **The review stage must be a fresh subagent regardless.** The author is the worst reviewer of its
-  own work. Stage 3 currently reviews inside the window that wrote the code, defeating the point.
+- **Requirements, DoD, and tests precede implementation.** The supervisor scales the ceremony to
+  the task rather than requiring a stored spec for every trivial change.
+- **Implementation is one bounded sequential slice at a time.** Parallel builders require explicit
+  user approval.
+- **Review uses a fresh read-only worker or the supervisor.** The author does not accept its own
+  work.
 - **The loop condition is the ticket's acceptance criterion**, which `/to-tickets` already forces
   you to declare. That is the "red" that makes it a loop instead of an agent talking to itself.
 
 For the unattended version, that per-ticket block is exactly a `gnhf` worker prompt with
 `--stop-when "<the ticket's acceptance criterion>"` and `--worktree`. No new machinery is needed.
-`/ship` needs to stop hoarding one context window.
+`/ship` is now a thin OpenCode wrapper around this shared policy.
 
-**Harness gap.** `/ship` lives in `command/`, which is OpenCode only; `~/.claude/commands` is empty.
-The pipeline is absent from Claude Code, the harness with native worktrees, background subagents,
-and automatic context summarization. `/ship` should become a skill so all three harnesses get it.
+**Cross-harness behavior.** `/ship` remains an OpenCode convenience command. Codex, Claude Code,
+and OpenCode receive the same default behavior from `instructions/AGENTS.md`, so no duplicate
+workflow skill is needed. Native model and agent configuration supplies the role routing.
 
 ---
 
@@ -279,7 +279,8 @@ and automatic context summarization. `/ship` should become a skill so all three 
    axis) and `ponytail-audit` (repo scope, genuinely different). Drop `ponytail-review`.
 4. **Pick one save-state mechanism.** `.agents/memory.md` is referenced by two agent personas and a
    command; make it the single target. Repoint or drop `stow`.
-5. **Restructure `/ship` per section 6**, and promote it from command to skill.
+5. **Keep `/ship` thin.** The shared `AGENTS.md` policy is the cross-harness source of truth; the
+   OpenCode command only invokes it.
 6. **Delete the sync machinery once #1 lands.** ~19KB of scripts and ~19KB of JSON state have
    nothing left to check. Direct path: bump a submodule, run `link-skills.sh`, see what breaks.
 7. **Docs: 5 files to 1.** Keep `unified-flow.md` and this file. `combined-workflow.md`,

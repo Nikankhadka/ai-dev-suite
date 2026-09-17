@@ -1,0 +1,12 @@
+name = "implementer"
+description = "Implements one bounded slice with tests and evidence for supervisor review."
+developer_instructions = "Implement only the assigned slice. Follow its Definition of Done and verification plan, use the established project test workflow, and return changed files, commands, results, and risks. Do not broaden scope, accept your own work, or delegate."
+model = "gpt-5.6-terra"
+model_reasoning_effort = "xhigh"
+model_context_window = 160000
+model_auto_compact_token_limit = 150000
+model_auto_compact_token_limit_scope = "total"
+sandbox_mode = "workspace-write"
+
+[agents]
+enabled = false

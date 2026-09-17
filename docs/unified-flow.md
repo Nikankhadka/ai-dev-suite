@@ -10,12 +10,13 @@ A comprehensive guide merging [Matt Pocock's engineering skills](https://github.
 2. **Process** - Planning, implementation, and validation skills that you orchestrate but don't micromanage
 3. **Orchestration** - Parallel crews, autonomous runs, and knowledge capture that let you give direction once and ship many times
 
-**Never review diffs manually.** Trust the validation pipeline. Review the evidence - screenshots, logs, risk assessments - not the raw code.
+**Review evidence first.** Use screenshots, logs, tests, and risk assessments, then spot-check the diff in proportion to risk.
 
-**Voice first. Plan visually. Parallelize fearlessly.**
+**Voice first. Plan visually. Parallelize only independent read or review work by default.**
 
 For how to run these tools as iterate-verify-commit loops and parallel crews, see
-[loop-flow.md](loop-flow.md). This doc covers the tools; that one covers the loop discipline.
+[loop-flow.md](loop-flow.md). For role and model defaults, context limits, and hybrid handoffs, see
+[supervised-model-routing.md](supervised-model-routing.md).
 
 ---
 
@@ -68,7 +69,9 @@ The suite installs itself, submodules included:
 curl -fsSL https://raw.githubusercontent.com/Nikankhadka/ai-dev-suite/main/setup.sh | bash
 ```
 
-That clones to `~/.config/opencode`, initializes every vendored submodule, symlinks the skills into `~/.claude/skills` and `~/.agents/skills` (read by opencode, Claude Code, and Codex alike), and links `instructions/AGENTS.md` as the shared global instruction file for all three harnesses.
+That clones to `~/.config/opencode`, initializes every vendored submodule, links the shared skills
+and instructions, merges native model defaults, and installs bounded Claude and Codex roles.
+Settings merges preserve unrelated keys and create timestamped backups when values change.
 
 Slash commands are OpenCode-only and live in `~/.config/opencode/command/`. Skills work on every harness.
 
@@ -93,10 +96,12 @@ The suite defines specialized agent personas, each with tailored skill access:
 
 | Agent | Role | Key Skills |
 |-------|------|-----------|
-| **builder** | Writes code | `/tdd`, `/implement`, `/prototype`, `/code-review` |
-| **planner** | Designs features | `/grill-me`, `/to-spec`, `/to-tickets`, `/wayfinder`, `/lavish` |
-| **reviewer** | Reviews code | `/code-review` (three-axis: standards + spec + over-engineering) |
-| **debugger** | Fixes bugs | `/diagnosing-bugs` (6-phase loop) |
+| **supervisor** | Owns planning, delegation, review, and acceptance | global supervised workflow |
+| **reader** | Returns bounded read-only evidence | repository search and inspection |
+| **builder** | Implements one bounded slice | `/tdd`, `/implement`, `/prototype` |
+| **planner** | Reformulates requirements and defines DoD/tests | `/grill-me`, `/to-spec`, `/to-tickets`, `/wayfinder`, `/lavish` |
+| **reviewer** | Reviews one assigned axis without editing | `/code-review` or `/ponytail-review` |
+| **debugger** | Diagnoses without fixing | `/diagnosing-bugs` (6-phase loop) |
 | **maintainer** | Cleans house | `/maintain`, `stack-discovery`, `domain-modeling` |
 
 ---
@@ -247,13 +252,15 @@ You must supply `--intent` - what you set out to accomplish, not a description o
 
 ### Code Review Integration
 
-No-Mistakes' adversarial review step can run `/code-review` in a fresh context - three axes as parallel sub-agents:
+No-Mistakes' adversarial review step can run `/code-review` in fresh contexts. The supervisor may
+assign up to three flat, read-only review workers:
 
 - **Standards** - 12 Fowler code smells + repo's documented standards
 - **Spec** - Compare implementation against the originating spec/PRD
 - **Over-engineering** - What can be deleted or simplified
 
-Sub-agents are critical: the agent that wrote the code is the worst reviewer of its own work. Fresh contexts with no knowledge of the author catch what the author would miss.
+Workers cannot spawn workers. Fresh review context keeps implementation assumptions from masking
+specification, standards, simplicity, or evidence gaps.
 
 ---
 
@@ -303,15 +310,17 @@ It captures: user preferences (working style, tooling), project facts (build/tes
 
 Outputs a "safe-to-end" verdict and a RESUME POINTER - exactly which files a fresh session should load to continue.
 
-**Handoff** compacts the current session into a document for another agent:
+**Handoff** writes the supervisor-owned `.agent-handoff.md` ledger for a fresh session:
 
 ```
 /handoff
 ```
 
-Use when you're passing work between agents or clearing context for the next ticket.
+Use at the 100K soft threshold, when passing between harnesses, or before clearing context. The
+receiving supervisor verifies the ledger and deletes it after completion.
 
-**Strategic Compact** suggests manual context compaction at logical task boundaries instead of relying on arbitrary auto-compaction. Load it when a session is long, multi-phase, or approaching 75% context limits - it tells you *when* to suggest `/compact`, the user decides *if*.
+**Strategic Compact** prefers a fresh handoff at 100K and forbids starting new work at 160K.
+Compaction is the fallback when a fresh session is unavailable.
 
 ### Architecture Health
 

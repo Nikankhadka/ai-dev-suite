@@ -86,10 +86,12 @@ For architectural and non-visual decisions:
 
 | Agent | Role | Key Skills |
 |-------|------|-----------|
-| **builder** | Writes code | `/tdd`, `/implement`, `/prototype`, `/code-review` |
-| **planner** | Designs features | `/grill-me`, `/to-spec`, `/to-tickets`, `/wayfinder` |
-| **reviewer** | Reviews code | `/code-review` (two-axis: standards + spec) |
-| **debugger** | Fixes bugs | `/diagnosing-bugs` (6-phase loop) |
+| **supervisor** | Plans, delegates, and accepts | global supervised workflow |
+| **reader** | Gathers bounded read-only evidence | repository inspection |
+| **builder** | Implements one bounded slice | `/tdd`, `/implement`, `/prototype` |
+| **planner** | Defines requirements, DoD, and tests | `/grill-me`, `/to-spec`, `/to-tickets`, `/wayfinder` |
+| **reviewer** | Reviews one assigned axis | standards, spec, simplicity, or evidence |
+| **debugger** | Diagnoses bugs | `/diagnosing-bugs` (6-phase loop) |
 
 ### Coding Workflow (Matt)
 1. **`/tdd`** - Red-green-refactor at pre-agreed seams. Write failing test first, then minimal implementation. Work in vertical slices.
@@ -158,7 +160,7 @@ Stop when coverage reaches 80%."
 ### Knowledge Capture
 - If the agent made a mistake, add it to the project memory file
 - Extract conditional knowledge into skills when it grows too large
-- Run `/handoff` to compact sessions for handoff between agents
+- Run `/handoff` to write `.agent-handoff.md` before changing agents or contexts
 
 ---
 
@@ -236,11 +238,11 @@ firstmate                    # Talk to one agent
 
 ## Key Principles
 
-1. **Never review diffs manually** - use No-Mistakes, review only the evidence and risk assessment
+1. **Review evidence first** - use No-Mistakes, then spot-check diffs in proportion to risk
 2. **Voice first, type only when needed** - 3x faster, less friction
 3. **Plan visually when possible** - Lavish over text walls
 4. **Keep memory files minimal** - move conditional knowledge into skills
-5. **Parallelize fearlessly** - Treehouse + Firstmate make parallel work safe
+5. **Parallelize bounded reads and reviews** - implementation stays sequential unless explicitly approved
 6. **Trust the pipeline for low-risk changes** - your time is better spent on direction-setting
 7. **Don't trust popular skills blindly** - evaluate them, don't install based on stars
 8. **AI codes faster than humans** - don't let "development cost" bias technical decisions toward low-quality shortcuts

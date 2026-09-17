@@ -48,9 +48,10 @@ Before reaching for a CLI, know what the harness already gives you.
 
 - Commands with `subtask: true` in their frontmatter run in a child session, so a long procedure
   does not consume the main context. `/maintain` and `/memory` already do this.
-- The five personas in `agent/` (the opencode global agent dir) are the loop roles: `planner` frames, `builder` builds,
-  `reviewer` checks, `debugger` diagnoses, `maintainer` cleans. Each is `mode: subagent`, so
-  routing a command at a persona is how you get a clean context for that phase.
+- The personas in `agent/` (the OpenCode global agent dir) are flat loop roles: `supervisor`
+  coordinates; `reader` gathers evidence; `planner` frames; `builder` builds; `reviewer` checks;
+  `debugger` diagnoses; `maintainer` cleans. Routing a command at a persona gives that phase a
+  clean context.
 
 Layer 0 covers more than people expect. Reach past it only when you need durability across
 sessions (`gnhf`), a real gate (`no-mistakes`), or true filesystem isolation (`treehouse`).
@@ -99,11 +100,10 @@ return only its assigned phase. If a pipeline-control command returns `nested_ga
 and hand back to the outer executor. Only `status`, `logs`, `help` and `doctor` are safe from the
 inside.
 
-**`/ship` is the same idea, local and staged.** `command/ship.md` runs Context, Plan,
-Build, Review, Test, Docs and optional Release with a hard gate on each (G0 through G6), a max
-attempt count per gate, and a mandatory report table. It never proceeds past a FAIL. Use `/ship`
-for one requirement end to end inside a session; use `no-mistakes` when the work is already
-committed and needs to reach a push target.
+**`/ship` is a thin local entrypoint.** It invokes the global supervised workflow: restate the
+outcome, define DoD and tests, delegate one bounded implementation slice, run independent review,
+and report evidence. Add `--release` to hand committed work to no-mistakes. The command does not
+maintain a competing single-context gate pipeline.
 
 ---
 
@@ -324,7 +324,7 @@ An uncapped unattended loop is not autonomy, it is an unbounded write to your re
 
 | Task shape | Loop | Why |
 |---|---|---|
-| Bounded, verifiable, one sitting | `/ship` | Gates in order, one report, no external process |
+| Bounded, verifiable, one sitting | `/ship` | One supervisor, bounded workers, one evidence report |
 | Committed work that needs to reach a PR | `/no-mistakes` | Isolated worktree, adversarial review, CI babysitting |
 | Bounded and verifiable, but long | gnhf Hands-Off with caps | Durable across hours, commits each iteration |
 | Exploratory, design-heavy, unclear target | gnhf Companion | You steer between iterations |
@@ -375,20 +375,21 @@ Keep `ponytail` on while building. The cheapest review finding is the code that 
 
 ### 3. Verify
 
-Read evidence, not diffs.
+Read evidence first, then inspect the diff in proportion to risk.
 
 ```bash
 no-mistakes axi run --intent "<the ticket's intent, in your words>"
 no-mistakes axi status
 ```
 
-For low-risk changes, the pipeline catches what you would have caught, and reading the diff is
-theater. Spend your review attention on the high-risk ones and on every `ask-user` escalation,
-because those are precisely the decisions the pipeline correctly refused to make for you.
+For low-risk changes, evidence and targeted diff checks are usually enough. Spend deeper review
+attention on high-risk work and every `ask-user` escalation, because those are precisely the
+decisions the pipeline correctly refused to make for you.
 
-`/code-review` is the same discipline at session scope, three axes as parallel subagents:
-standards, spec, over-engineering. Never merge or rerank the axes. A change can pass one and fail
-another, and the separation is what stops one from masking the other.
+`/code-review` is the same discipline at session scope. The supervisor can assign standards,
+specification, over-engineering, or evidence to at most three flat read-only reviewers. Workers do
+not spawn workers. A change can pass one axis and fail another, so the supervisor reports each
+axis before its final verdict.
 
 ### 4. Capture
 
@@ -398,7 +399,7 @@ forever.
 ```
 /memory note <the non-obvious decision and why>    # .agents/memory.md, project-scoped
 /stow                                              # sweep the session before a context reset
-/handoff                                           # only when passing to another agent mid-flight
+/handoff                                           # write .agent-handoff.md for a fresh context
 ```
 
 The boundary between the three, since it is not obvious:
@@ -407,11 +408,11 @@ The boundary between the three, since it is not obvious:
   moment you learn something, not at the end.
 - **`/stow`** is an automatic sweep of a whole session for things you did not think to record. Use
   it before a context reset or a long break.
-- **`/handoff`** compacts the live conversation so a different agent can continue *this* work. It
-  is about continuity, not knowledge.
-- **`strategic-compact`** (a skill, not a command) suggests manual compaction at natural task
-  boundaries - research to plan, debugging to next feature, after a failed approach. Load it
-  during long or multi-phase sessions before context pressure degrades responses.
+- **`/handoff`** writes the supervisor-owned `.agent-handoff.md` ledger so a fresh agent can
+  continue this work. It is excluded locally and deleted after the receiving supervisor verifies
+  completion.
+- **`strategic-compact`** (a skill, not a command) treats 100K as a soft handoff and 160K as a
+  stop-before-new-work threshold. Fresh context is the default; compaction is a fallback.
 
 Record only what the code cannot tell you: decisions and their reasoning, gotchas found the hard
 way, conventions you were corrected on. Never record file structure or dependency lists.
@@ -439,10 +440,12 @@ commits, spot-check two fixes against their evidence.
 
 ### Three-task parallel day
 
+This example requires explicit user approval because it parallelizes implementation.
+
 1. `/to-tickets` produces three slices with no shared blocking edges. Verify that before fanning
    out, because tickets that block each other are one sequential task wearing a disguise.
 2. `treehouse get --lease --lease-holder task-a` (and b, c). Three isolated checkouts.
-3. One agent per worktree, each running `/ship` against its ticket's acceptance condition.
+3. With approval, run one agent per worktree against its ticket's acceptance condition.
 4. Land them one at a time. First one merges clean; rebase the others; `/resolving-merge-conflicts`
    for anything that collides.
 5. `treehouse return <path>` for each, then `/stow` once at the end for the whole day.
@@ -480,6 +483,9 @@ a refactor.
   one wide change collide by construction.
 - **Skipping capture.** The loop that never writes down what it learned runs at the same speed on
   day 30 as on day 1.
+
+The default role, model, context, and handoff policy is documented in
+[supervised-model-routing.md](supervised-model-routing.md).
 
 ---
 

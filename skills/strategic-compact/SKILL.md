@@ -1,30 +1,38 @@
 ---
 name: strategic-compact
-description: Suggests manual context compaction at logical task boundaries instead of relying on arbitrary auto-compaction. Load when a session is long, multi-phase, or approaching 140K of total context limits.
+description: Suggests fresh handoff around 100K context and stop-before-new-work at 160K, with manual compaction only as fallback.
 ---
 
 # Strategic Compact
 
-Suggest a manual compact (`/compact` where the harness supports it) at logical boundaries rather than letting it happen mid-task.
+Prefer a fresh handoff at logical boundaries rather than letting context pressure shape the work. Manual compact (`/compact` where the harness supports it) is the fallback when a fresh handoff is impractical.
 
 ## When to Activate
 
-- Long sessions approaching context limits
+- Long sessions approaching the 100K soft handoff threshold
 - Multi-phase tasks (research -> plan -> implement -> test)
 - Switching between unrelated tasks in the same session
 - After completing a milestone, before starting new work
 - Responses feel slower or less coherent (context pressure)
+- Any session near 160K context. Do not intentionally start new work there; hand off first.
 
-## Compaction Decision Guide
+## Context Rotation Guide
 
-| Phase transition           | Compact? | Why                                                             |
-| -------------------------- | -------- | --------------------------------------------------------------- |
-| Research -> Planning       | Yes      | Research context is bulky; the plan is the distilled output     |
-| Planning -> Implementation | Yes      | Plan lives in a todo list or file; free up context for code     |
-| Implementation -> Testing  | Maybe    | Keep if tests reference recent code; compact if switching focus |
-| Debugging -> Next feature  | Yes      | Debug traces pollute context for unrelated work                 |
-| Mid-implementation         | No       | Losing variable names, file paths, partial state is costly      |
-| After a failed approach    | Yes      | Clear the dead-end reasoning before trying a new approach       |
+| Phase transition           | Action | Why                                                               |
+| -------------------------- | ------ | ----------------------------------------------------------------- |
+| Research -> Planning       | Handoff | Research context is bulky; the plan is the distilled output       |
+| Planning -> Implementation | Handoff | Plan lives in a task or file; start implementation fresh          |
+| Implementation -> Testing  | Stay or hand off | Keep a small related context; rotate when switching focus |
+| Debugging -> Next feature  | Handoff | Debug traces pollute context for unrelated work                   |
+| Mid-implementation         | Stay    | Losing variable names, file paths, and partial state is costly    |
+| After a failed approach    | Handoff | Keep the dead-end evidence in the ledger, not the active context  |
+
+## Context Policy
+
+- Around 100K context, prepare `.agent-handoff.md` and prefer a fresh session or worker
+- At 160K, stop before starting new work and hand off
+- Use compaction only when a fresh handoff would lose too much live state
+- Treat model context limits as ceilings, not quality guarantees
 
 ## What Survives vs. What's Lost
 
@@ -37,11 +45,11 @@ Suggest a manual compact (`/compact` where the harness supports it) at logical b
 
 ## Best Practices
 
-1. Compact after planning, once the plan is written to a todo list or file
-2. Compact after debugging, once the fix is confirmed
+1. Hand off after planning, once the plan is written to a todo list or file
+2. Hand off after debugging, once the fix is confirmed
 3. Never compact mid-implementation - preserve context for related changes still in flight
-4. Suggest, don't force - this skill tells you _when_ to suggest, the user decides _if_
-5. Write anything important to a file or `/memory` before compacting away the reasoning that produced it
+4. Suggest, don't force - this skill tells you when to suggest handoff or compact, the user decides if
+5. Write anything important to `.agent-handoff.md` or `/memory` before compacting away the reasoning that produced it
 
 ## Avoiding Duplicate Context
 

@@ -6,7 +6,9 @@ A summary of the agent-assisted development workflow used by [Matt Pocock](https
 
 **Treat the AI as a design partner, not a code monkey.** The skills exist to sharpen your thinking before a single line is written. Grilling precedes building. Specs precede implementation. Review is done by agents that didn't write the code - because the author is the worst reviewer.
 
-**Be conscious of the context window.** The "smart zone" ends around 140K tokens - beyond that, attention degrades, hallucinations creep in, and the agent gets noticeably dumber. Treat your context window like a budget: plan work into sessions that stay comfortably inside the smart zone, clear context between tickets, and spawn sub-agents with fresh windows for review.
+**Be conscious of the context window.** This upstream summary historically used a 140K "smart
+zone." AI Dev Suite standardizes that guidance as a 100K soft handoff and a 160K stop-before-new-work
+limit. See [supervised-model-routing.md](supervised-model-routing.md).
 
 **Skills are lightweight by design.** Even with the full suite installed, the skills only consume ~660 tokens in the system prompt. They are user-invoked - you call them when you need them - so they don't leech into every conversation.
 
@@ -98,7 +100,7 @@ A grilling session might be 6 questions for a small change, or 20+ for a complex
 
 After grilling, you face a fork:
 
-**If the work fits in one smart zone (~140K tokens):** Go straight to `/implement`. The agent has the plan in context, the work is small enough, and you can ship in this session.
+**If the work fits before the 100K soft handoff:** Go straight to `/implement`. The agent has the plan in context, the work is small enough, and you can ship in this session.
 
 **If the work needs multiple sessions:** Take the spec-and-tickets path. This compresses the discussion into persistent artifacts so future sessions can pick up where this one left off.
 

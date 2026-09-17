@@ -4,7 +4,7 @@
 
   "commands": {
     "tdd":                  { "file": "command/tdd.md",                  "upstream": "vendor/mattpocock-skills/skills/engineering/tdd/SKILL.md",                  "agent": "builder" },
-    "code-review":          { "file": "command/code-review.md",          "upstream": "vendor/mattpocock-skills/skills/engineering/code-review/SKILL.md",          "agent": "reviewer" },
+    "code-review":          { "file": "command/code-review.md",          "upstream": "vendor/mattpocock-skills/skills/engineering/code-review/SKILL.md",          "agent": "supervisor" },
     "diagnosing-bugs":      { "file": "command/diagnosing-bugs.md",      "upstream": "vendor/mattpocock-skills/skills/engineering/diagnosing-bugs/SKILL.md",      "agent": "debugger" },
     "implement":            { "file": "command/implement.md",            "upstream": "vendor/mattpocock-skills/skills/engineering/implement/SKILL.md",            "agent": "builder" },
     "to-spec":              { "file": "command/to-spec.md",             "upstream": "vendor/mattpocock-skills/skills/engineering/to-spec/SKILL.md",              "agent": "planner" },
@@ -43,7 +43,7 @@
     "builder": {
       "file": "agent/builder.md",
       "skills": [
-        "tdd", "code-review", "ponytail-review", "ponytail-audit",
+        "tdd", "ponytail-review", "ponytail-audit",
         "improve-codebase-architecture", "domain-modeling", "codebase-design",
         "prototype", "resolving-merge-conflicts", "research",
         "stack-discovery", "frontend-design"
@@ -58,7 +58,7 @@
     },
     "reviewer": {
       "file": "agent/reviewer.md",
-      "skills": ["code-review", "ponytail-review", "codebase-design"]
+      "skills": ["ponytail-review", "codebase-design"]
     },
     "debugger": {
       "file": "agent/debugger.md",
@@ -67,6 +67,18 @@
     "maintainer": {
       "file": "agent/maintainer.md",
       "skills": ["stack-discovery", "domain-modeling"]
+    },
+    "supervisor": {
+      "file": "agent/supervisor.md",
+      "skills": []
+    },
+    "reader": {
+      "file": "agent/reader.md",
+      "skills": []
+    },
+    "fallback-reader": {
+      "file": "agent/fallback-reader.md",
+      "skills": []
     }
   },
 
@@ -89,7 +101,8 @@
     "docs/kunchen-flow.md":      { "checks": ["skill_names", "command_names"] },
     "docs/matt-flow.md":         { "checks": ["skill_names", "command_names"] },
     "docs/unified-flow.md":      { "checks": ["skill_names", "command_names"] },
-    "docs/loop-flow.md":         { "checks": ["skill_names", "command_names"] }
+    "docs/loop-flow.md":         { "checks": ["skill_names", "command_names"] },
+    "docs/supervised-model-routing.md": { "checks": ["skill_names", "command_names"] }
   },
 
   "config": {

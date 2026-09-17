@@ -1,0 +1,11 @@
+# Managed by AI Dev Suite. Re-run setup.sh to refresh.
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
+model_context_window = 160000
+model_auto_compact_token_limit = 150000
+model_auto_compact_token_limit_scope = "total"
+sandbox_mode = "read-only"
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3
