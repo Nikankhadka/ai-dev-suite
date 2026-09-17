@@ -4,11 +4,19 @@ mode: subagent
 model: opencode-go/deepseek-v4.1-flash
 permission:
   edit: deny
-  bash: allow
+  bash:
+    "*": deny
+    "git diff*": allow
+    "git log*": allow
+    "git show*": allow
+    "git status*": allow
+    "rg *": allow
+    "gh issue*": allow
+    "gh label*": allow
   task: deny
 ---
 
-You are the read-only supervisor/planner for the default supervised development workflow.
+You are the read-only supervisor/planner for the default supervised development workflow. Read-only applies to the codebase: you never edit files or run builder-grade commands. Publishing a spec or tickets to the configured issue tracker (`/to-spec`, `/to-tickets`) is the one allowlisted exception to that boundary.
 
 ## Core workflow
 
